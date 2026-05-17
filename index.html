@@ -4,686 +4,612 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ROMANBEROAMIN</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Neue+Haas+Grotesk+Display+Pro:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-  :root {
-    --black: #080808;
-    --white: #f0f0f0;
-    --dim: #555;
-    --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  }
+:root {
+  --black: #000;
+  --white: #fff;
+  --grey: #888;
+}
 
-  html, body {
-    background: var(--black);
-    color: var(--white);
-    font-family: var(--font);
-    min-height: 100vh;
-    cursor: none;
-  }
+html { scroll-behavior: smooth; }
 
-  /* CUSTOM CURSOR */
-  .cursor {
-    position: fixed;
-    width: 8px;
-    height: 8px;
-    background: var(--white);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease;
-    mix-blend-mode: difference;
-  }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  cursor: none;
+  overflow-x: hidden;
+}
 
-  .cursor.hovering {
-    width: 40px;
-    height: 40px;
-  }
+/* CURSOR */
+.cursor {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, background 0.3s;
+  mix-blend-mode: difference;
+}
+.cursor.big { width: 48px; height: 48px; }
 
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    padding: 28px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    mix-blend-mode: difference;
-  }
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  mix-blend-mode: difference;
+}
 
-  .nav-logo {
-    font-size: 13px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--white);
-    text-decoration: none;
-    font-weight: 500;
-  }
+.nav-logo {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 400;
+  cursor: none;
+}
 
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-  }
+.nav-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
 
-  .nav-links a {
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--white);
-    text-decoration: none;
-    opacity: 0.6;
-    transition: opacity 0.2s;
-  }
+.nav-right a {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  cursor: none;
+}
+.nav-right a:hover { opacity: 1; }
 
-  .nav-links a:hover { opacity: 1; }
+/* PAGES */
+.page { display: none; }
+.page.active { display: block; }
 
-  /* GRID */
-  .grid {
-    padding: 0;
-    column-count: 2;
-    column-gap: 0;
-  }
+/* ===================== FILM PAGE ===================== */
+.film-grid {
+  padding-top: 0;
+  columns: 2;
+  column-gap: 0;
+}
 
-  .grid-item {
-    position: relative;
-    overflow: hidden;
-    break-inside: avoid;
-    display: block;
-    cursor: none;
-  }
+@media (max-width: 600px) {
+  .film-grid { columns: 1; }
+}
 
-  .grid-item img {
-    width: 100%;
-    display: block;
-    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    filter: brightness(0.85);
-  }
+.film-item {
+  position: relative;
+  break-inside: avoid;
+  overflow: hidden;
+  cursor: none;
+  display: block;
+}
 
-  .grid-item:hover img {
-    transform: scale(1.03);
-    filter: brightness(0.5);
-  }
+.film-item img {
+  width: 100%;
+  display: block;
+  transition: filter 0.5s ease;
+  filter: brightness(0.9);
+}
 
-  /* HOVER INFO OVERLAY */
-  .grid-item-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 32px 24px 24px;
-    background: linear-gradient(transparent, rgba(0,0,0,0.85));
-    transform: translateY(100%);
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    pointer-events: none;
-  }
+.film-item:hover img {
+  filter: brightness(0.25);
+}
 
-  .grid-item:hover .grid-item-info {
-    transform: translateY(0);
-  }
+.film-item-info {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 32px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
 
-  .grid-item-title {
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--white);
-    line-height: 1.3;
-    margin-bottom: 4px;
-  }
+.film-item:hover .film-item-info {
+  opacity: 1;
+}
 
-  .grid-item-type {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
-  }
+.film-item-title {
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--white);
+  font-weight: 400;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
 
-  /* VIEW LINK */
-  .grid-item-link {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-  }
+.film-item-type {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
 
-  /* FOOTER */
-  footer {
-    padding: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    margin-top: 0;
-  }
+.film-item-link {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
 
-  footer span {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--dim);
-  }
+/* ===================== ABOUT PAGE ===================== */
+.about-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 32px 80px;
+}
 
-  footer a {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--dim);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
+.about-inner {
+  max-width: 520px;
+}
 
-  footer a:hover { color: var(--white); }
+.about-tag {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-bottom: 48px;
+}
 
-  /* PAGE TRANSITIONS */
-  .page { display: none; }
-  .page.active { display: block; }
+.about-text {
+  font-size: 20px;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.85);
+  font-weight: 300;
+  margin-bottom: 64px;
+}
 
-  /* ABOUT PAGE */
-  .about-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 120px 40px 80px;
-  }
+.about-cta {
+  display: flex;
+  gap: 40px;
+}
 
-  .about-content {
-    max-width: 560px;
-  }
+.about-cta a {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--grey);
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: none;
+}
+.about-cta a:hover { color: var(--white); }
 
-  .about-name {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--dim);
-    margin-bottom: 40px;
-  }
+/* ===================== CONTACT PAGE ===================== */
+.contact-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 32px 80px;
+}
 
-  .about-bio {
-    font-size: 18px;
-    line-height: 1.7;
-    color: var(--white);
-    font-weight: 400;
-    margin-bottom: 48px;
-  }
+.contact-inner { max-width: 480px; }
 
-  .about-links {
-    display: flex;
-    gap: 32px;
-  }
+.contact-tag {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-bottom: 48px;
+}
 
-  .about-links a {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--dim);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
+.contact-head {
+  font-size: 52px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: 64px;
+}
 
-  .about-links a:hover { color: var(--white); }
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-  /* CONTACT PAGE */
-  .contact-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 120px 40px 80px;
-  }
+.contact-links a {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--grey);
+  text-decoration: none;
+  transition: color 0.2s;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  cursor: none;
+}
+.contact-links a span { color: rgba(255,255,255,0.12); }
+.contact-links a:hover { color: var(--white); }
 
-  .contact-content {
-    max-width: 480px;
-  }
+/* ===================== SERVICES PAGE ===================== */
+.services-wrap {
+  min-height: 100vh;
+  padding: 120px 32px 80px;
+}
 
-  .contact-label {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--dim);
-    margin-bottom: 40px;
-  }
+.services-tag {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-bottom: 80px;
+}
 
-  .contact-heading {
-    font-size: 48px;
-    font-weight: 400;
-    line-height: 1.1;
-    margin-bottom: 48px;
-    letter-spacing: -0.02em;
-  }
+.services-list {
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
 
-  .contact-links {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+.service-row {
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 40px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 32px;
+  align-items: start;
+}
 
-  .contact-links a {
-    font-size: 13px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--dim);
-    text-decoration: none;
-    transition: color 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
+@media (max-width: 768px) {
+  .service-row { grid-template-columns: 1fr; gap: 16px; }
+}
 
-  .contact-links a::before {
-    content: '→';
-    color: rgba(255,255,255,0.2);
-  }
+.service-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-bottom: 8px;
+}
 
-  .contact-links a:hover { color: var(--white); }
+.service-price-big {
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
 
-  /* SERVICES PAGE */
-  .services-page {
-    min-height: 100vh;
-    padding: 120px 40px 80px;
-  }
+.service-details {
+  font-size: 11px;
+  line-height: 2;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.05em;
+}
 
-  .services-label {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--dim);
-    margin-bottom: 80px;
-  }
+.service-time {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--grey);
+  white-space: nowrap;
+}
 
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.06);
-  }
+.book-link {
+  display: inline-block;
+  margin-top: 64px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--grey);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  padding-bottom: 4px;
+  transition: color 0.2s, border-color 0.2s;
+  cursor: none;
+}
+.book-link:hover { color: var(--white); border-color: var(--white); }
 
-  .service-card {
-    background: var(--black);
-    padding: 48px 36px;
-  }
+/* FOOTER */
+footer {
+  padding: 32px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+footer span, footer a {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: none;
+}
+footer a:hover { color: var(--white); }
 
-  .service-name {
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--dim);
-    margin-bottom: 16px;
-  }
-
-  .service-price {
-    font-size: 36px;
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    margin-bottom: 32px;
-  }
-
-  .service-price span {
-    font-size: 13px;
-    color: var(--dim);
-    letter-spacing: 0.1em;
-    font-weight: 400;
-  }
-
-  .service-includes {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 40px;
-  }
-
-  .service-includes li {
-    font-size: 12px;
-    letter-spacing: 0.05em;
-    color: rgba(255,255,255,0.5);
-    padding-left: 16px;
-    position: relative;
-  }
-
-  .service-includes li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
-    color: rgba(255,255,255,0.2);
-  }
-
-  .service-timeline {
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--dim);
-  }
-
-  /* BOOK NOW BUTTON */
-  .book-btn {
-    display: inline-block;
-    margin-top: 64px;
-    padding: 16px 40px;
-    border: 1px solid rgba(255,255,255,0.2);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--white);
-    text-decoration: none;
-    transition: background 0.2s, border-color 0.2s;
-    cursor: none;
-  }
-
-  .book-btn:hover {
-    background: var(--white);
-    color: var(--black);
-    border-color: var(--white);
-  }
-
-  /* MOBILE */
-  @media (max-width: 768px) {
-    .grid { column-count: 1; }
-    nav { padding: 20px 24px; }
-    .nav-logo { font-size: 11px; }
-    .nav-links { gap: 20px; }
-    .about-page, .contact-page { padding: 100px 24px 60px; }
-    .services-page { padding: 100px 24px 60px; }
-    .services-grid { grid-template-columns: 1fr; }
-    .about-bio { font-size: 16px; }
-    .contact-heading { font-size: 36px; }
-  }
-
-  /* FADE IN */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .grid-item {
-    animation: fadeIn 0.6s ease forwards;
-    opacity: 0;
-  }
-
-  .grid-item:nth-child(1) { animation-delay: 0.05s; }
-  .grid-item:nth-child(2) { animation-delay: 0.1s; }
-  .grid-item:nth-child(3) { animation-delay: 0.15s; }
-  .grid-item:nth-child(4) { animation-delay: 0.2s; }
-  .grid-item:nth-child(5) { animation-delay: 0.25s; }
-  .grid-item:nth-child(6) { animation-delay: 0.3s; }
-  .grid-item:nth-child(7) { animation-delay: 0.35s; }
-  .grid-item:nth-child(8) { animation-delay: 0.4s; }
-  .grid-item:nth-child(9) { animation-delay: 0.45s; }
-  .grid-item:nth-child(10) { animation-delay: 0.5s; }
-  .grid-item:nth-child(11) { animation-delay: 0.55s; }
-  .grid-item:nth-child(12) { animation-delay: 0.6s; }
-  .grid-item:nth-child(13) { animation-delay: 0.65s; }
-
-  /* PAGE LOAD */
-  body.loaded nav { opacity: 1; }
-  nav { opacity: 0; transition: opacity 0.4s ease 0.2s; }
+/* FADE IN */
+@keyframes up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.film-item { opacity: 0; animation: up 0.6s ease forwards; }
+.film-item:nth-child(1){animation-delay:0s}
+.film-item:nth-child(2){animation-delay:0.05s}
+.film-item:nth-child(3){animation-delay:0.1s}
+.film-item:nth-child(4){animation-delay:0.15s}
+.film-item:nth-child(5){animation-delay:0.2s}
+.film-item:nth-child(6){animation-delay:0.25s}
+.film-item:nth-child(7){animation-delay:0.3s}
+.film-item:nth-child(8){animation-delay:0.35s}
+.film-item:nth-child(9){animation-delay:0.4s}
+.film-item:nth-child(10){animation-delay:0.45s}
+.film-item:nth-child(11){animation-delay:0.5s}
+.film-item:nth-child(12){animation-delay:0.55s}
+.film-item:nth-child(13){animation-delay:0.6s}
 </style>
 </head>
 <body>
 
-<!-- CUSTOM CURSOR -->
 <div class="cursor" id="cursor"></div>
 
-<!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo" onclick="showPage('film')">ROMANBEROAMIN</a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('film')">Film</a></li>
-    <li><a href="#" onclick="showPage('about')">About</a></li>
-    <li><a href="https://instagram.com/romanberoamin" target="_blank">Instagram</a></li>
-    <li><a href="#" onclick="showPage('contact')">Contact</a></li>
-  </ul>
+  <a href="#" class="nav-logo" onclick="go('film');return false;">ROMANBEROAMIN</a>
+  <div class="nav-right">
+    <a href="#" onclick="go('film');return false;">Film</a>
+    <a href="#" onclick="go('about');return false;">About</a>
+    <a href="#" onclick="go('services');return false;">Services</a>
+    <a href="https://instagram.com/romanberoamin" target="_blank">Instagram</a>
+    <a href="#" onclick="go('contact');return false;">Contact</a>
+  </div>
 </nav>
 
-<!-- FILM PAGE -->
+<!-- FILM -->
 <div class="page active" id="page-film">
-  <div class="grid" style="padding-top: 0;">
+  <div class="film-grid">
 
-    <div class="grid-item">
-      <a class="grid-item-link" href="https://www.instagram.com/reel/DHfLyovxAdR/" target="_blank"></a>
-      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/914f4a0b-3778-4c3e-a50b-2f8c9c8410f6/giphy+%286%29.gif" alt="Logan Ghiorzi" loading="lazy">
-      <div class="grid-item-info">
-        <div class="grid-item-title">Logan Ghiorzi</div>
-        <div class="grid-item-type">Unreleased Music Video</div>
+    <div class="film-item">
+      <a class="film-item-link" href="https://www.instagram.com/reel/DHfLyovxAdR/" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/914f4a0b-3778-4c3e-a50b-2f8c9c8410f6/giphy+%286%29.gif" alt="">
+      <div class="film-item-info">
+        <div class="film-item-title">Logan Ghiorzi</div>
+        <div class="film-item-type">Unreleased Music Video</div>
       </div>
     </div>
 
-    <div class="grid-item">
-      <a class="grid-item-link" href="https://www.tiktok.com/@1tristxn/video/7188627518583246123" target="_blank"></a>
-      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/886d23eb-acf5-41b4-8c71-fc466a69480e/giphy+%2830%29.gif" alt="Tristxn" loading="lazy">
-      <div class="grid-item-info">
-        <div class="grid-item-title">Tristxn — Trust How I Feel</div>
-        <div class="grid-item-type">Single Promo</div>
+    <div class="film-item">
+      <a class="film-item-link" href="https://www.tiktok.com/@1tristxn/video/7188627518583246123" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/886d23eb-acf5-41b4-8c71-fc466a69480e/giphy+%2830%29.gif" alt="">
+      <div class="film-item-info">
+        <div class="film-item-title">Tristxn — Trust How I Feel</div>
+        <div class="film-item-type">Single Promo</div>
       </div>
     </div>
 
-    <div class="grid-item">
-      <a class="grid-item-link" href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank"></a>
-      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/6c7e300f-a0f8-4bcc-bfa2-01b6a1c7d88a/giphy+%289%29.gif" alt="Sincewhenbro" loading="lazy">
-      <div class="grid-item-info">
-        <div class="grid-item-title">Sincewhenbro — Phineas</div>
-        <div class="grid-item-type">Music Video</div>
+    <div class="film-item">
+      <a class="film-item-link" href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/6c7e300f-a0f8-4bcc-bfa2-01b6a1c7d88a/giphy+%289%29.gif" alt="">
+      <div class="film-item-info">
+        <div class="film-item-title">Sincewhenbro — Phineas</div>
+        <div class="film-item-type">Music Video</div>
       </div>
     </div>
 
-    <div class="grid-item">
-      <a class="grid-item-link" href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank"></a>
-      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/241ffc63-39f9-4f99-9fa4-3acc09032195/giphy+%2817%29.gif" alt="Logan Ghiorzi Punk Ass Kids" loading="lazy">
-      <div class="grid-item-info">
-        <div class="grid-item-title">Logan Ghiorzi — Punk Ass Kids</div>
-        <div class="grid-item-type">Music Video</div>
+    <div class="film-item">
+      <a class="film-item-link" href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/241ffc63-39f9-4f99-9fa4-3acc09032195/giphy+%2817%29.gif" alt="">
+      <div class="film-item-info">
+        <div class="film-item-title">Logan Ghiorzi — Punk Ass Kids</div>
+        <div class="film-item-type">Music Video</div>
       </div>
     </div>
 
-    <div class="grid-item">
-      <a class="grid-item-link" href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank"></a>
-      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/47d861ac-41bc-432c-9c07-044fd6df5208/giphy+%2827%29.gif" alt="SAMNX" loading="lazy">
-      <div class="grid-item-info">
-        <div class="grid-item-title">SAMNX — 1Step Cypher</div>
-        <div class="grid-item-type">Vertical Music Video</div>
+    <div class="film-item">
+      <a class="film-item-link" href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/47d861ac-41bc-432c-9c07-044fd6df5208/giphy+%2827%29.gif" alt="">
+      <div class="film-item-info">
+        <div class="film-item-title">SAMNX — 1Step Cypher</div>
+        <div class="film-item-type">Vertical Music Video</div>
       </div>
     </div>
 
-    <div class="grid-item">
-      <a class="grid-item-link" href="https://www.youtube.com/watch?v=D_b7UVassEI" target="_blank"></a>
-      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/de9f86ca-ff39-472b-9392-e0d81b2cc6ed/giphy+%2812%29.gif" alt="KAM" loading="lazy">
-      <div class="grid-item-info">
-        <div class="grid-item-title">KAM — Spin The Block</div>
-        <div class="grid-item-type">Music Video</div>
+    <div class="film-item">
+      <a class="film-item-link" href="https://www.youtube.com/watch?v=D_b7UVassEI" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/de9f86ca-ff39-472b-9392-e0d81b2cc6ed/giphy+%2812%29.gif" alt="">
+      <div class="film-item-info">
+        <div class="film-item-title">KAM — Spin The Block</div>
+        <div class="film-item-type">Music Video</div>
       </div>
     </div>
 
-    <div class="grid-item">
-      <a class="grid-item-link" href="https://www.instagram.com/reel/CjURR8PgtK8/" target="_blank"></a>
-      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/dbd339f2-48d4-4e92-b14c-0735e5e2c7a1/giphy+%2832%29.gif" alt="Stuck in a Video Game" loading="lazy">
-      <div class="grid-item-info">
-        <div class="grid-item-title">Stuck in a Video Game</div>
-        <div class="grid-item-type">Animation Original</div>
+    <div class="film-item">
+      <a class="film-item-link" href="https://www.instagram.com/reel/CjURR8PgtK8/" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/dbd339f2-48d4-4e92-b14c-0735e5e2c7a1/giphy+%2832%29.gif" alt="">
+      <div class="film-item-info">
+        <div class="film-item-title">Stuck In A Video Game</div>
+        <div class="film-item-type">Animation Original</div>
       </div>
     </div>
 
-    <div class="grid-item">
-      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/3cb4b132-f709-4621-a8ed-435c960cc05b/giphy+%2818%29.gif" alt="BREMNMM" loading="lazy">
-      <div class="grid-item-info">
-        <div class="grid-item-title">BREMNMM</div>
-        <div class="grid-item-type">Clothing Brand Campaign</div>
+    <div class="film-item">
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/3cb4b132-f709-4621-a8ed-435c960cc05b/giphy+%2818%29.gif" alt="">
+      <div class="film-item-info">
+        <div class="film-item-title">BREMNMM</div>
+        <div class="film-item-type">Clothing Brand Campaign</div>
       </div>
     </div>
 
-    <div class="grid-item">
-      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/0b92d81d-0bb7-4740-b2d8-9a893b82da6f/giphy+%2826%29.gif" alt="Avion" loading="lazy">
-      <div class="grid-item-info">
-        <div class="grid-item-title">Avion</div>
-        <div class="grid-item-type">Music Video</div>
+    <div class="film-item">
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/0b92d81d-0bb7-4740-b2d8-9a893b82da6f/giphy+%2826%29.gif" alt="">
+      <div class="film-item-info">
+        <div class="film-item-title">Avion</div>
+        <div class="film-item-type">Music Video</div>
       </div>
     </div>
 
-    <div class="grid-item">
-      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/46a7c458-c748-4378-8c83-96573a3d590a/giphy+%2828%29.gif" alt="SAMNX Phoenix" loading="lazy">
-      <div class="grid-item-info">
-        <div class="grid-item-title">SAMNX — Phoenix</div>
-        <div class="grid-item-type">Single Promo</div>
+    <div class="film-item">
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/46a7c458-c748-4378-8c83-96573a3d590a/giphy+%2828%29.gif" alt="">
+      <div class="film-item-info">
+        <div class="film-item-title">SAMNX — Phoenix</div>
+        <div class="film-item-type">Single Promo</div>
       </div>
     </div>
 
-    <div class="grid-item">
-      <a class="grid-item-link" href="https://www.instagram.com/reel/CfjD-Blv7Xe/" target="_blank"></a>
-      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/775adcaf-892a-40d8-a426-e351d0c9cbfe/giphy+%2833%29.gif" alt="Pet Kraken" loading="lazy">
-      <div class="grid-item-info">
-        <div class="grid-item-title">Pet Kraken</div>
-        <div class="grid-item-type">Animation Original</div>
+    <div class="film-item">
+      <a class="film-item-link" href="https://www.instagram.com/reel/CfjD-Blv7Xe/" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/775adcaf-892a-40d8-a426-e351d0c9cbfe/giphy+%2833%29.gif" alt="">
+      <div class="film-item-info">
+        <div class="film-item-title">Pet Kraken</div>
+        <div class="film-item-type">Animation Original</div>
       </div>
     </div>
 
-    <div class="grid-item">
-      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/ba13df87-7c7d-4aeb-9cf5-06ec5c4c9534/giphy+%281%29.gif" alt="MDMA Pennywise" loading="lazy">
-      <div class="grid-item-info">
-        <div class="grid-item-title">MDMA — Pennywise</div>
-        <div class="grid-item-type">Unreleased Music Video</div>
+    <div class="film-item">
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/ba13df87-7c7d-4aeb-9cf5-06ec5c4c9534/giphy+%281%29.gif" alt="">
+      <div class="film-item-info">
+        <div class="film-item-title">MDMA — Pennywise</div>
+        <div class="film-item-type">Unreleased Music Video</div>
       </div>
     </div>
 
-    <div class="grid-item">
-      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/214933d9-5ccf-4a79-a66d-c57a9a36e27f/giphy+%282%29.gif" alt="74 Youngan" loading="lazy">
-      <div class="grid-item-info">
-        <div class="grid-item-title">74 Youngan — The Street Escape</div>
-        <div class="grid-item-type">Music Video</div>
+    <div class="film-item">
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/214933d9-5ccf-4a79-a66d-c57a9a36e27f/giphy+%282%29.gif" alt="">
+      <div class="film-item-info">
+        <div class="film-item-title">74 Youngan — The Street Escape</div>
+        <div class="film-item-type">Music Video</div>
       </div>
     </div>
 
   </div>
-
   <footer>
     <span>© 2025 RomanBeroamin LLC</span>
-    <a href="https://instagram.com/romanberoamin" target="_blank">Instagram</a>
+    <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
   </footer>
 </div>
 
-<!-- ABOUT PAGE -->
+<!-- ABOUT -->
 <div class="page" id="page-about">
-  <div class="about-page">
-    <div class="about-content">
-      <div class="about-name">Roman Beroamin — Phoenix, AZ</div>
-      <p class="about-bio">
-        Director, visual artist, and creative force based in Phoenix, Arizona. I make music videos, brand films, and surreal visual worlds that hit different. Dark aesthetics, emotional depth, and technical precision — that's the work.
-      </p>
-      <p class="about-bio" style="font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 0;">
-        Available for music videos, brand campaigns, short form content, and creative direction.
-      </p>
-      <div class="about-links" style="margin-top: 48px;">
-        <a href="#" onclick="showPage('contact')">Book a Project</a>
+  <div class="about-wrap">
+    <div class="about-inner">
+      <div class="about-tag">Roman Beroamin — Phoenix, AZ</div>
+      <p class="about-text">Director. Visual artist. I make music videos, brand films, and surreal visual worlds that hit different. Dark aesthetics, emotional depth, technical precision. That's the work.</p>
+      <p class="about-text" style="font-size:15px;color:rgba(255,255,255,0.35);margin-bottom:0;">Available for music videos, brand campaigns, short form content, and creative direction.</p>
+      <div class="about-cta">
+        <a href="#" onclick="go('contact');return false;">Book a Project</a>
+        <a href="#" onclick="go('services');return false;">Services</a>
         <a href="https://instagram.com/romanberoamin" target="_blank">Instagram</a>
-        <a href="#" onclick="showPage('services')">Services</a>
       </div>
     </div>
   </div>
   <footer>
     <span>© 2025 RomanBeroamin LLC</span>
-    <a href="https://instagram.com/romanberoamin" target="_blank">Instagram</a>
+    <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
   </footer>
 </div>
 
-<!-- SERVICES PAGE -->
+<!-- SERVICES -->
 <div class="page" id="page-services">
-  <div class="services-page">
-    <div class="services-label">Services & Pricing</div>
-    <div class="services-grid">
-
-      <div class="service-card">
-        <div class="service-name">Basic</div>
-        <div class="service-price">$400 <span>launch</span></div>
-        <ul class="service-includes">
-          <li>1 Music Video</li>
-          <li>1–2 Short Form Clips</li>
-          <li>Color Grade</li>
-          <li>Run & Gun Production</li>
-        </ul>
-        <div class="service-timeline">Delivery — 1 Week</div>
+  <div class="services-wrap">
+    <div class="services-tag">Services & Pricing</div>
+    <div class="services-list">
+      <div class="service-row">
+        <div>
+          <div class="service-label">Basic</div>
+          <div class="service-price-big">$400</div>
+        </div>
+        <div class="service-details">
+          1 Music Video<br>
+          1–2 Short Form Clips<br>
+          Color Grade<br>
+          Run & Gun
+        </div>
+        <div></div>
+        <div class="service-time">1 Week</div>
       </div>
-
-      <div class="service-card">
-        <div class="service-name">Standard</div>
-        <div class="service-price">$700 <span>launch</span></div>
-        <ul class="service-includes">
-          <li>1 Music Video</li>
-          <li>Trailer</li>
-          <li>2–3 Short Form Clips</li>
-          <li>Color Grade + Light VFX</li>
-        </ul>
-        <div class="service-timeline">Delivery — 3 Weeks</div>
+      <div class="service-row">
+        <div>
+          <div class="service-label">Standard</div>
+          <div class="service-price-big">$700</div>
+        </div>
+        <div class="service-details">
+          1 Music Video<br>
+          Trailer<br>
+          2–3 Short Form Clips<br>
+          Color Grade + Light VFX
+        </div>
+        <div></div>
+        <div class="service-time">3 Weeks</div>
       </div>
-
-      <div class="service-card">
-        <div class="service-name">Premium</div>
-        <div class="service-price">$1,200 <span>launch</span></div>
-        <ul class="service-includes">
-          <li>1 Music Video (Full Pipeline)</li>
-          <li>Trailer + 3–4 Short Form Clips</li>
-          <li>3D / AI / VFX Integration</li>
-          <li>Promotional Rollout</li>
-          <li>Ad Management</li>
-        </ul>
-        <div class="service-timeline">Delivery — 1 Month</div>
+      <div class="service-row">
+        <div>
+          <div class="service-label">Premium</div>
+          <div class="service-price-big">$1,200</div>
+        </div>
+        <div class="service-details">
+          1 Music Video (Full Pipeline)<br>
+          Trailer + 3–4 Short Form Clips<br>
+          3D / AI / VFX Integration<br>
+          Promotional Rollout<br>
+          Ad Management
+        </div>
+        <div></div>
+        <div class="service-time">1 Month</div>
       </div>
-
     </div>
-    <a href="#" class="book-btn" onclick="showPage('contact')">Book a Project</a>
+    <a href="#" class="book-link" onclick="go('contact');return false;">Book a Project →</a>
   </div>
   <footer>
     <span>© 2025 RomanBeroamin LLC</span>
-    <a href="https://instagram.com/romanberoamin" target="_blank">Instagram</a>
+    <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
   </footer>
 </div>
 
-<!-- CONTACT PAGE -->
+<!-- CONTACT -->
 <div class="page" id="page-contact">
-  <div class="contact-page">
-    <div class="contact-content">
-      <div class="contact-label">Get In Touch</div>
-      <h1 class="contact-heading">Let's make<br>something<br>unforgettable.</h1>
+  <div class="contact-wrap">
+    <div class="contact-inner">
+      <div class="contact-tag">Get In Touch</div>
+      <h1 class="contact-head">Let's make<br>something<br>unforgettable.</h1>
       <div class="contact-links">
-        <a href="mailto:your@email.com">your@email.com</a>
-        <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
-        <a href="#" onclick="showPage('services')">View Services & Pricing</a>
+        <a href="mailto:your@email.com"><span>→</span> your@email.com</a>
+        <a href="https://instagram.com/romanberoamin" target="_blank"><span>→</span> @romanberoamin</a>
+        <a href="#" onclick="go('services');return false;"><span>→</span> View Services & Pricing</a>
       </div>
     </div>
   </div>
   <footer>
     <span>© 2025 RomanBeroamin LLC</span>
-    <a href="https://instagram.com/romanberoamin" target="_blank">Instagram</a>
+    <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
   </footer>
 </div>
 
 <script>
-  // CURSOR
-  const cursor = document.getElementById('cursor');
-  document.addEventListener('mousemove', e => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-  });
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+document.querySelectorAll('a, .film-item').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+});
 
-  document.querySelectorAll('a, .grid-item, .book-btn').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
-  });
-
-  // PAGE NAVIGATION
-  function showPage(id) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + id).classList.add('active');
-    window.scrollTo(0, 0);
-    return false;
-  }
-
-  // BODY LOADED
-  window.addEventListener('load', () => {
-    document.body.classList.add('loaded');
-  });
+function go(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
 </script>
 </body>
 </html>
