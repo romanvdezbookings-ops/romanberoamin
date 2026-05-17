@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROMANBEROAMIN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Neue+Haas+Grotesk+Display+Pro:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #080808;
+    --white: #f0f0f0;
+    --dim: #555;
+    --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  html, body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font);
+    min-height: 100vh;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--white);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease;
+    mix-blend-mode: difference;
+  }
+
+  .cursor.hovering {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 28px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    mix-blend-mode: difference;
+  }
+
+  .nav-logo {
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+
+  .nav-links a:hover { opacity: 1; }
+
+  /* GRID */
+  .grid {
+    padding: 0;
+    column-count: 2;
+    column-gap: 0;
+  }
+
+  .grid-item {
+    position: relative;
+    overflow: hidden;
+    break-inside: avoid;
+    display: block;
+    cursor: none;
+  }
+
+  .grid-item img {
+    width: 100%;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    filter: brightness(0.85);
+  }
+
+  .grid-item:hover img {
+    transform: scale(1.03);
+    filter: brightness(0.5);
+  }
+
+  /* HOVER INFO OVERLAY */
+  .grid-item-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 32px 24px 24px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    pointer-events: none;
+  }
+
+  .grid-item:hover .grid-item-info {
+    transform: translateY(0);
+  }
+
+  .grid-item-title {
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+
+  .grid-item-type {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* VIEW LINK */
+  .grid-item-link {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 0;
+  }
+
+  footer span {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  footer a {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  footer a:hover { color: var(--white); }
+
+  /* PAGE TRANSITIONS */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ABOUT PAGE */
+  .about-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 40px 80px;
+  }
+
+  .about-content {
+    max-width: 560px;
+  }
+
+  .about-name {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 40px;
+  }
+
+  .about-bio {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--white);
+    font-weight: 400;
+    margin-bottom: 48px;
+  }
+
+  .about-links {
+    display: flex;
+    gap: 32px;
+  }
+
+  .about-links a {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .about-links a:hover { color: var(--white); }
+
+  /* CONTACT PAGE */
+  .contact-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 40px 80px;
+  }
+
+  .contact-content {
+    max-width: 480px;
+  }
+
+  .contact-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 40px;
+  }
+
+  .contact-heading {
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 48px;
+    letter-spacing: -0.02em;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .contact-links a {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .contact-links a::before {
+    content: '→';
+    color: rgba(255,255,255,0.2);
+  }
+
+  .contact-links a:hover { color: var(--white); }
+
+  /* SERVICES PAGE */
+  .services-page {
+    min-height: 100vh;
+    padding: 120px 40px 80px;
+  }
+
+  .services-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 80px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .service-card {
+    background: var(--black);
+    padding: 48px 36px;
+  }
+
+  .service-name {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 16px;
+  }
+
+  .service-price {
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+
+  .service-price span {
+    font-size: 13px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+
+  .service-includes {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+
+  .service-includes li {
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.5);
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .service-includes li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .service-timeline {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  /* BOOK NOW BUTTON */
+  .book-btn {
+    display: inline-block;
+    margin-top: 64px;
+    padding: 16px 40px;
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: none;
+  }
+
+  .book-btn:hover {
+    background: var(--white);
+    color: var(--black);
+    border-color: var(--white);
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    .grid { column-count: 1; }
+    nav { padding: 20px 24px; }
+    .nav-logo { font-size: 11px; }
+    .nav-links { gap: 20px; }
+    .about-page, .contact-page { padding: 100px 24px 60px; }
+    .services-page { padding: 100px 24px 60px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .about-bio { font-size: 16px; }
+    .contact-heading { font-size: 36px; }
+  }
+
+  /* FADE IN */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .grid-item {
+    animation: fadeIn 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  .grid-item:nth-child(1) { animation-delay: 0.05s; }
+  .grid-item:nth-child(2) { animation-delay: 0.1s; }
+  .grid-item:nth-child(3) { animation-delay: 0.15s; }
+  .grid-item:nth-child(4) { animation-delay: 0.2s; }
+  .grid-item:nth-child(5) { animation-delay: 0.25s; }
+  .grid-item:nth-child(6) { animation-delay: 0.3s; }
+  .grid-item:nth-child(7) { animation-delay: 0.35s; }
+  .grid-item:nth-child(8) { animation-delay: 0.4s; }
+  .grid-item:nth-child(9) { animation-delay: 0.45s; }
+  .grid-item:nth-child(10) { animation-delay: 0.5s; }
+  .grid-item:nth-child(11) { animation-delay: 0.55s; }
+  .grid-item:nth-child(12) { animation-delay: 0.6s; }
+  .grid-item:nth-child(13) { animation-delay: 0.65s; }
+
+  /* PAGE LOAD */
+  body.loaded nav { opacity: 1; }
+  nav { opacity: 0; transition: opacity 0.4s ease 0.2s; }
+</style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo" onclick="showPage('film')">ROMANBEROAMIN</a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('film')">Film</a></li>
+    <li><a href="#" onclick="showPage('about')">About</a></li>
+    <li><a href="https://instagram.com/romanberoamin" target="_blank">Instagram</a></li>
+    <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- FILM PAGE -->
+<div class="page active" id="page-film">
+  <div class="grid" style="padding-top: 0;">
+
+    <div class="grid-item">
+      <a class="grid-item-link" href="https://www.instagram.com/reel/DHfLyovxAdR/" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/914f4a0b-3778-4c3e-a50b-2f8c9c8410f6/giphy+%286%29.gif" alt="Logan Ghiorzi" loading="lazy">
+      <div class="grid-item-info">
+        <div class="grid-item-title">Logan Ghiorzi</div>
+        <div class="grid-item-type">Unreleased Music Video</div>
+      </div>
+    </div>
+
+    <div class="grid-item">
+      <a class="grid-item-link" href="https://www.tiktok.com/@1tristxn/video/7188627518583246123" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/886d23eb-acf5-41b4-8c71-fc466a69480e/giphy+%2830%29.gif" alt="Tristxn" loading="lazy">
+      <div class="grid-item-info">
+        <div class="grid-item-title">Tristxn — Trust How I Feel</div>
+        <div class="grid-item-type">Single Promo</div>
+      </div>
+    </div>
+
+    <div class="grid-item">
+      <a class="grid-item-link" href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/6c7e300f-a0f8-4bcc-bfa2-01b6a1c7d88a/giphy+%289%29.gif" alt="Sincewhenbro" loading="lazy">
+      <div class="grid-item-info">
+        <div class="grid-item-title">Sincewhenbro — Phineas</div>
+        <div class="grid-item-type">Music Video</div>
+      </div>
+    </div>
+
+    <div class="grid-item">
+      <a class="grid-item-link" href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/241ffc63-39f9-4f99-9fa4-3acc09032195/giphy+%2817%29.gif" alt="Logan Ghiorzi Punk Ass Kids" loading="lazy">
+      <div class="grid-item-info">
+        <div class="grid-item-title">Logan Ghiorzi — Punk Ass Kids</div>
+        <div class="grid-item-type">Music Video</div>
+      </div>
+    </div>
+
+    <div class="grid-item">
+      <a class="grid-item-link" href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/47d861ac-41bc-432c-9c07-044fd6df5208/giphy+%2827%29.gif" alt="SAMNX" loading="lazy">
+      <div class="grid-item-info">
+        <div class="grid-item-title">SAMNX — 1Step Cypher</div>
+        <div class="grid-item-type">Vertical Music Video</div>
+      </div>
+    </div>
+
+    <div class="grid-item">
+      <a class="grid-item-link" href="https://www.youtube.com/watch?v=D_b7UVassEI" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/de9f86ca-ff39-472b-9392-e0d81b2cc6ed/giphy+%2812%29.gif" alt="KAM" loading="lazy">
+      <div class="grid-item-info">
+        <div class="grid-item-title">KAM — Spin The Block</div>
+        <div class="grid-item-type">Music Video</div>
+      </div>
+    </div>
+
+    <div class="grid-item">
+      <a class="grid-item-link" href="https://www.instagram.com/reel/CjURR8PgtK8/" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/dbd339f2-48d4-4e92-b14c-0735e5e2c7a1/giphy+%2832%29.gif" alt="Stuck in a Video Game" loading="lazy">
+      <div class="grid-item-info">
+        <div class="grid-item-title">Stuck in a Video Game</div>
+        <div class="grid-item-type">Animation Original</div>
+      </div>
+    </div>
+
+    <div class="grid-item">
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/3cb4b132-f709-4621-a8ed-435c960cc05b/giphy+%2818%29.gif" alt="BREMNMM" loading="lazy">
+      <div class="grid-item-info">
+        <div class="grid-item-title">BREMNMM</div>
+        <div class="grid-item-type">Clothing Brand Campaign</div>
+      </div>
+    </div>
+
+    <div class="grid-item">
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/0b92d81d-0bb7-4740-b2d8-9a893b82da6f/giphy+%2826%29.gif" alt="Avion" loading="lazy">
+      <div class="grid-item-info">
+        <div class="grid-item-title">Avion</div>
+        <div class="grid-item-type">Music Video</div>
+      </div>
+    </div>
+
+    <div class="grid-item">
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/46a7c458-c748-4378-8c83-96573a3d590a/giphy+%2828%29.gif" alt="SAMNX Phoenix" loading="lazy">
+      <div class="grid-item-info">
+        <div class="grid-item-title">SAMNX — Phoenix</div>
+        <div class="grid-item-type">Single Promo</div>
+      </div>
+    </div>
+
+    <div class="grid-item">
+      <a class="grid-item-link" href="https://www.instagram.com/reel/CfjD-Blv7Xe/" target="_blank"></a>
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/775adcaf-892a-40d8-a426-e351d0c9cbfe/giphy+%2833%29.gif" alt="Pet Kraken" loading="lazy">
+      <div class="grid-item-info">
+        <div class="grid-item-title">Pet Kraken</div>
+        <div class="grid-item-type">Animation Original</div>
+      </div>
+    </div>
+
+    <div class="grid-item">
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/ba13df87-7c7d-4aeb-9cf5-06ec5c4c9534/giphy+%281%29.gif" alt="MDMA Pennywise" loading="lazy">
+      <div class="grid-item-info">
+        <div class="grid-item-title">MDMA — Pennywise</div>
+        <div class="grid-item-type">Unreleased Music Video</div>
+      </div>
+    </div>
+
+    <div class="grid-item">
+      <img src="https://images.squarespace-cdn.com/content/v1/68b9daf7d737f74e5c4da844/214933d9-5ccf-4a79-a66d-c57a9a36e27f/giphy+%282%29.gif" alt="74 Youngan" loading="lazy">
+      <div class="grid-item-info">
+        <div class="grid-item-title">74 Youngan — The Street Escape</div>
+        <div class="grid-item-type">Music Video</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>© 2025 RomanBeroamin LLC</span>
+    <a href="https://instagram.com/romanberoamin" target="_blank">Instagram</a>
+  </footer>
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="page" id="page-about">
+  <div class="about-page">
+    <div class="about-content">
+      <div class="about-name">Roman Beroamin — Phoenix, AZ</div>
+      <p class="about-bio">
+        Director, visual artist, and creative force based in Phoenix, Arizona. I make music videos, brand films, and surreal visual worlds that hit different. Dark aesthetics, emotional depth, and technical precision — that's the work.
+      </p>
+      <p class="about-bio" style="font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 0;">
+        Available for music videos, brand campaigns, short form content, and creative direction.
+      </p>
+      <div class="about-links" style="margin-top: 48px;">
+        <a href="#" onclick="showPage('contact')">Book a Project</a>
+        <a href="https://instagram.com/romanberoamin" target="_blank">Instagram</a>
+        <a href="#" onclick="showPage('services')">Services</a>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <span>© 2025 RomanBeroamin LLC</span>
+    <a href="https://instagram.com/romanberoamin" target="_blank">Instagram</a>
+  </footer>
+</div>
+
+<!-- SERVICES PAGE -->
+<div class="page" id="page-services">
+  <div class="services-page">
+    <div class="services-label">Services & Pricing</div>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-name">Basic</div>
+        <div class="service-price">$400 <span>launch</span></div>
+        <ul class="service-includes">
+          <li>1 Music Video</li>
+          <li>1–2 Short Form Clips</li>
+          <li>Color Grade</li>
+          <li>Run & Gun Production</li>
+        </ul>
+        <div class="service-timeline">Delivery — 1 Week</div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-name">Standard</div>
+        <div class="service-price">$700 <span>launch</span></div>
+        <ul class="service-includes">
+          <li>1 Music Video</li>
+          <li>Trailer</li>
+          <li>2–3 Short Form Clips</li>
+          <li>Color Grade + Light VFX</li>
+        </ul>
+        <div class="service-timeline">Delivery — 3 Weeks</div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-name">Premium</div>
+        <div class="service-price">$1,200 <span>launch</span></div>
+        <ul class="service-includes">
+          <li>1 Music Video (Full Pipeline)</li>
+          <li>Trailer + 3–4 Short Form Clips</li>
+          <li>3D / AI / VFX Integration</li>
+          <li>Promotional Rollout</li>
+          <li>Ad Management</li>
+        </ul>
+        <div class="service-timeline">Delivery — 1 Month</div>
+      </div>
+
+    </div>
+    <a href="#" class="book-btn" onclick="showPage('contact')">Book a Project</a>
+  </div>
+  <footer>
+    <span>© 2025 RomanBeroamin LLC</span>
+    <a href="https://instagram.com/romanberoamin" target="_blank">Instagram</a>
+  </footer>
+</div>
+
+<!-- CONTACT PAGE -->
+<div class="page" id="page-contact">
+  <div class="contact-page">
+    <div class="contact-content">
+      <div class="contact-label">Get In Touch</div>
+      <h1 class="contact-heading">Let's make<br>something<br>unforgettable.</h1>
+      <div class="contact-links">
+        <a href="mailto:your@email.com">your@email.com</a>
+        <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
+        <a href="#" onclick="showPage('services')">View Services & Pricing</a>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <span>© 2025 RomanBeroamin LLC</span>
+    <a href="https://instagram.com/romanberoamin" target="_blank">Instagram</a>
+  </footer>
+</div>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+
+  document.querySelectorAll('a, .grid-item, .book-btn').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+  });
+
+  // PAGE NAVIGATION
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    window.scrollTo(0, 0);
+    return false;
+  }
+
+  // BODY LOADED
+  window.addEventListener('load', () => {
+    document.body.classList.add('loaded');
+  });
+</script>
+</body>
+</html>
