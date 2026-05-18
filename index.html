@@ -8,10 +8,18 @@
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+@font-face {
+  font-family: 'BlueScreen';
+  src: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/Blue%20Screen%20Personal%20Use.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --black: #000;
   --white: #fff;
-  --grey: #777;
+  --grey: #666;
+  --blue: #0078D7;
 }
 
 html, body {
@@ -22,17 +30,10 @@ html, body {
   cursor: none;
 }
 
-/* CURSOR */
-.cursor {
-  position: fixed;
-  width: 6px;
-  height: 6px;
-  background: #fff;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  mix-blend-mode: difference;
+/* PIXEL CURSOR */
+* { cursor: none !important; }
+body {
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, none !important;
 }
 
 /* ===================== NAV ===================== */
@@ -40,60 +41,79 @@ nav {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 200;
-  padding: 20px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 32px 0;
+  background: var(--black);
+}
+
+.site-title {
+  font-family: 'BlueScreen', monospace;
+  font-size: 28px;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+  cursor: none !important;
+}
+
+.nav-links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 28px;
+  padding-bottom: 16px;
 }
 
 .nav-item {
   font-size: 11px;
   letter-spacing: 0.15em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--white);
   text-decoration: none;
-  opacity: 0.5;
-  transition: opacity 0.2s;
-  cursor: none;
-  white-space: nowrap;
+  opacity: 0.45;
+  transition: opacity 0.2s, color 0.2s;
+  cursor: none !important;
   background: none;
   border: none;
   font-family: inherit;
   font-weight: 300;
   padding: 0;
 }
-.nav-item:hover { opacity: 1; }
-.nav-item.active { opacity: 1; }
+.nav-item:hover { opacity: 1; color: var(--blue); }
+.nav-item.active { opacity: 1; color: var(--blue); }
 
 /* PORTFOLIO DROPDOWN */
-.portfolio-wrap {
-  position: relative;
-}
+.portfolio-wrap { position: relative; }
 
 .portfolio-dropdown {
   position: absolute;
-  top: 100%;
-  left: 0;
-  padding-top: 16px;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
   display: none;
   flex-direction: column;
-  gap: 10px;
-  min-width: 320px;
+  gap: 8px;
+  min-width: 280px;
+  background: var(--black);
+  padding: 16px 0;
   z-index: 300;
+  border-top: 1px solid rgba(255,255,255,0.08);
 }
 
 .portfolio-wrap:hover .portfolio-dropdown { display: flex; }
 
 .portfolio-dropdown a {
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.5);
   text-decoration: none;
   transition: color 0.2s;
-  cursor: none;
+  cursor: none !important;
   white-space: nowrap;
+  text-align: center;
 }
-.portfolio-dropdown a:hover { color: var(--white); }
+.portfolio-dropdown a:hover { color: var(--blue); }
 
 /* ===================== PAGES ===================== */
 .page { display: none; }
@@ -103,12 +123,16 @@ nav {
 #page-home {
   position: fixed;
   inset: 0;
+  padding-top: 90px;
 }
 
 .carousel {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 90px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slide {
@@ -120,7 +144,6 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--black);
 }
 
 .slide.active {
@@ -129,8 +152,8 @@ nav {
 }
 
 .slide img {
-  max-width: 100%;
-  max-height: 100vh;
+  max-width: 70%;
+  max-height: calc(100vh - 140px);
   width: auto;
   height: auto;
   object-fit: contain;
@@ -140,7 +163,7 @@ nav {
 /* dots */
 .dots {
   position: fixed;
-  bottom: 28px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -152,13 +175,13 @@ nav {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.25);
-  cursor: none;
+  background: rgba(255,255,255,0.2);
+  cursor: none !important;
   transition: background 0.3s;
   border: none;
   padding: 0;
 }
-.dot.active { background: rgba(255,255,255,0.8); }
+.dot.active { background: var(--blue); }
 
 /* prev next */
 .arrow {
@@ -168,13 +191,13 @@ nav {
   z-index: 50;
   background: none;
   border: none;
-  color: rgba(255,255,255,0.3);
-  font-size: 18px;
-  cursor: none;
-  padding: 24px 16px;
+  color: rgba(255,255,255,0.25);
+  font-size: 16px;
+  cursor: none !important;
+  padding: 24px 20px;
   transition: color 0.2s;
 }
-.arrow:hover { color: #fff; }
+.arrow:hover { color: var(--blue); }
 .arrow-prev { left: 0; }
 .arrow-next { right: 0; }
 
@@ -182,18 +205,18 @@ nav {
 #page-about {
   min-height: 100vh;
   overflow-y: auto;
-  padding-top: 80px;
+  padding-top: 90px;
 }
 
 .about-wrap {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 90px);
 }
 
 .about-img {
   overflow: hidden;
-  max-height: calc(100vh - 80px);
+  height: calc(100vh - 90px);
 }
 
 .about-img img {
@@ -229,7 +252,7 @@ nav {
 .about-links {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .about-links a {
@@ -239,95 +262,20 @@ nav {
   color: var(--grey);
   text-decoration: none;
   transition: color 0.2s;
-  cursor: none;
+  cursor: none !important;
 }
-.about-links a:hover { color: #fff; }
-
-/* ===================== SERVICES ===================== */
-#page-services {
-  min-height: 100vh;
-  overflow-y: auto;
-  padding-top: 80px;
-}
-
-.services-wrap {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 60px 36px 80px;
-}
-
-.services-tag {
-  font-size: 10px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--grey);
-  margin-bottom: 60px;
-}
-
-.services-list { border-top: 1px solid rgba(255,255,255,0.07); }
-
-.service-row {
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-  padding: 36px 0;
-  display: grid;
-  grid-template-columns: 140px 1fr 80px;
-  gap: 40px;
-  align-items: start;
-}
-
-.service-label {
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--grey);
-  margin-bottom: 8px;
-}
-
-.service-price-big {
-  font-size: 28px;
-  font-weight: 300;
-  letter-spacing: -0.02em;
-}
-
-.service-details {
-  font-size: 11px;
-  line-height: 2.1;
-  color: rgba(255,255,255,0.35);
-}
-
-.service-time {
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--grey);
-  text-align: right;
-}
-
-.book-link {
-  display: inline-block;
-  margin-top: 56px;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--grey);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
-  padding-bottom: 4px;
-  transition: color 0.2s, border-color 0.2s;
-  cursor: none;
-}
-.book-link:hover { color: #fff; border-color: #fff; }
+.about-links a:hover { color: var(--blue); }
 
 /* ===================== CONTACT ===================== */
 #page-contact {
   min-height: 100vh;
-  overflow-y: auto;
   display: flex;
   align-items: center;
-  padding: 80px 36px;
+  justify-content: center;
+  padding: 90px 36px 80px;
 }
 
-.contact-inner { max-width: 440px; }
+.contact-inner { max-width: 440px; text-align: center; }
 
 .contact-tag {
   font-size: 10px;
@@ -358,105 +306,100 @@ nav {
   color: var(--grey);
   text-decoration: none;
   transition: color 0.2s;
-  cursor: none;
+  cursor: none !important;
 }
-.contact-links a:hover { color: #fff; }
+.contact-links a:hover { color: var(--blue); }
 
 /* FOOTER */
-.site-footer {
-  padding: 24px 32px;
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid rgba(255,255,255,0.05);
-}
-.site-footer span, .site-footer a {
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.18);
-  text-decoration: none;
-  cursor: none;
-}
-.site-footer a:hover { color: rgba(255,255,255,0.5); }
-
-/* CAROUSEL FOOTER */
 .carousel-footer {
   position: fixed;
   bottom: 0; left: 0; right: 0;
-  padding: 20px 32px;
+  padding: 18px 32px;
   display: flex;
   justify-content: space-between;
   z-index: 50;
-  mix-blend-mode: difference;
 }
 .carousel-footer span, .carousel-footer a {
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.15);
   text-decoration: none;
-  cursor: none;
+  cursor: none !important;
+}
+
+.site-footer {
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  margin-top: 40px;
+}
+.site-footer span, .site-footer a {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.15);
+  text-decoration: none;
+  cursor: none !important;
 }
 
 @media (max-width: 768px) {
-  nav { gap: 16px; flex-wrap: wrap; padding: 16px 20px; }
+  .nav-links { gap: 14px; flex-wrap: wrap; justify-content: center; }
   .about-wrap { grid-template-columns: 1fr; }
-  .about-img { max-height: 45vh; }
+  .about-img { height: 45vh; }
   .about-content { padding: 40px 24px; }
-  .service-row { grid-template-columns: 1fr; gap: 8px; }
-  .service-time { text-align: left; }
+  .slide img { max-width: 90%; }
   .contact-head { font-size: 36px; }
-  #page-contact { padding: 80px 24px; }
 }
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-
 <!-- NAV -->
 <nav>
-  <a class="nav-item active" href="#" onclick="go('home');return false;">Home</a>
-  <a class="nav-item" href="#" onclick="go('about');return false;">About</a>
+  <a class="site-title" href="#" onclick="go('home');return false;">ROMANBEROAMIN</a>
+  <div class="nav-links">
+    <a class="nav-item active" id="nav-home" href="#" onclick="go('home');return false;">home</a>
+    <a class="nav-item" id="nav-about" href="#" onclick="go('about');return false;">about</a>
 
-  <div class="portfolio-wrap">
-    <button class="nav-item" style="cursor:none;">Portfolio ▾</button>
-    <div class="portfolio-dropdown">
-      <a href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank">Sincewhenbro — Phineas</a>
-      <a href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank">Logan Ghiorzi — Punk Ass Kids</a>
-      <a href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank">SAMN X — '1STEP' Cypher</a>
-      <a href="https://www.youtube.com/watch?v=ds_LTLYf8E4" target="_blank">Glaive & Friends — Live In Los Angeles 2021</a>
-      <a href="https://www.youtube.com/watch?v=bMWZB63-0p4" target="_blank">74 Youngan — The Street Escape</a>
-      <a href="https://www.youtube.com/watch?v=PIE1O1JSraA" target="_blank">Chris King — WHO?</a>
+    <div class="portfolio-wrap">
+      <button class="nav-item" id="nav-portfolio">portfolio ▾</button>
+      <div class="portfolio-dropdown">
+        <a href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank">Sincewhenbro — Phineas</a>
+        <a href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank">Logan Ghiorzi — Punk Ass Kids</a>
+        <a href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank">SAMN X — '1STEP' Cypher</a>
+        <a href="https://www.youtube.com/watch?v=ds_LTLYf8E4" target="_blank">Glaive & Friends — Live In Los Angeles</a>
+        <a href="https://www.youtube.com/watch?v=bMWZB63-0p4" target="_blank">74 Youngan — The Street Escape</a>
+        <a href="https://www.youtube.com/watch?v=PIE1O1JSraA" target="_blank">Chris King — WHO?</a>
+      </div>
     </div>
-  </div>
 
-  <a class="nav-item" href="https://instagram.com/romanberoamin" target="_blank">Instagram</a>
-  <a class="nav-item" href="#" onclick="go('services');return false;">Services</a>
-  <a class="nav-item" href="#" onclick="go('contact');return false;">Contact</a>
+    <a class="nav-item" href="https://instagram.com/romanberoamin" target="_blank">instagram</a>
+    <a class="nav-item" id="nav-contact" href="#" onclick="go('contact');return false;">contact</a>
+  </div>
 </nav>
 
 <!-- HOME -->
 <div class="page active" id="page-home">
   <div class="carousel" id="carousel">
-    <div class="slide active"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(1).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(2).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(6).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(9).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(12).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(17).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(26).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(27).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(28).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(30).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(32).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(33).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(35).gif" alt=""></div>
+    <div class="slide active" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(1).gif" alt=""></div>
+    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(2).gif" alt=""></div>
+    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(6).gif" alt=""></div>
+    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(9).gif" alt=""></div>
+    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(12).gif" alt=""></div>
+    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(17).gif" alt=""></div>
+    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(26).gif" alt=""></div>
+    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(28).gif" alt=""></div>
+    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(27).gif" alt=""></div>
+    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(30).gif" alt=""></div>
+    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(32).gif" alt=""></div>
+    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(33).gif" alt=""></div>
+    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(35).gif" alt=""></div>
   </div>
 
   <button class="arrow arrow-prev" onclick="changeSlide(-1)">←</button>
   <button class="arrow arrow-next" onclick="changeSlide(1)">→</button>
-
   <div class="dots" id="dots"></div>
 
   <div class="carousel-footer">
@@ -477,48 +420,9 @@ nav {
       <p class="about-text" style="font-size:14px;color:rgba(255,255,255,0.3);">Available for music videos, brand campaigns, short form content, and creative direction.</p>
       <div class="about-links">
         <a href="#" onclick="go('contact');return false;">Book a Project →</a>
-        <a href="#" onclick="go('services');return false;">Services & Pricing →</a>
         <a href="https://instagram.com/romanberoamin" target="_blank">Instagram →</a>
       </div>
     </div>
-  </div>
-  <div class="site-footer">
-    <span>© 2025 RomanBeroamin LLC</span>
-    <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
-  </div>
-</div>
-
-<!-- SERVICES -->
-<div class="page" id="page-services">
-  <div class="services-wrap">
-    <div class="services-tag">Services & Pricing — RomanBeroamin LLC</div>
-    <div class="services-list">
-      <div class="service-row">
-        <div>
-          <div class="service-label">Basic</div>
-          <div class="service-price-big">$400</div>
-        </div>
-        <div class="service-details">1 Music Video<br>1–2 Short Form Clips<br>Color Grade<br>Run & Gun Production</div>
-        <div class="service-time">1 Week</div>
-      </div>
-      <div class="service-row">
-        <div>
-          <div class="service-label">Standard</div>
-          <div class="service-price-big">$700</div>
-        </div>
-        <div class="service-details">1 Music Video<br>Trailer<br>2–3 Short Form Clips<br>Color Grade + Light VFX</div>
-        <div class="service-time">3 Weeks</div>
-      </div>
-      <div class="service-row">
-        <div>
-          <div class="service-label">Premium</div>
-          <div class="service-price-big">$1,200</div>
-        </div>
-        <div class="service-details">1 Music Video (Full Pipeline)<br>Trailer + 3–4 Short Form Clips<br>3D / AI / VFX Integration<br>Promotional Rollout<br>Ad Management</div>
-        <div class="service-time">1 Month</div>
-      </div>
-    </div>
-    <a href="#" class="book-link" onclick="go('contact');return false;">Book a Project →</a>
   </div>
   <div class="site-footer">
     <span>© 2025 RomanBeroamin LLC</span>
@@ -534,30 +438,25 @@ nav {
     <div class="contact-links">
       <a href="mailto:romanvdezbookings@gmail.com">romanvdezbookings@gmail.com</a>
       <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
-      <a href="#" onclick="go('services');return false;">View Services & Pricing</a>
     </div>
   </div>
 </div>
 
 <script>
-// CURSOR
-const cursor = document.getElementById('cursor');
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top = e.clientY + 'px';
-});
-
 // PAGE NAV
-const navItems = document.querySelectorAll('.nav-item');
 function go(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
-  navItems.forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const active = document.getElementById('nav-' + id);
+  if (active) active.classList.add('active');
   window.scrollTo(0, 0);
   if (id === 'home') {
     document.body.style.overflow = 'hidden';
+    startCarousel();
   } else {
     document.body.style.overflow = '';
+    stopCarousel();
   }
 }
 
@@ -566,12 +465,12 @@ const slides = document.querySelectorAll('.slide');
 const dotsWrap = document.getElementById('dots');
 let current = 0;
 const total = slides.length;
+let timer = null;
 
-// Build dots
 slides.forEach((_, i) => {
   const d = document.createElement('button');
   d.className = 'dot' + (i === 0 ? ' active' : '');
-  d.onclick = () => showSlide(i);
+  d.onclick = () => { showSlide(i); resetTimer(); };
   dotsWrap.appendChild(d);
 });
 
@@ -583,9 +482,34 @@ function showSlide(n) {
   document.querySelectorAll('.dot')[current].classList.add('active');
 }
 
-function changeSlide(dir) { showSlide(current + dir); }
+function changeSlide(dir) {
+  showSlide(current + dir);
+  resetTimer();
+}
 
-setInterval(() => changeSlide(1), 5000);
+function getDuration() {
+  const d = slides[current].getAttribute('data-duration');
+  return d ? parseInt(d) : 5000;
+}
+
+function startCarousel() {
+  stopCarousel();
+  timer = setTimeout(function tick() {
+    showSlide(current + 1);
+    timer = setTimeout(tick, getDuration());
+  }, getDuration());
+}
+
+function stopCarousel() {
+  if (timer) { clearTimeout(timer); timer = null; }
+}
+
+function resetTimer() {
+  stopCarousel();
+  startCarousel();
+}
+
+startCarousel();
 
 document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') changeSlide(1);
