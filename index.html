@@ -11,15 +11,13 @@
 @font-face {
   font-family: 'BlueScreen';
   src: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/Blue%20Screen%20Personal%20Use.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
 }
 
 :root {
   --black: #000;
   --white: #fff;
   --grey: #666;
-  --blue: #0078D7;
+  --blue: #0057D9;
 }
 
 html, body {
@@ -27,42 +25,49 @@ html, body {
   color: var(--white);
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 300;
-  cursor: none;
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, auto !important;
 }
 
-/* PIXEL CURSOR */
-* { cursor: none !important; }
-body {
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, none !important;
-}
+* { cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, auto !important; }
 
-/* ===================== NAV ===================== */
-nav {
+/* ===================== NAV — LEFT SIDE ===================== */
+.site-header {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 0; left: 0;
   z-index: 200;
+  padding: 28px 36px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 24px 32px 0;
-  background: var(--black);
+  align-items: flex-start;
+  gap: 6px;
 }
 
 .site-title {
   font-family: 'BlueScreen', monospace;
-  font-size: 28px;
-  color: var(--white);
+  font-size: 42px;
+  color: var(--blue);
   text-decoration: none;
-  letter-spacing: 0.1em;
-  margin-bottom: 12px;
-  cursor: none !important;
+  letter-spacing: 0.05em;
+  line-height: 1;
 }
 
-.nav-links {
+.site-subtitle {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  font-weight: 300;
+}
+
+/* NAV — TOP RIGHT */
+.site-nav {
+  position: fixed;
+  top: 0; right: 0;
+  z-index: 200;
+  padding: 36px 36px 0;
   display: flex;
   align-items: center;
   gap: 28px;
-  padding-bottom: 16px;
 }
 
 .nav-item {
@@ -71,9 +76,8 @@ nav {
   text-transform: lowercase;
   color: var(--white);
   text-decoration: none;
-  opacity: 0.45;
+  opacity: 0.4;
   transition: opacity 0.2s, color 0.2s;
-  cursor: none !important;
   background: none;
   border: none;
   font-family: inherit;
@@ -88,17 +92,16 @@ nav {
 
 .portfolio-dropdown {
   position: absolute;
-  top: calc(100% + 12px);
-  left: 50%;
-  transform: translateX(-50%);
+  top: calc(100% + 16px);
+  right: 0;
   display: none;
   flex-direction: column;
-  gap: 8px;
-  min-width: 280px;
+  gap: 10px;
+  min-width: 260px;
   background: var(--black);
   padding: 16px 0;
   z-index: 300;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255,255,255,0.07);
 }
 
 .portfolio-wrap:hover .portfolio-dropdown { display: flex; }
@@ -106,12 +109,12 @@ nav {
 .portfolio-dropdown a {
   font-size: 10px;
   letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255,255,255,0.45);
   text-decoration: none;
   transition: color 0.2s;
-  cursor: none !important;
   white-space: nowrap;
-  text-align: center;
+  text-align: right;
+  padding-right: 4px;
 }
 .portfolio-dropdown a:hover { color: var(--blue); }
 
@@ -119,27 +122,26 @@ nav {
 .page { display: none; }
 .page.active { display: block; }
 
-/* ===================== HOME / CAROUSEL ===================== */
+/* ===================== HOME ===================== */
 #page-home {
   position: fixed;
   inset: 0;
-  padding-top: 90px;
 }
 
-.carousel {
-  position: relative;
+.carousel-wrap {
   width: 100%;
-  height: calc(100vh - 90px);
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .slide {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 0.9s ease;
+  transition: opacity 0.8s ease;
   pointer-events: none;
   display: flex;
   align-items: center;
@@ -152,38 +154,45 @@ nav {
 }
 
 .slide img {
-  max-width: 70%;
-  max-height: calc(100vh - 140px);
+  max-width: 58%;
+  max-height: 75vh;
   width: auto;
   height: auto;
   object-fit: contain;
   display: block;
 }
 
-/* dots */
-.dots {
+/* FILMSTRIP */
+.filmstrip {
   position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 0; left: 0; right: 0;
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 3px;
+  padding: 12px 36px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.9));
+  overflow-x: auto;
   z-index: 50;
+  scrollbar-width: none;
 }
+.filmstrip::-webkit-scrollbar { display: none; }
 
-.dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  cursor: none !important;
-  transition: background 0.3s;
+.thumb {
+  width: 52px;
+  height: 36px;
+  object-fit: cover;
+  opacity: 0.35;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
   border: none;
   padding: 0;
+  background: none;
+  display: block;
 }
-.dot.active { background: var(--blue); }
+.thumb:hover { opacity: 0.7; }
+.thumb.active { opacity: 1; outline: 1px solid var(--blue); }
 
-/* prev next */
+/* ARROWS */
 .arrow {
   position: fixed;
   top: 50%;
@@ -191,9 +200,8 @@ nav {
   z-index: 50;
   background: none;
   border: none;
-  color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.2);
   font-size: 16px;
-  cursor: none !important;
   padding: 24px 20px;
   transition: color 0.2s;
 }
@@ -201,70 +209,67 @@ nav {
 .arrow-prev { left: 0; }
 .arrow-next { right: 0; }
 
-/* ===================== ABOUT ===================== */
-#page-about {
+/* ===================== INFO ===================== */
+#page-info {
   min-height: 100vh;
   overflow-y: auto;
-  padding-top: 90px;
+  padding-top: 100px;
 }
 
-.about-wrap {
+.info-wrap {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: calc(100vh - 90px);
+  min-height: calc(100vh - 100px);
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 36px;
+  gap: 80px;
+  align-items: start;
 }
 
-.about-img {
-  overflow: hidden;
-  height: calc(100vh - 90px);
-}
+.info-left { display: flex; flex-direction: column; gap: 48px; }
 
-.about-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  filter: brightness(0.7);
-}
-
-.about-content {
-  padding: 80px 60px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.about-tag {
+.info-section-label {
   font-size: 10px;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--grey);
-  margin-bottom: 40px;
+  margin-bottom: 16px;
 }
 
-.about-text {
-  font-size: 17px;
-  line-height: 1.75;
-  color: rgba(255,255,255,0.75);
-  margin-bottom: 40px;
+.info-bio {
+  font-size: 14px;
+  line-height: 1.85;
+  color: rgba(255,255,255,0.65);
+  font-weight: 300;
 }
 
-.about-links {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.info-clients {
+  font-size: 13px;
+  line-height: 1.9;
+  color: rgba(255,255,255,0.5);
 }
 
-.about-links a {
-  font-size: 10px;
-  letter-spacing: 0.2em;
+.info-contact a {
+  font-size: 12px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--grey);
-  text-decoration: none;
+  color: rgba(255,255,255,0.5);
+  text-decoration: underline;
   transition: color 0.2s;
-  cursor: none !important;
 }
-.about-links a:hover { color: var(--blue); }
+.info-contact a:hover { color: var(--blue); }
+
+.info-right {
+  position: sticky;
+  top: 100px;
+}
+
+.info-right img {
+  width: 100%;
+  display: block;
+  filter: brightness(0.75);
+}
 
 /* ===================== CONTACT ===================== */
 #page-contact {
@@ -272,159 +277,126 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 90px 36px 80px;
+  padding: 100px 36px;
 }
 
-.contact-inner { max-width: 440px; text-align: center; }
-
-.contact-tag {
-  font-size: 10px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--grey);
-  margin-bottom: 48px;
-}
-
-.contact-head {
-  font-size: 48px;
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
-  margin-bottom: 56px;
-}
-
-.contact-links {
+.contact-inner {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  align-items: center;
+  gap: 20px;
 }
 
-.contact-links a {
-  font-size: 11px;
-  letter-spacing: 0.15em;
+.contact-inner a {
+  font-size: 12px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--grey);
+  color: rgba(255,255,255,0.45);
   text-decoration: none;
   transition: color 0.2s;
-  cursor: none !important;
 }
-.contact-links a:hover { color: var(--blue); }
+.contact-inner a:hover { color: var(--blue); }
 
 /* FOOTER */
-.carousel-footer {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  padding: 18px 32px;
-  display: flex;
-  justify-content: space-between;
-  z-index: 50;
-}
-.carousel-footer span, .carousel-footer a {
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.15);
-  text-decoration: none;
-  cursor: none !important;
-}
-
-.site-footer {
-  padding: 24px 32px;
+.page-footer {
+  padding: 24px 36px;
   display: flex;
   justify-content: space-between;
   border-top: 1px solid rgba(255,255,255,0.05);
-  margin-top: 40px;
+  margin-top: 60px;
 }
-.site-footer span, .site-footer a {
+.page-footer span, .page-footer a {
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.15);
   text-decoration: none;
-  cursor: none !important;
 }
 
 @media (max-width: 768px) {
-  .nav-links { gap: 14px; flex-wrap: wrap; justify-content: center; }
-  .about-wrap { grid-template-columns: 1fr; }
-  .about-img { height: 45vh; }
-  .about-content { padding: 40px 24px; }
-  .slide img { max-width: 90%; }
-  .contact-head { font-size: 36px; }
+  .site-title { font-size: 28px; }
+  .site-nav { gap: 16px; padding: 20px 20px 0; }
+  .slide img { max-width: 88%; }
+  .info-wrap { grid-template-columns: 1fr; gap: 40px; }
+  .info-right { position: static; }
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
+<!-- HEADER LEFT -->
+<div class="site-header">
   <a class="site-title" href="#" onclick="go('home');return false;">ROMANBEROAMIN</a>
-  <div class="nav-links">
-    <a class="nav-item active" id="nav-home" href="#" onclick="go('home');return false;">home</a>
-    <a class="nav-item" id="nav-about" href="#" onclick="go('about');return false;">about</a>
+  <span class="site-subtitle">Roman Valadez</span>
+</div>
 
-    <div class="portfolio-wrap">
-      <button class="nav-item" id="nav-portfolio">portfolio ▾</button>
-      <div class="portfolio-dropdown">
-        <a href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank">Sincewhenbro — Phineas</a>
-        <a href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank">Logan Ghiorzi — Punk Ass Kids</a>
-        <a href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank">SAMN X — '1STEP' Cypher</a>
-        <a href="https://www.youtube.com/watch?v=ds_LTLYf8E4" target="_blank">Glaive & Friends — Live In Los Angeles</a>
-        <a href="https://www.youtube.com/watch?v=bMWZB63-0p4" target="_blank">74 Youngan — The Street Escape</a>
-        <a href="https://www.youtube.com/watch?v=PIE1O1JSraA" target="_blank">Chris King — WHO?</a>
-      </div>
+<!-- NAV RIGHT -->
+<nav class="site-nav">
+  <a class="nav-item active" id="nav-home" href="#" onclick="go('home');return false;">home</a>
+  <a class="nav-item" id="nav-info" href="#" onclick="go('info');return false;">info</a>
+
+  <div class="portfolio-wrap">
+    <button class="nav-item" id="nav-portfolio">portfolio ▾</button>
+    <div class="portfolio-dropdown">
+      <a href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank">Sincewhenbro — Phineas</a>
+      <a href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank">Logan Ghiorzi — Punk Ass Kids</a>
+      <a href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank">SAMN X — '1STEP' Cypher</a>
+      <a href="https://www.youtube.com/watch?v=ds_LTLYf8E4" target="_blank">Glaive & Friends — Live In Los Angeles</a>
+      <a href="https://www.youtube.com/watch?v=bMWZB63-0p4" target="_blank">74 Youngan — The Street Escape</a>
+      <a href="https://www.youtube.com/watch?v=PIE1O1JSraA" target="_blank">Chris King — WHO?</a>
     </div>
-
-    <a class="nav-item" href="https://instagram.com/romanberoamin" target="_blank">instagram</a>
-    <a class="nav-item" id="nav-contact" href="#" onclick="go('contact');return false;">contact</a>
   </div>
+
+  <a class="nav-item" href="https://instagram.com/romanberoamin" target="_blank">instagram</a>
+  <a class="nav-item" id="nav-contact" href="#" onclick="go('contact');return false;">contact</a>
 </nav>
 
 <!-- HOME -->
 <div class="page active" id="page-home">
-  <div class="carousel" id="carousel">
-    <div class="slide active" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(1).gif" alt=""></div>
-    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(2).gif" alt=""></div>
-    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(6).gif" alt=""></div>
-    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(9).gif" alt=""></div>
-    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(12).gif" alt=""></div>
-    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(17).gif" alt=""></div>
-    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(26).gif" alt=""></div>
-    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(28).gif" alt=""></div>
-    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(27).gif" alt=""></div>
-    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(30).gif" alt=""></div>
-    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(32).gif" alt=""></div>
-    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(33).gif" alt=""></div>
-    <div class="slide" data-duration="4000"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(35).gif" alt=""></div>
+  <div class="carousel-wrap">
+    <div class="slide active"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(1).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(2).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(6).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(9).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(12).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(17).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(26).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(27).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(28).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(30).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(32).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(33).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(35).gif" alt=""></div>
   </div>
 
   <button class="arrow arrow-prev" onclick="changeSlide(-1)">←</button>
   <button class="arrow arrow-next" onclick="changeSlide(1)">→</button>
-  <div class="dots" id="dots"></div>
 
-  <div class="carousel-footer">
-    <span>© 2025 RomanBeroamin LLC</span>
-    <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
-  </div>
+  <div class="filmstrip" id="filmstrip"></div>
 </div>
 
-<!-- ABOUT -->
-<div class="page" id="page-about">
-  <div class="about-wrap">
-    <div class="about-img">
-      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/about%20me.jpg" alt="Roman Beroamin">
-    </div>
-    <div class="about-content">
-      <div class="about-tag">Roman Beroamin — Phoenix, AZ</div>
-      <p class="about-text">Director. Visual artist. I make music videos, brand films, and surreal visual worlds that hit different. Dark aesthetics, emotional depth, technical precision. That's the work.</p>
-      <p class="about-text" style="font-size:14px;color:rgba(255,255,255,0.3);">Available for music videos, brand campaigns, short form content, and creative direction.</p>
-      <div class="about-links">
-        <a href="#" onclick="go('contact');return false;">Book a Project →</a>
-        <a href="https://instagram.com/romanberoamin" target="_blank">Instagram →</a>
+<!-- INFO -->
+<div class="page" id="page-info">
+  <div class="info-wrap">
+    <div class="info-left">
+      <div>
+        <div class="info-section-label">Bio</div>
+        <p class="info-bio">Born in Chicago, Illinois, raised in Phoenix, Arizona, Roman Valadez is a director and visual artist. Beginning at 20 with no formal training, Valadez built his practice from the ground up — shooting artists, learning every aspect of production, and developing a style rooted in visceral emotion and high energy. His aesthetic draws from surrealism, dark imagery, and cinematic precision, combining these disciplines into a body of work that is visceral, intentional, and distinctly his own.</p>
+      </div>
+      <div>
+        <div class="info-section-label">Clients</div>
+        <p class="info-clients">Interscope Records / Alamo Records / 1400 Music Group / Overcast AZ / Reel Ones / G-Eazy / Logan Ghiorzi / Chris King / SAMN X</p>
+      </div>
+      <div class="info-contact">
+        <div class="info-section-label">Contact</div>
+        <a href="mailto:romanvdezbookings@gmail.com">romanvdezbookings@gmail.com</a>
       </div>
     </div>
+    <div class="info-right">
+      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/about%20me.jpg" alt="Roman Valadez">
+    </div>
   </div>
-  <div class="site-footer">
+  <div class="page-footer">
     <span>© 2025 RomanBeroamin LLC</span>
     <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
   </div>
@@ -433,12 +405,8 @@ nav {
 <!-- CONTACT -->
 <div class="page" id="page-contact">
   <div class="contact-inner">
-    <div class="contact-tag">Get In Touch</div>
-    <h1 class="contact-head">Let's make<br>something<br>unforgettable.</h1>
-    <div class="contact-links">
-      <a href="mailto:romanvdezbookings@gmail.com">romanvdezbookings@gmail.com</a>
-      <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
-    </div>
+    <a href="mailto:romanvdezbookings@gmail.com">romanvdezbookings@gmail.com</a>
+    <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
   </div>
 </div>
 
@@ -448,66 +416,54 @@ function go(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  const active = document.getElementById('nav-' + id);
-  if (active) active.classList.add('active');
+  const a = document.getElementById('nav-' + id);
+  if (a) a.classList.add('active');
   window.scrollTo(0, 0);
-  if (id === 'home') {
-    document.body.style.overflow = 'hidden';
-    startCarousel();
-  } else {
-    document.body.style.overflow = '';
-    stopCarousel();
-  }
+  document.body.style.overflow = id === 'home' ? 'hidden' : '';
 }
 
-// CAROUSEL
+// CAROUSEL + FILMSTRIP
 const slides = document.querySelectorAll('.slide');
-const dotsWrap = document.getElementById('dots');
+const filmstrip = document.getElementById('filmstrip');
+const srcs = [
+  'giphy%20(1).gif','giphy%20(2).gif','giphy%20(6).gif','giphy%20(9).gif',
+  'giphy%20(12).gif','giphy%20(17).gif','giphy%20(26).gif','giphy%20(27).gif',
+  'giphy%20(28).gif','giphy%20(30).gif','giphy%20(32).gif','giphy%20(33).gif','giphy%20(35).gif'
+];
+const base = 'https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/';
 let current = 0;
 const total = slides.length;
 let timer = null;
 
-slides.forEach((_, i) => {
-  const d = document.createElement('button');
-  d.className = 'dot' + (i === 0 ? ' active' : '');
-  d.onclick = () => { showSlide(i); resetTimer(); };
-  dotsWrap.appendChild(d);
+// Build filmstrip
+srcs.forEach((src, i) => {
+  const img = document.createElement('img');
+  img.src = base + src;
+  img.className = 'thumb' + (i === 0 ? ' active' : '');
+  img.onclick = () => { showSlide(i); resetTimer(); };
+  filmstrip.appendChild(img);
 });
 
 function showSlide(n) {
   slides[current].classList.remove('active');
-  document.querySelectorAll('.dot')[current].classList.remove('active');
+  filmstrip.querySelectorAll('.thumb')[current].classList.remove('active');
   current = (n + total) % total;
   slides[current].classList.add('active');
-  document.querySelectorAll('.dot')[current].classList.add('active');
+  filmstrip.querySelectorAll('.thumb')[current].classList.add('active');
 }
 
-function changeSlide(dir) {
-  showSlide(current + dir);
-  resetTimer();
-}
-
-function getDuration() {
-  const d = slides[current].getAttribute('data-duration');
-  return d ? parseInt(d) : 5000;
-}
+function changeSlide(dir) { showSlide(current + dir); resetTimer(); }
 
 function startCarousel() {
   stopCarousel();
   timer = setTimeout(function tick() {
     showSlide(current + 1);
-    timer = setTimeout(tick, getDuration());
-  }, getDuration());
+    timer = setTimeout(tick, 5000);
+  }, 5000);
 }
 
-function stopCarousel() {
-  if (timer) { clearTimeout(timer); timer = null; }
-}
-
-function resetTimer() {
-  stopCarousel();
-  startCarousel();
-}
+function stopCarousel() { if (timer) { clearTimeout(timer); timer = null; } }
+function resetTimer() { stopCarousel(); startCarousel(); }
 
 startCarousel();
 
