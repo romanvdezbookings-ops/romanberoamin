@@ -13,11 +13,7 @@
   src: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/Blue%20Screen%20Personal%20Use.ttf') format('truetype');
 }
 
-:root {
-  --black: #000000;
-  --white: #ffffff;
-  --blue: #1466FF;
-}
+:root { --black: #000000; --white: #ffffff; --blue: #1466FF; }
 
 html, body {
   background: var(--black);
@@ -57,35 +53,18 @@ html, body {
   line-height: 1;
   text-transform: uppercase;
   text-shadow:
-    -1px 0 rgba(255,0,80,0.35),
-    1px 0 rgba(0,200,255,0.35),
-    0 0 12px rgba(20,102,255,0.9),
-    0 0 30px rgba(20,102,255,0.5),
-    0 0 70px rgba(20,102,255,0.2);
+    -1px 0 rgba(255,0,80,0.35), 1px 0 rgba(0,200,255,0.35),
+    0 0 12px rgba(20,102,255,0.9), 0 0 30px rgba(20,102,255,0.5), 0 0 70px rgba(20,102,255,0.2);
 }
 
-.site-subtitle {
-  font-family: 'BlueScreen', monospace;
-  font-size: 13px;
-  color: var(--white);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
+.site-subtitle { font-family: 'BlueScreen', monospace; font-size: 13px; color: var(--white); letter-spacing: 0.08em; text-transform: uppercase; }
 
 .site-nav { display: flex; align-items: center; gap: 28px; padding-top: 16px; }
 
 .nav-item {
-  font-family: 'BlueScreen', monospace;
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: lowercase;
-  color: var(--white);
-  text-decoration: none;
-  transition: color 0.15s, text-shadow 0.15s;
-  background: none;
-  border: none;
-  font-weight: 400;
-  padding: 0;
+  font-family: 'BlueScreen', monospace; font-size: 13px; letter-spacing: 0.08em;
+  text-transform: lowercase; color: var(--white); text-decoration: none;
+  transition: color 0.15s, text-shadow 0.15s; background: none; border: none; font-weight: 400; padding: 0;
 }
 .nav-item:hover, .nav-item.active {
   color: var(--blue);
@@ -134,7 +113,6 @@ html, body {
 .info-contact a:hover { color: var(--blue); }
 .info-right { position: sticky; top: 20px; }
 .info-right img { width: 100%; display: block; filter: brightness(0.8); }
-
 .page-footer { padding: 20px 36px; display: flex; justify-content: space-between; border-top: 1px solid rgba(20,102,255,0.15); width: 100%; }
 .page-footer span, .page-footer a { font-family: 'BlueScreen', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: lowercase; color: rgba(255,255,255,0.2); text-decoration: none; }
 
@@ -232,18 +210,14 @@ html, body {
 const canvas = document.getElementById('trail-canvas');
 const ctx = canvas.getContext('2d');
 
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 resize();
 window.addEventListener('resize', resize);
 
 let mouseX = -200, mouseY = -200;
 const points = [];
-const MAX = 40;
+const MAX = 45;
 
-// Load cursor image
 const cursorImg = new Image();
 cursorImg.crossOrigin = 'anonymous';
 cursorImg.src = 'https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png';
@@ -252,29 +226,32 @@ const CURSOR_SIZE = 52;
 document.addEventListener('mousemove', e => {
   mouseX = e.clientX;
   mouseY = e.clientY;
-  points.push({ x: mouseX, y: mouseY });
+  points.push({ x: mouseX, y: mouseY, alpha: 1.0 });
   if (points.length > MAX) points.shift();
 });
 
 function frame() {
-  // Fade technique — draw semi-transparent black rect instead of clearRect
-  // This leaves the trail fading naturally frame by frame — no blur needed
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Clear canvas fully — no fade rect so site stays visible
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Draw trail as connected line segments — no blur at all
+  // Age points manually for fade effect
+  points.forEach((p, i) => {
+    p.alpha = i / points.length;
+  });
+
+  // Draw trail under cursor
   if (points.length > 1) {
     for (let i = 1; i < points.length; i++) {
       const p0 = points[i - 1];
       const p1 = points[i];
       const t = i / points.length;
 
-      // Outer glow — layered widths, no blur
+      // Outer glow — wide, low opacity
       ctx.beginPath();
       ctx.moveTo(p0.x, p0.y);
       ctx.lineTo(p1.x, p1.y);
-      ctx.strokeStyle = `rgba(20, 102, 255, ${t * 0.15})`;
-      ctx.lineWidth = t * 10;
+      ctx.strokeStyle = `rgba(20, 102, 255, ${t * 0.12})`;
+      ctx.lineWidth = t * 14;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
       ctx.stroke();
@@ -283,29 +260,27 @@ function frame() {
       ctx.beginPath();
       ctx.moveTo(p0.x, p0.y);
       ctx.lineTo(p1.x, p1.y);
-      ctx.strokeStyle = `rgba(60, 140, 255, ${t * 0.3})`;
-      ctx.lineWidth = t * 4;
+      ctx.strokeStyle = `rgba(60, 140, 255, ${t * 0.25})`;
+      ctx.lineWidth = t * 5;
       ctx.stroke();
 
-      // Core bright streak
+      // Core streak
       ctx.beginPath();
       ctx.moveTo(p0.x, p0.y);
       ctx.lineTo(p1.x, p1.y);
-      ctx.strokeStyle = `rgba(200, 220, 255, ${t * 0.85})`;
+      ctx.strokeStyle = `rgba(200, 220, 255, ${t * 0.8})`;
       ctx.lineWidth = Math.max(0.5, t * 1.5);
       ctx.stroke();
     }
   }
 
-  // Draw cursor ON TOP of trail so it looks unified
+  // Draw cursor ON TOP — cursor tip at mouseX, mouseY
   if (cursorImg.complete && cursorImg.naturalWidth > 0 && mouseX > -100) {
-    // Subtle blue glow under cursor
     ctx.save();
-    ctx.globalAlpha = 0.35;
-    ctx.drawImage(cursorImg, mouseX - 6, mouseY - 6, CURSOR_SIZE + 12, CURSOR_SIZE + 12);
+    ctx.globalAlpha = 0.3;
+    ctx.drawImage(cursorImg, mouseX - 4, mouseY - 4, CURSOR_SIZE + 8, CURSOR_SIZE + 8);
     ctx.restore();
 
-    // Cursor on top sharp
     ctx.save();
     ctx.globalAlpha = 1;
     ctx.drawImage(cursorImg, mouseX, mouseY, CURSOR_SIZE, CURSOR_SIZE);
