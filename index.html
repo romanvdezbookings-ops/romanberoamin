@@ -24,11 +24,10 @@ html, body {
   color: var(--white);
   font-family: 'BlueScreen', monospace;
   overflow: hidden;
-  cursor: url("https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png") 0 0, auto !important;
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, auto !important;
 }
-* { cursor: url("https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png") 0 0, auto !important; }
+* { cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, auto !important; }
 
-/* CANVAS handles both cursor and trail */
 #trail-canvas {
   position: fixed;
   inset: 0;
@@ -36,7 +35,6 @@ html, body {
   z-index: 99999;
 }
 
-/* ===================== HEADER ===================== */
 .site-header {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -145,8 +143,9 @@ html, body {
   gap: 10px;
 }
 
+/* Numbers fallback to system font */
 .portfolio-dropdown a {
-  font-family: 'BlueScreen', monospace;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 11px;
   letter-spacing: 0.06em;
   color: var(--white);
@@ -357,10 +356,12 @@ html, body {
         <div class="dropdown-inner">
           <a href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank">sincewhenbro — phineas</a>
           <a href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank">logan ghiorzi — punk ass kids</a>
-          <a href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank">samn x — '1step' cypher</a>
+          <a href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank">samn x — 1step cypher</a>
           <a href="https://www.youtube.com/watch?v=ds_LTLYf8E4" target="_blank">glaive & friends — live in los angeles</a>
           <a href="https://www.youtube.com/watch?v=bMWZB63-0p4" target="_blank">74 youngan — the street escape</a>
           <a href="https://www.youtube.com/watch?v=PIE1O1JSraA" target="_blank">chris king — who?</a>
+          <a href="https://www.youtube.com/watch?v=v677z4mhKWw" target="_blank">spotemgottem — no tiktok</a>
+          <a href="https://www.youtube.com/watch?v=7qdfkpLZGYA" target="_blank">rotten clothing commercial</a>
         </div>
       </div>
     </div>
@@ -400,7 +401,7 @@ html, body {
       </div>
       <div>
         <div class="info-section-label">clients</div>
-        <p class="info-clients">Interscope Records / Alamo Records / 1400 Music Group / Overcast AZ / Reel Ones / G-Eazy / Logan Ghiorzi / Chris King / SAMN X</p>
+        <p class="info-clients">Interscope Records / Alamo Records / 1400 Music Group / Overcast AZ / Reel Ones / SpotemGottem / G-Eazy / Logan Ghiorzi / Chris King / SAMN X</p>
       </div>
       <div class="info-contact">
         <div class="info-section-label">contact</div>
@@ -418,7 +419,7 @@ html, body {
 </div>
 
 <script>
-// ===================== CANVAS CURSOR + TRAIL =====================
+// ===================== TRAIL =====================
 const canvas = document.getElementById('trail-canvas');
 const ctx = canvas.getContext('2d');
 
@@ -428,12 +429,7 @@ window.addEventListener('resize', resize);
 
 let mouseX = -200, mouseY = -200;
 const trail = [];
-const MAX = 30;
-
-// Load cursor image
-const cursorImg = new Image();
-cursorImg.src = 'https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png';
-const CURSOR_SIZE = 52;
+const MAX = 55; // longer trail
 
 document.addEventListener('mousemove', e => {
   mouseX = e.clientX;
@@ -445,8 +441,8 @@ document.addEventListener('mousemove', e => {
 function frame() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Age and draw trail
-  trail.forEach(p => { p.life -= 0.07; });
+  // Slower fade = longer visible trail
+  trail.forEach(p => { p.life -= 0.03; });
   while (trail.length > 0 && trail[0].life <= 0) trail.shift();
 
   for (let i = 1; i < trail.length; i++) {
@@ -487,12 +483,6 @@ function frame() {
   }
 
   ctx.filter = 'none';
-
-  // Draw cursor image on canvas — mix-blend-mode difference removes white box on dark background
-  if (cursorImg.complete && mouseX > -100) {
-    ctx.save();
-  }
-
   requestAnimationFrame(frame);
 }
 
