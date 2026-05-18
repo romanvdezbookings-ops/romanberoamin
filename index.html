@@ -11,7 +11,7 @@
 :root {
   --black: #000;
   --white: #fff;
-  --grey: #666;
+  --grey: #777;
 }
 
 html, body {
@@ -19,8 +19,6 @@ html, body {
   color: var(--white);
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 300;
-  height: 100%;
-  overflow: hidden;
   cursor: none;
 }
 
@@ -34,62 +32,77 @@ html, body {
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s;
   mix-blend-mode: difference;
 }
-.cursor.big { width: 44px; height: 44px; }
 
-/* NAV */
+/* ===================== NAV ===================== */
 nav {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 100;
-  padding: 28px 36px;
+  z-index: 200;
+  padding: 20px 32px;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  gap: 32px;
 }
 
-.nav-logo {
+.nav-item {
   font-size: 11px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--white);
   text-decoration: none;
-  font-weight: 400;
-  cursor: none;
-  mix-blend-mode: difference;
-}
-
-.nav-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-}
-
-.nav-right a {
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--white);
-  text-decoration: none;
-  opacity: 0.45;
+  opacity: 0.5;
   transition: opacity 0.2s;
   cursor: none;
-  mix-blend-mode: difference;
+  white-space: nowrap;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-weight: 300;
+  padding: 0;
 }
-.nav-right a:hover { opacity: 1; }
+.nav-item:hover { opacity: 1; }
+.nav-item.active { opacity: 1; }
 
-/* PAGES */
+/* PORTFOLIO DROPDOWN */
+.portfolio-wrap {
+  position: relative;
+}
+
+.portfolio-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding-top: 16px;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 320px;
+  z-index: 300;
+}
+
+.portfolio-wrap:hover .portfolio-dropdown { display: flex; }
+
+.portfolio-dropdown a {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: none;
+  white-space: nowrap;
+}
+.portfolio-dropdown a:hover { color: var(--white); }
+
+/* ===================== PAGES ===================== */
 .page { display: none; }
 .page.active { display: block; }
 
-/* ===================== CAROUSEL ===================== */
-#page-film {
+/* ===================== HOME / CAROUSEL ===================== */
+#page-home {
   position: fixed;
   inset: 0;
-  overflow: hidden;
 }
 
 .carousel {
@@ -102,8 +115,12 @@ nav {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 0.8s ease;
+  transition: opacity 0.9s ease;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--black);
 }
 
 .slide.active {
@@ -112,25 +129,38 @@ nav {
 }
 
 .slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
   display: block;
 }
 
-/* slide counter */
-.slide-counter {
+/* dots */
+.dots {
   position: fixed;
-  bottom: 32px;
-  left: 36px;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  color: rgba(255,255,255,0.3);
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
   z-index: 50;
-  mix-blend-mode: difference;
 }
 
-/* arrows */
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  cursor: none;
+  transition: background 0.3s;
+  border: none;
+  padding: 0;
+}
+.dot.active { background: rgba(255,255,255,0.8); }
+
+/* prev next */
 .arrow {
   position: fixed;
   top: 50%;
@@ -138,33 +168,32 @@ nav {
   z-index: 50;
   background: none;
   border: none;
-  color: rgba(255,255,255,0.4);
-  font-size: 24px;
+  color: rgba(255,255,255,0.3);
+  font-size: 18px;
   cursor: none;
-  padding: 20px;
+  padding: 24px 16px;
   transition: color 0.2s;
-  mix-blend-mode: difference;
 }
 .arrow:hover { color: #fff; }
-.arrow-prev { left: 8px; }
-.arrow-next { right: 8px; }
+.arrow-prev { left: 0; }
+.arrow-next { right: 0; }
 
 /* ===================== ABOUT ===================== */
 #page-about {
   min-height: 100vh;
   overflow-y: auto;
+  padding-top: 80px;
 }
 
 .about-wrap {
-  min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: center;
+  min-height: calc(100vh - 80px);
 }
 
 .about-img {
-  height: 100vh;
   overflow: hidden;
+  max-height: calc(100vh - 80px);
 }
 
 .about-img img {
@@ -172,11 +201,14 @@ nav {
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: brightness(0.75);
+  filter: brightness(0.7);
 }
 
 .about-content {
-  padding: 120px 64px;
+  padding: 80px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .about-tag {
@@ -184,24 +216,23 @@ nav {
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--grey);
-  margin-bottom: 48px;
+  margin-bottom: 40px;
 }
 
 .about-text {
-  font-size: 18px;
-  line-height: 1.7;
-  color: rgba(255,255,255,0.8);
-  font-weight: 300;
-  margin-bottom: 48px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 40px;
 }
 
-.about-cta {
+.about-links {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
-.about-cta a {
+.about-links a {
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -210,19 +241,19 @@ nav {
   transition: color 0.2s;
   cursor: none;
 }
-.about-cta a:hover { color: var(--white); }
+.about-links a:hover { color: #fff; }
 
 /* ===================== SERVICES ===================== */
 #page-services {
   min-height: 100vh;
   overflow-y: auto;
+  padding-top: 80px;
 }
 
 .services-wrap {
-  min-height: 100vh;
-  padding: 120px 36px 80px;
-  max-width: 900px;
+  max-width: 860px;
   margin: 0 auto;
+  padding: 60px 36px 80px;
 }
 
 .services-tag {
@@ -230,16 +261,16 @@ nav {
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--grey);
-  margin-bottom: 80px;
+  margin-bottom: 60px;
 }
 
 .services-list { border-top: 1px solid rgba(255,255,255,0.07); }
 
 .service-row {
   border-bottom: 1px solid rgba(255,255,255,0.07);
-  padding: 40px 0;
+  padding: 36px 0;
   display: grid;
-  grid-template-columns: 160px 1fr 80px;
+  grid-template-columns: 140px 1fr 80px;
   gap: 40px;
   align-items: start;
 }
@@ -249,20 +280,19 @@ nav {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--grey);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .service-price-big {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 300;
   letter-spacing: -0.02em;
 }
 
 .service-details {
   font-size: 11px;
-  line-height: 2.2;
+  line-height: 2.1;
   color: rgba(255,255,255,0.35);
-  letter-spacing: 0.04em;
 }
 
 .service-time {
@@ -275,7 +305,7 @@ nav {
 
 .book-link {
   display: inline-block;
-  margin-top: 64px;
+  margin-top: 56px;
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -286,22 +316,18 @@ nav {
   transition: color 0.2s, border-color 0.2s;
   cursor: none;
 }
-.book-link:hover { color: var(--white); border-color: var(--white); }
+.book-link:hover { color: #fff; border-color: #fff; }
 
 /* ===================== CONTACT ===================== */
 #page-contact {
   min-height: 100vh;
   overflow-y: auto;
-}
-
-.contact-wrap {
-  min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 120px 36px 80px;
+  padding: 80px 36px;
 }
 
-.contact-inner { max-width: 480px; }
+.contact-inner { max-width: 440px; }
 
 .contact-tag {
   font-size: 10px;
@@ -312,64 +338,60 @@ nav {
 }
 
 .contact-head {
-  font-size: 52px;
+  font-size: 48px;
   font-weight: 300;
   letter-spacing: -0.02em;
   line-height: 1.05;
-  margin-bottom: 64px;
+  margin-bottom: 56px;
 }
 
 .contact-links {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 }
 
 .contact-links a {
   font-size: 11px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--grey);
   text-decoration: none;
   transition: color 0.2s;
-  display: flex;
-  gap: 16px;
   cursor: none;
 }
-.contact-links a span { color: rgba(255,255,255,0.1); }
-.contact-links a:hover { color: var(--white); }
+.contact-links a:hover { color: #fff; }
 
 /* FOOTER */
-footer {
+.site-footer {
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.site-footer span, .site-footer a {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.18);
+  text-decoration: none;
+  cursor: none;
+}
+.site-footer a:hover { color: rgba(255,255,255,0.5); }
+
+/* CAROUSEL FOOTER */
+.carousel-footer {
   position: fixed;
   bottom: 0; left: 0; right: 0;
-  padding: 28px 36px;
+  padding: 20px 32px;
   display: flex;
   justify-content: space-between;
   z-index: 50;
   mix-blend-mode: difference;
 }
-footer span, footer a {
+.carousel-footer span, .carousel-footer a {
   font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.25);
-  text-decoration: none;
-  transition: color 0.2s;
-  cursor: none;
-}
-footer a:hover { color: var(--white); }
-
-.inner-footer {
-  padding: 32px 36px;
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  margin-top: 40px;
-}
-.inner-footer span, .inner-footer a {
-  font-size: 10px;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.2);
   text-decoration: none;
@@ -377,12 +399,14 @@ footer a:hover { color: var(--white); }
 }
 
 @media (max-width: 768px) {
+  nav { gap: 16px; flex-wrap: wrap; padding: 16px 20px; }
   .about-wrap { grid-template-columns: 1fr; }
-  .about-img { height: 50vh; }
-  .about-content { padding: 60px 24px; }
-  .service-row { grid-template-columns: 1fr; gap: 12px; }
+  .about-img { max-height: 45vh; }
+  .about-content { padding: 40px 24px; }
+  .service-row { grid-template-columns: 1fr; gap: 8px; }
   .service-time { text-align: left; }
   .contact-head { font-size: 36px; }
+  #page-contact { padding: 80px 24px; }
 }
 </style>
 </head>
@@ -390,71 +414,55 @@ footer a:hover { color: var(--white); }
 
 <div class="cursor" id="cursor"></div>
 
+<!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo" onclick="go('film');return false;">ROMANBEROAMIN</a>
-  <div class="nav-right">
-    <a href="#" onclick="go('film');return false;">Film</a>
-    <a href="#" onclick="go('about');return false;">About</a>
-    <a href="#" onclick="go('services');return false;">Services</a>
-    <a href="https://instagram.com/romanberoamin" target="_blank">Instagram</a>
-    <a href="#" onclick="go('contact');return false;">Contact</a>
+  <a class="nav-item active" href="#" onclick="go('home');return false;">Home</a>
+  <a class="nav-item" href="#" onclick="go('about');return false;">About</a>
+
+  <div class="portfolio-wrap">
+    <button class="nav-item" style="cursor:none;">Portfolio ▾</button>
+    <div class="portfolio-dropdown">
+      <a href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank">Sincewhenbro — Phineas</a>
+      <a href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank">Logan Ghiorzi — Punk Ass Kids</a>
+      <a href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank">SAMN X — '1STEP' Cypher</a>
+      <a href="https://www.youtube.com/watch?v=ds_LTLYf8E4" target="_blank">Glaive & Friends — Live In Los Angeles 2021</a>
+      <a href="https://www.youtube.com/watch?v=bMWZB63-0p4" target="_blank">74 Youngan — The Street Escape</a>
+      <a href="https://www.youtube.com/watch?v=PIE1O1JSraA" target="_blank">Chris King — WHO?</a>
+    </div>
   </div>
+
+  <a class="nav-item" href="https://instagram.com/romanberoamin" target="_blank">Instagram</a>
+  <a class="nav-item" href="#" onclick="go('services');return false;">Services</a>
+  <a class="nav-item" href="#" onclick="go('contact');return false;">Contact</a>
 </nav>
 
-<!-- FILM / CAROUSEL -->
-<div class="page active" id="page-film">
+<!-- HOME -->
+<div class="page active" id="page-home">
   <div class="carousel" id="carousel">
-
-    <div class="slide active">
-      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(1).gif" alt="">
-    </div>
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(2).gif" alt="">
-    </div>
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(6).gif" alt="">
-    </div>
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(9).gif" alt="">
-    </div>
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(12).gif" alt="">
-    </div>
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(17).gif" alt="">
-    </div>
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(26).gif" alt="">
-    </div>
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(27).gif" alt="">
-    </div>
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(28).gif" alt="">
-    </div>
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(30).gif" alt="">
-    </div>
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(32).gif" alt="">
-    </div>
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(33).gif" alt="">
-    </div>
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(35).gif" alt="">
-    </div>
-
+    <div class="slide active"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(1).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(2).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(6).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(9).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(12).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(17).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(26).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(27).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(28).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(30).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(32).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(33).gif" alt=""></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(35).gif" alt=""></div>
   </div>
 
-  <button class="arrow arrow-prev" onclick="changeSlide(-1)">&#8592;</button>
-  <button class="arrow arrow-next" onclick="changeSlide(1)">&#8594;</button>
-  <div class="slide-counter" id="counter">1 / 13</div>
+  <button class="arrow arrow-prev" onclick="changeSlide(-1)">←</button>
+  <button class="arrow arrow-next" onclick="changeSlide(1)">→</button>
 
-  <footer>
+  <div class="dots" id="dots"></div>
+
+  <div class="carousel-footer">
     <span>© 2025 RomanBeroamin LLC</span>
     <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
-  </footer>
+  </div>
 </div>
 
 <!-- ABOUT -->
@@ -467,14 +475,14 @@ footer a:hover { color: var(--white); }
       <div class="about-tag">Roman Beroamin — Phoenix, AZ</div>
       <p class="about-text">Director. Visual artist. I make music videos, brand films, and surreal visual worlds that hit different. Dark aesthetics, emotional depth, technical precision. That's the work.</p>
       <p class="about-text" style="font-size:14px;color:rgba(255,255,255,0.3);">Available for music videos, brand campaigns, short form content, and creative direction.</p>
-      <div class="about-cta">
+      <div class="about-links">
         <a href="#" onclick="go('contact');return false;">Book a Project →</a>
         <a href="#" onclick="go('services');return false;">Services & Pricing →</a>
         <a href="https://instagram.com/romanberoamin" target="_blank">Instagram →</a>
       </div>
     </div>
   </div>
-  <div class="inner-footer">
+  <div class="site-footer">
     <span>© 2025 RomanBeroamin LLC</span>
     <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
   </div>
@@ -490,12 +498,7 @@ footer a:hover { color: var(--white); }
           <div class="service-label">Basic</div>
           <div class="service-price-big">$400</div>
         </div>
-        <div class="service-details">
-          1 Music Video<br>
-          1–2 Short Form Clips<br>
-          Color Grade<br>
-          Run & Gun Production
-        </div>
+        <div class="service-details">1 Music Video<br>1–2 Short Form Clips<br>Color Grade<br>Run & Gun Production</div>
         <div class="service-time">1 Week</div>
       </div>
       <div class="service-row">
@@ -503,12 +506,7 @@ footer a:hover { color: var(--white); }
           <div class="service-label">Standard</div>
           <div class="service-price-big">$700</div>
         </div>
-        <div class="service-details">
-          1 Music Video<br>
-          Trailer<br>
-          2–3 Short Form Clips<br>
-          Color Grade + Light VFX
-        </div>
+        <div class="service-details">1 Music Video<br>Trailer<br>2–3 Short Form Clips<br>Color Grade + Light VFX</div>
         <div class="service-time">3 Weeks</div>
       </div>
       <div class="service-row">
@@ -516,40 +514,28 @@ footer a:hover { color: var(--white); }
           <div class="service-label">Premium</div>
           <div class="service-price-big">$1,200</div>
         </div>
-        <div class="service-details">
-          1 Music Video (Full Pipeline)<br>
-          Trailer + 3–4 Short Form Clips<br>
-          3D / AI / VFX Integration<br>
-          Promotional Rollout<br>
-          Ad Management
-        </div>
+        <div class="service-details">1 Music Video (Full Pipeline)<br>Trailer + 3–4 Short Form Clips<br>3D / AI / VFX Integration<br>Promotional Rollout<br>Ad Management</div>
         <div class="service-time">1 Month</div>
       </div>
     </div>
     <a href="#" class="book-link" onclick="go('contact');return false;">Book a Project →</a>
-    <div class="inner-footer">
-      <span>© 2025 RomanBeroamin LLC</span>
-      <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
-    </div>
+  </div>
+  <div class="site-footer">
+    <span>© 2025 RomanBeroamin LLC</span>
+    <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
   </div>
 </div>
 
 <!-- CONTACT -->
 <div class="page" id="page-contact">
-  <div class="contact-wrap">
-    <div class="contact-inner">
-      <div class="contact-tag">Get In Touch</div>
-      <h1 class="contact-head">Let's make<br>something<br>unforgettable.</h1>
-      <div class="contact-links">
-        <a href="mailto:your@email.com"><span>→</span> your@email.com</a>
-        <a href="https://instagram.com/romanberoamin" target="_blank"><span>→</span> @romanberoamin</a>
-        <a href="#" onclick="go('services');return false;"><span>→</span> View Services & Pricing</a>
-      </div>
+  <div class="contact-inner">
+    <div class="contact-tag">Get In Touch</div>
+    <h1 class="contact-head">Let's make<br>something<br>unforgettable.</h1>
+    <div class="contact-links">
+      <a href="mailto:romanvdezbookings@gmail.com">romanvdezbookings@gmail.com</a>
+      <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
+      <a href="#" onclick="go('services');return false;">View Services & Pricing</a>
     </div>
-  </div>
-  <div class="inner-footer" style="position:fixed;bottom:0;left:0;right:0;background:#000;">
-    <span>© 2025 RomanBeroamin LLC</span>
-    <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
   </div>
 </div>
 
@@ -560,17 +546,15 @@ document.addEventListener('mousemove', e => {
   cursor.style.left = e.clientX + 'px';
   cursor.style.top = e.clientY + 'px';
 });
-document.querySelectorAll('a, button').forEach(el => {
-  el.addEventListener('mouseenter', () => cursor.classList.add('big'));
-  el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
-});
 
 // PAGE NAV
+const navItems = document.querySelectorAll('.nav-item');
 function go(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
+  navItems.forEach(n => n.classList.remove('active'));
   window.scrollTo(0, 0);
-  if (id === 'film') {
+  if (id === 'home') {
     document.body.style.overflow = 'hidden';
   } else {
     document.body.style.overflow = '';
@@ -578,29 +562,31 @@ function go(id) {
 }
 
 // CAROUSEL
-let current = 0;
 const slides = document.querySelectorAll('.slide');
-const counter = document.getElementById('counter');
+const dotsWrap = document.getElementById('dots');
+let current = 0;
 const total = slides.length;
+
+// Build dots
+slides.forEach((_, i) => {
+  const d = document.createElement('button');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => showSlide(i);
+  dotsWrap.appendChild(d);
+});
 
 function showSlide(n) {
   slides[current].classList.remove('active');
+  document.querySelectorAll('.dot')[current].classList.remove('active');
   current = (n + total) % total;
   slides[current].classList.add('active');
-  counter.textContent = (current + 1) + ' / ' + total;
+  document.querySelectorAll('.dot')[current].classList.add('active');
 }
 
-function changeSlide(dir) {
-  showSlide(current + dir);
-}
+function changeSlide(dir) { showSlide(current + dir); }
 
-// Auto advance every 4 seconds
-setInterval(() => changeSlide(1), 4000);
+setInterval(() => changeSlide(1), 5000);
 
-// Click anywhere on film page to advance
-document.getElementById('carousel').addEventListener('click', () => changeSlide(1));
-
-// Keyboard arrows
 document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') changeSlide(1);
   if (e.key === 'ArrowLeft') changeSlide(-1);
