@@ -24,9 +24,9 @@ html, body {
   color: var(--white);
   font-family: 'BlueScreen', monospace;
   overflow: hidden;
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, auto !important;
+  cursor: none !important;
 }
-* { cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, auto !important; }
+* { cursor: none !important; }
 
 #trail-canvas {
   position: fixed;
@@ -136,14 +136,13 @@ html, body {
 
 .dropdown-inner {
   background: var(--black);
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid rgba(20, 102, 255, 0.3);
   padding: 14px 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/* Numbers fallback to system font */
 .portfolio-dropdown a {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 11px;
@@ -158,10 +157,7 @@ html, body {
 
 .portfolio-dropdown a:hover {
   color: var(--blue);
-  text-shadow:
-    -0.5px 0 rgba(255, 0, 80, 0.35),
-    0.5px 0 rgba(0, 200, 255, 0.35),
-    0 0 6px rgba(20, 102, 255, 0.7);
+  text-shadow: 0 0 6px rgba(20, 102, 255, 0.7);
 }
 
 .page { display: none !important; }
@@ -224,7 +220,7 @@ html, body {
   transition: color 0.2s;
   font-family: 'BlueScreen', monospace;
 }
-.arrow:hover { color: var(--blue); }
+.arrow:hover { color: var(--blue); text-shadow: 0 0 8px rgba(20,102,255,0.8); }
 .arrow-prev { left: 0; }
 .arrow-next { right: 0; }
 
@@ -244,7 +240,11 @@ html, body {
   background: none;
 }
 .thumb:hover { opacity: 0.7; }
-.thumb.active { opacity: 1; outline: 1px solid var(--blue); box-shadow: 0 0 6px rgba(20,102,255,0.6); }
+.thumb.active {
+  opacity: 1;
+  outline: 1px solid #1466FF;
+  box-shadow: 0 0 6px rgba(20,102,255,0.6);
+}
 
 #page-info {
   position: fixed;
@@ -306,7 +306,7 @@ html, body {
   text-decoration: underline;
   transition: color 0.2s;
 }
-.info-contact a:hover { color: var(--blue); }
+.info-contact a:hover { color: var(--blue); text-shadow: 0 0 8px rgba(20,102,255,0.8); }
 
 .info-right { position: sticky; top: 20px; }
 .info-right img { width: 100%; display: block; filter: brightness(0.8); }
@@ -315,7 +315,7 @@ html, body {
   padding: 20px 36px;
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid rgba(20,102,255,0.15);
   width: 100%;
 }
 .page-footer span, .page-footer a {
@@ -383,7 +383,6 @@ html, body {
     <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(30).gif" alt=""></div>
     <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(32).gif" alt=""></div>
     <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(33).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(35).gif" alt=""></div>
   </div>
   <button class="arrow arrow-prev" onclick="changeSlide(-1)">←</button>
   <button class="arrow arrow-next" onclick="changeSlide(1)">→</button>
@@ -419,7 +418,6 @@ html, body {
 </div>
 
 <script>
-// ===================== TRAIL =====================
 const canvas = document.getElementById('trail-canvas');
 const ctx = canvas.getContext('2d');
 
@@ -429,7 +427,13 @@ window.addEventListener('resize', resize);
 
 let mouseX = -200, mouseY = -200;
 const trail = [];
-const MAX = 55; // longer trail
+const MAX = 55;
+
+// Load cursor
+const cursorImg = new Image();
+cursorImg.crossOrigin = 'anonymous';
+cursorImg.src = 'https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png';
+const CURSOR_SIZE = 52;
 
 document.addEventListener('mousemove', e => {
   mouseX = e.clientX;
@@ -441,7 +445,6 @@ document.addEventListener('mousemove', e => {
 function frame() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Slower fade = longer visible trail
   trail.forEach(p => { p.life -= 0.03; });
   while (trail.length > 0 && trail[0].life <= 0) trail.shift();
 
@@ -453,7 +456,6 @@ function frame() {
     const t = i / trail.length;
     const a = life * t;
 
-    // Outer glow
     ctx.beginPath();
     ctx.moveTo(p0.x, p0.y);
     ctx.lineTo(p1.x, p1.y);
@@ -463,16 +465,14 @@ function frame() {
     ctx.filter = 'blur(5px)';
     ctx.stroke();
 
-    // Mid
     ctx.beginPath();
     ctx.moveTo(p0.x, p0.y);
     ctx.lineTo(p1.x, p1.y);
-    ctx.strokeStyle = `rgba(60, 130, 255, ${a * 0.28})`;
+    ctx.strokeStyle = `rgba(20, 102, 255, ${a * 0.28})`;
     ctx.lineWidth = t * 4;
     ctx.filter = 'blur(1.5px)';
     ctx.stroke();
 
-    // Core
     ctx.beginPath();
     ctx.moveTo(p0.x, p0.y);
     ctx.lineTo(p1.x, p1.y);
@@ -483,12 +483,27 @@ function frame() {
   }
 
   ctx.filter = 'none';
+
+  // Draw cursor with blue bloom glow
+  if (cursorImg.complete && cursorImg.naturalWidth > 0 && mouseX > -100) {
+    // Blue glow behind cursor
+    ctx.save();
+    ctx.filter = 'blur(8px)';
+    ctx.globalAlpha = 0.5;
+    ctx.drawImage(cursorImg, mouseX - 4, mouseY - 4, CURSOR_SIZE + 8, CURSOR_SIZE + 8);
+    ctx.restore();
+
+    // Actual cursor on top
+    ctx.save();
+    ctx.drawImage(cursorImg, mouseX, mouseY, CURSOR_SIZE, CURSOR_SIZE);
+    ctx.restore();
+  }
+
   requestAnimationFrame(frame);
 }
 
 frame();
 
-// ===================== PAGE NAV =====================
 function go(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
@@ -498,13 +513,12 @@ function go(id) {
   window.scrollTo(0, 0);
 }
 
-// ===================== CAROUSEL =====================
 const slides = document.querySelectorAll('.slide');
 const filmstrip = document.getElementById('filmstrip');
 const srcs = [
   'giphy%20(1).gif','giphy%20(2).gif','giphy%20(6).gif','giphy%20(9).gif',
   'giphy%20(12).gif','giphy%20(17).gif','giphy%20(26).gif','giphy%20(27).gif',
-  'giphy%20(28).gif','giphy%20(30).gif','giphy%20(32).gif','giphy%20(33).gif','giphy%20(35).gif'
+  'giphy%20(28).gif','giphy%20(30).gif','giphy%20(32).gif','giphy%20(33).gif'
 ];
 const base = 'https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/';
 let current = 0;
