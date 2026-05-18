@@ -24,29 +24,27 @@ html, body {
   color: var(--white);
   font-family: 'BlueScreen', monospace;
   overflow: hidden;
-  /* Hide default cursor everywhere */
   cursor: none !important;
 }
-
 * { cursor: none !important; }
 
-/* CUSTOM CURSOR ELEMENT */
+/* CUSTOM CURSOR */
 #custom-cursor {
   position: fixed;
   top: 0; left: 0;
-  width: 24px;
-  height: 24px;
   pointer-events: none;
   z-index: 99999;
-  transform: translate(0, 0);
-  image-rendering: pixelated;
+  /* No transform lag — directly set via JS */
 }
 
 #custom-cursor img {
-  width: 24px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
   image-rendering: pixelated;
   display: block;
+  /* Remove any white box */
+  background: transparent;
+  mix-blend-mode: normal;
 }
 
 /* AKIRA TRAIL CANVAS */
@@ -76,7 +74,6 @@ html, body {
   flex-shrink: 0;
 }
 
-/* CHROMATIC ABERRATION via layered pseudo-elements */
 .site-title {
   font-family: 'BlueScreen', monospace;
   font-size: 52px;
@@ -85,14 +82,12 @@ html, body {
   letter-spacing: 0.04em;
   line-height: 1;
   text-transform: uppercase;
-  position: relative;
-  display: inline-block;
   text-shadow:
-    -2px 0 rgba(255, 0, 80, 0.6),
-    2px 0 rgba(0, 200, 255, 0.6),
-    0 0 12px rgba(20, 102, 255, 1),
-    0 0 30px rgba(20, 102, 255, 0.7),
-    0 0 70px rgba(20, 102, 255, 0.3);
+    -1px 0 rgba(255, 0, 80, 0.4),
+    1px 0 rgba(0, 200, 255, 0.4),
+    0 0 12px rgba(20, 102, 255, 0.9),
+    0 0 30px rgba(20, 102, 255, 0.5),
+    0 0 70px rgba(20, 102, 255, 0.2);
 }
 
 .site-subtitle {
@@ -127,19 +122,17 @@ html, body {
 .nav-item:hover {
   color: var(--blue);
   text-shadow:
-    -1.5px 0 rgba(255, 0, 80, 0.7),
-    1.5px 0 rgba(0, 200, 255, 0.7),
-    0 0 8px rgba(20, 102, 255, 1),
-    0 0 20px rgba(20, 102, 255, 0.5);
+    -1px 0 rgba(255, 0, 80, 0.4),
+    1px 0 rgba(0, 200, 255, 0.4),
+    0 0 8px rgba(20, 102, 255, 0.8);
 }
 
 .nav-item.active {
   color: var(--blue);
   text-shadow:
-    -1.5px 0 rgba(255, 0, 80, 0.7),
-    1.5px 0 rgba(0, 200, 255, 0.7),
-    0 0 8px rgba(20, 102, 255, 1),
-    0 0 20px rgba(20, 102, 255, 0.5);
+    -1px 0 rgba(255, 0, 80, 0.4),
+    1px 0 rgba(0, 200, 255, 0.4),
+    0 0 8px rgba(20, 102, 255, 0.8);
 }
 
 /* PORTFOLIO DROPDOWN */
@@ -187,9 +180,9 @@ html, body {
 .portfolio-dropdown a:hover {
   color: var(--blue);
   text-shadow:
-    -1px 0 rgba(255, 0, 80, 0.6),
-    1px 0 rgba(0, 200, 255, 0.6),
-    0 0 6px rgba(20, 102, 255, 0.9);
+    -0.5px 0 rgba(255, 0, 80, 0.4),
+    0.5px 0 rgba(0, 200, 255, 0.4),
+    0 0 6px rgba(20, 102, 255, 0.7);
 }
 
 /* ===================== PAGES ===================== */
@@ -254,17 +247,13 @@ html, body {
   color: rgba(255,255,255,0.3);
   font-size: 18px;
   padding: 24px 18px;
-  transition: color 0.2s, text-shadow 0.2s;
+  transition: color 0.2s;
   font-family: 'BlueScreen', monospace;
 }
-.arrow:hover {
-  color: var(--blue);
-  text-shadow: -1px 0 rgba(255,0,80,0.6), 1px 0 rgba(0,200,255,0.6), 0 0 8px rgba(20,102,255,0.9);
-}
+.arrow:hover { color: var(--blue); }
 .arrow-prev { left: 0; }
 .arrow-next { right: 0; }
 
-/* FILMSTRIP */
 .filmstrip-outer {
   width: 60%;
   flex-shrink: 0;
@@ -294,7 +283,7 @@ html, body {
 .thumb.active {
   opacity: 1;
   outline: 1px solid var(--blue);
-  box-shadow: 0 0 6px rgba(20,102,255,0.7), -1px 0 rgba(255,0,80,0.4), 1px 0 rgba(0,200,255,0.4);
+  box-shadow: 0 0 6px rgba(20,102,255,0.6);
 }
 
 /* ===================== INFO ===================== */
@@ -356,12 +345,9 @@ html, body {
   text-transform: lowercase;
   color: var(--white);
   text-decoration: underline;
-  transition: color 0.2s, text-shadow 0.2s;
+  transition: color 0.2s;
 }
-.info-contact a:hover {
-  color: var(--blue);
-  text-shadow: -1px 0 rgba(255,0,80,0.6), 1px 0 rgba(0,200,255,0.6), 0 0 8px rgba(20,102,255,0.9);
-}
+.info-contact a:hover { color: var(--blue); }
 
 .info-right { position: sticky; top: 20px; }
 .info-right img { width: 100%; display: block; filter: brightness(0.8); }
@@ -400,7 +386,6 @@ html, body {
   <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png" alt="">
 </div>
 
-<!-- AKIRA TRAIL CANVAS -->
 <canvas id="trail-canvas"></canvas>
 
 <!-- HEADER -->
@@ -481,19 +466,12 @@ html, body {
 </div>
 
 <script>
-// ===================== CUSTOM CURSOR =====================
+// ===================== CURSOR + TRAIL =====================
 const cursorEl = document.getElementById('custom-cursor');
-let cursorX = -100, cursorY = -100;
-let smoothX = -100, smoothY = -100;
-
-document.addEventListener('mousemove', e => {
-  cursorX = e.clientX;
-  cursorY = e.clientY;
-});
-
-// ===================== AKIRA TRAIL =====================
 const canvas = document.getElementById('trail-canvas');
 const ctx = canvas.getContext('2d');
+
+let mouseX = -200, mouseY = -200;
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
@@ -502,73 +480,70 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
+// Trail points
 const trail = [];
-const TRAIL_LENGTH = 40;
-const FADE_SPEED = 8; // higher = faster fade
+const MAX = 35;
 
-function lerp(a, b, t) { return a + (b - a) * t; }
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  // Move cursor element instantly — no lag
+  cursorEl.style.left = mouseX + 'px';
+  cursorEl.style.top = mouseY + 'px';
+  trail.push({ x: mouseX, y: mouseY, life: 1.0 });
+  if (trail.length > MAX) trail.shift();
+});
 
-function animate() {
-  // Smooth cursor following
-  smoothX = lerp(smoothX, cursorX, 0.35);
-  smoothY = lerp(smoothY, cursorY, 0.35);
-
-  // Update cursor element position
-  cursorEl.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
-
-  // Add current smoothed position to trail
-  trail.push({ x: smoothX, y: smoothY, life: 1.0 });
-  if (trail.length > TRAIL_LENGTH) trail.shift();
-
-  // Age trail points
-  trail.forEach(p => { p.life -= 0.045; });
-
-  // Draw trail
+function drawFrame() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Age points faster for quicker fade
+  trail.forEach(p => { p.life -= 0.06; });
+  // Remove dead points
+  while (trail.length > 0 && trail[0].life <= 0) trail.shift();
 
   for (let i = 1; i < trail.length; i++) {
     const p0 = trail[i - 1];
     const p1 = trail[i];
     const life = Math.max(0, p1.life);
     if (life <= 0) continue;
-
     const t = i / trail.length;
-    const alpha = life * t;
+    const a = life * t;
 
     // Outer glow
     ctx.beginPath();
     ctx.moveTo(p0.x, p0.y);
     ctx.lineTo(p1.x, p1.y);
-    ctx.strokeStyle = `rgba(20, 80, 255, ${alpha * 0.12})`;
-    ctx.lineWidth = t * 14;
+    ctx.strokeStyle = `rgba(20, 80, 255, ${a * 0.1})`;
+    ctx.lineWidth = t * 12;
     ctx.lineCap = 'round';
-    ctx.filter = 'blur(6px)';
+    ctx.filter = 'blur(5px)';
     ctx.stroke();
 
-    // Mid glow
+    // Mid
     ctx.beginPath();
     ctx.moveTo(p0.x, p0.y);
     ctx.lineTo(p1.x, p1.y);
-    ctx.strokeStyle = `rgba(40, 120, 255, ${alpha * 0.3})`;
-    ctx.lineWidth = t * 5;
-    ctx.filter = 'blur(2px)';
+    ctx.strokeStyle = `rgba(60, 130, 255, ${a * 0.28})`;
+    ctx.lineWidth = t * 4;
+    ctx.filter = 'blur(1.5px)';
     ctx.stroke();
 
-    // Core white-blue streak
+    // Core
     ctx.beginPath();
     ctx.moveTo(p0.x, p0.y);
     ctx.lineTo(p1.x, p1.y);
-    ctx.strokeStyle = `rgba(200, 220, 255, ${alpha * 0.85})`;
-    ctx.lineWidth = Math.max(0.4, t * 1.5);
+    ctx.strokeStyle = `rgba(210, 225, 255, ${a * 0.8})`;
+    ctx.lineWidth = Math.max(0.3, t * 1.2);
     ctx.filter = 'none';
     ctx.stroke();
   }
 
   ctx.filter = 'none';
-  requestAnimationFrame(animate);
+  requestAnimationFrame(drawFrame);
 }
 
-animate();
+drawFrame();
 
 // ===================== PAGE NAV =====================
 function go(id) {
