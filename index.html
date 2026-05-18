@@ -16,7 +16,7 @@
 :root {
   --black: #000;
   --white: #fff;
-  --grey: #666;
+  --grey: #555;
   --blue: #0057D9;
 }
 
@@ -25,62 +25,66 @@ html, body {
   color: var(--white);
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 300;
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, auto !important;
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, auto;
 }
 
-* { cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, auto !important; }
+* { cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, auto; }
 
-/* ===================== NAV — LEFT SIDE ===================== */
+/* ===================== HEADER ===================== */
 .site-header {
   position: fixed;
-  top: 0; left: 0;
+  top: 0; left: 0; right: 0;
   z-index: 200;
-  padding: 28px 36px;
+  padding: 24px 36px;
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.header-left {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
+  gap: 4px;
+  flex-shrink: 0;
 }
 
 .site-title {
   font-family: 'BlueScreen', monospace;
-  font-size: 42px;
+  font-size: 38px;
   color: var(--blue);
   text-decoration: none;
   letter-spacing: 0.05em;
   line-height: 1;
+  text-transform: uppercase;
 }
 
 .site-subtitle {
+  font-family: 'BlueScreen', monospace;
   font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.4);
-  font-weight: 300;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.1em;
 }
 
-/* NAV — TOP RIGHT */
+/* NAV — inline right of name */
 .site-nav {
-  position: fixed;
-  top: 0; right: 0;
-  z-index: 200;
-  padding: 36px 36px 0;
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
+  padding-top: 10px;
+  flex-wrap: wrap;
 }
 
 .nav-item {
   font-size: 11px;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: lowercase;
   color: var(--white);
   text-decoration: none;
-  opacity: 0.4;
+  opacity: 0.45;
   transition: opacity 0.2s, color 0.2s;
   background: none;
   border: none;
-  font-family: inherit;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 300;
   padding: 0;
 }
@@ -92,8 +96,8 @@ html, body {
 
 .portfolio-dropdown {
   position: absolute;
-  top: calc(100% + 16px);
-  right: 0;
+  top: calc(100% + 12px);
+  left: 0;
   display: none;
   flex-direction: column;
   gap: 10px;
@@ -113,8 +117,7 @@ html, body {
   text-decoration: none;
   transition: color 0.2s;
   white-space: nowrap;
-  text-align: right;
-  padding-right: 4px;
+  text-transform: lowercase;
 }
 .portfolio-dropdown a:hover { color: var(--blue); }
 
@@ -126,15 +129,21 @@ html, body {
 #page-home {
   position: fixed;
   inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 90px;
+  padding-bottom: 80px;
 }
 
 .carousel-wrap {
+  position: relative;
+  flex: 1;
   width: 100%;
-  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
 }
 
 .slide {
@@ -154,43 +163,13 @@ html, body {
 }
 
 .slide img {
-  max-width: 58%;
-  max-height: 75vh;
+  max-width: 55%;
+  max-height: 68vh;
   width: auto;
   height: auto;
   object-fit: contain;
   display: block;
 }
-
-/* FILMSTRIP */
-.filmstrip {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  padding: 12px 36px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.9));
-  overflow-x: auto;
-  z-index: 50;
-  scrollbar-width: none;
-}
-.filmstrip::-webkit-scrollbar { display: none; }
-
-.thumb {
-  width: 52px;
-  height: 36px;
-  object-fit: cover;
-  opacity: 0.35;
-  transition: opacity 0.2s;
-  flex-shrink: 0;
-  border: none;
-  padding: 0;
-  background: none;
-  display: block;
-}
-.thumb:hover { opacity: 0.7; }
-.thumb.active { opacity: 1; outline: 1px solid var(--blue); }
 
 /* ARROWS */
 .arrow {
@@ -208,6 +187,36 @@ html, body {
 .arrow:hover { color: var(--blue); }
 .arrow-prev { left: 0; }
 .arrow-next { right: 0; }
+
+/* FILMSTRIP — centered under carousel */
+.filmstrip-wrap {
+  width: 55%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+.filmstrip-wrap::-webkit-scrollbar { display: none; }
+
+.filmstrip {
+  display: flex;
+  gap: 3px;
+  justify-content: center;
+}
+
+.thumb {
+  width: 52px;
+  height: 34px;
+  object-fit: cover;
+  opacity: 0.3;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+  display: block;
+  border: none;
+  padding: 0;
+  background: none;
+}
+.thumb:hover { opacity: 0.65; }
+.thumb.active { opacity: 1; outline: 1px solid var(--blue); }
 
 /* ===================== INFO ===================== */
 #page-info {
@@ -232,29 +241,29 @@ html, body {
 .info-section-label {
   font-size: 10px;
   letter-spacing: 0.25em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--grey);
   margin-bottom: 16px;
 }
 
 .info-bio {
-  font-size: 14px;
-  line-height: 1.85;
-  color: rgba(255,255,255,0.65);
+  font-size: 13px;
+  line-height: 1.9;
+  color: rgba(255,255,255,0.6);
   font-weight: 300;
 }
 
 .info-clients {
-  font-size: 13px;
-  line-height: 1.9;
-  color: rgba(255,255,255,0.5);
+  font-size: 12px;
+  line-height: 2;
+  color: rgba(255,255,255,0.45);
 }
 
 .info-contact a {
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
+  text-transform: lowercase;
+  color: rgba(255,255,255,0.45);
   text-decoration: underline;
   transition: color 0.2s;
 }
@@ -271,33 +280,6 @@ html, body {
   filter: brightness(0.75);
 }
 
-/* ===================== CONTACT ===================== */
-#page-contact {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 100px 36px;
-}
-
-.contact-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.contact-inner a {
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.contact-inner a:hover { color: var(--blue); }
-
-/* FOOTER */
 .page-footer {
   padding: 24px 36px;
   display: flex;
@@ -308,15 +290,16 @@ html, body {
 .page-footer span, .page-footer a {
   font-size: 10px;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: rgba(255,255,255,0.15);
   text-decoration: none;
 }
 
 @media (max-width: 768px) {
-  .site-title { font-size: 28px; }
-  .site-nav { gap: 16px; padding: 20px 20px 0; }
+  .site-header { flex-direction: column; gap: 12px; }
+  .site-title { font-size: 26px; }
   .slide img { max-width: 88%; }
+  .filmstrip-wrap { width: 88%; }
   .info-wrap { grid-template-columns: 1fr; gap: 40px; }
   .info-right { position: static; }
 }
@@ -324,32 +307,29 @@ html, body {
 </head>
 <body>
 
-<!-- HEADER LEFT -->
+<!-- HEADER -->
 <div class="site-header">
-  <a class="site-title" href="#" onclick="go('home');return false;">ROMANBEROAMIN</a>
-  <span class="site-subtitle">Roman Valadez</span>
-</div>
-
-<!-- NAV RIGHT -->
-<nav class="site-nav">
-  <a class="nav-item active" id="nav-home" href="#" onclick="go('home');return false;">home</a>
-  <a class="nav-item" id="nav-info" href="#" onclick="go('info');return false;">info</a>
-
-  <div class="portfolio-wrap">
-    <button class="nav-item" id="nav-portfolio">portfolio ▾</button>
-    <div class="portfolio-dropdown">
-      <a href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank">Sincewhenbro — Phineas</a>
-      <a href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank">Logan Ghiorzi — Punk Ass Kids</a>
-      <a href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank">SAMN X — '1STEP' Cypher</a>
-      <a href="https://www.youtube.com/watch?v=ds_LTLYf8E4" target="_blank">Glaive & Friends — Live In Los Angeles</a>
-      <a href="https://www.youtube.com/watch?v=bMWZB63-0p4" target="_blank">74 Youngan — The Street Escape</a>
-      <a href="https://www.youtube.com/watch?v=PIE1O1JSraA" target="_blank">Chris King — WHO?</a>
-    </div>
+  <div class="header-left">
+    <a class="site-title" href="#" onclick="go('home');return false;">ROMANBEROAMIN</a>
+    <span class="site-subtitle">Roman Valadez</span>
   </div>
-
-  <a class="nav-item" href="https://instagram.com/romanberoamin" target="_blank">instagram</a>
-  <a class="nav-item" id="nav-contact" href="#" onclick="go('contact');return false;">contact</a>
-</nav>
+  <nav class="site-nav">
+    <a class="nav-item active" id="nav-home" href="#" onclick="go('home');return false;">home</a>
+    <a class="nav-item" id="nav-info" href="#" onclick="go('info');return false;">info</a>
+    <div class="portfolio-wrap">
+      <button class="nav-item">portfolio ▾</button>
+      <div class="portfolio-dropdown">
+        <a href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank">sincewhenbro — phineas</a>
+        <a href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank">logan ghiorzi — punk ass kids</a>
+        <a href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank">samn x — '1step' cypher</a>
+        <a href="https://www.youtube.com/watch?v=ds_LTLYf8E4" target="_blank">glaive & friends — live in los angeles</a>
+        <a href="https://www.youtube.com/watch?v=bMWZB63-0p4" target="_blank">74 youngan — the street escape</a>
+        <a href="https://www.youtube.com/watch?v=PIE1O1JSraA" target="_blank">chris king — who?</a>
+      </div>
+    </div>
+    <a class="nav-item" href="https://instagram.com/romanberoamin" target="_blank">instagram</a>
+  </nav>
+</div>
 
 <!-- HOME -->
 <div class="page active" id="page-home">
@@ -372,7 +352,9 @@ html, body {
   <button class="arrow arrow-prev" onclick="changeSlide(-1)">←</button>
   <button class="arrow arrow-next" onclick="changeSlide(1)">→</button>
 
-  <div class="filmstrip" id="filmstrip"></div>
+  <div class="filmstrip-wrap">
+    <div class="filmstrip" id="filmstrip"></div>
+  </div>
 </div>
 
 <!-- INFO -->
@@ -380,15 +362,15 @@ html, body {
   <div class="info-wrap">
     <div class="info-left">
       <div>
-        <div class="info-section-label">Bio</div>
+        <div class="info-section-label">bio</div>
         <p class="info-bio">Born in Chicago, Illinois, raised in Phoenix, Arizona, Roman Valadez is a director and visual artist. Beginning at 20 with no formal training, Valadez built his practice from the ground up — shooting artists, learning every aspect of production, and developing a style rooted in visceral emotion and high energy. His aesthetic draws from surrealism, dark imagery, and cinematic precision, combining these disciplines into a body of work that is visceral, intentional, and distinctly his own.</p>
       </div>
       <div>
-        <div class="info-section-label">Clients</div>
+        <div class="info-section-label">clients</div>
         <p class="info-clients">Interscope Records / Alamo Records / 1400 Music Group / Overcast AZ / Reel Ones / G-Eazy / Logan Ghiorzi / Chris King / SAMN X</p>
       </div>
       <div class="info-contact">
-        <div class="info-section-label">Contact</div>
+        <div class="info-section-label">contact</div>
         <a href="mailto:romanvdezbookings@gmail.com">romanvdezbookings@gmail.com</a>
       </div>
     </div>
@@ -397,21 +379,12 @@ html, body {
     </div>
   </div>
   <div class="page-footer">
-    <span>© 2025 RomanBeroamin LLC</span>
-    <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
-  </div>
-</div>
-
-<!-- CONTACT -->
-<div class="page" id="page-contact">
-  <div class="contact-inner">
-    <a href="mailto:romanvdezbookings@gmail.com">romanvdezbookings@gmail.com</a>
+    <span>© 2025 romanberoamin llc</span>
     <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
   </div>
 </div>
 
 <script>
-// PAGE NAV
 function go(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
@@ -422,7 +395,6 @@ function go(id) {
   document.body.style.overflow = id === 'home' ? 'hidden' : '';
 }
 
-// CAROUSEL + FILMSTRIP
 const slides = document.querySelectorAll('.slide');
 const filmstrip = document.getElementById('filmstrip');
 const srcs = [
@@ -435,7 +407,6 @@ let current = 0;
 const total = slides.length;
 let timer = null;
 
-// Build filmstrip
 srcs.forEach((src, i) => {
   const img = document.createElement('img');
   img.src = base + src;
