@@ -24,9 +24,9 @@ html, body {
   color: var(--white);
   font-family: 'BlueScreen', monospace;
   overflow: hidden;
-  cursor: none !important;
+  cursor: url("https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png") 0 0, auto !important;
 }
-* { cursor: none !important; }
+* { cursor: url("https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png") 0 0, auto !important; }
 
 /* CANVAS handles both cursor and trail */
 #trail-canvas {
@@ -491,9 +491,6 @@ function frame() {
   // Draw cursor image on canvas — mix-blend-mode difference removes white box on dark background
   if (cursorImg.complete && mouseX > -100) {
     ctx.save();
-    ctx.globalCompositeOperation = 'difference';
-    ctx.drawImage(cursorImg, mouseX, mouseY, CURSOR_SIZE, CURSOR_SIZE);
-    ctx.restore();
   }
 
   requestAnimationFrame(frame);
