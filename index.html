@@ -90,11 +90,6 @@ html, body {
 .slide.active { opacity: 1; pointer-events: auto; }
 .slide img { max-width: 60%; max-height: 65vh; width: auto; height: auto; object-fit: contain; display: block; }
 
-.arrow { position: fixed; top: 50%; transform: translateY(-50%); z-index: 50; background: none; border: none; color: rgba(255,255,255,0.3); font-size: 18px; padding: 24px 18px; transition: color 0.2s; font-family: 'BlueScreen', monospace; }
-.arrow:hover { color: var(--blue); }
-.arrow-prev { left: 0; }
-.arrow-next { right: 0; }
-
 .filmstrip-outer { width: 60%; flex-shrink: 0; overflow-x: hidden; }
 .filmstrip { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; }
 .thumb { width: 48px; height: 32px; object-fit: cover; opacity: 0.3; transition: opacity 0.2s; flex-shrink: 0; display: block; border: none; padding: 0; background: none; }
@@ -173,8 +168,6 @@ html, body {
     <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(32).gif" alt=""></div>
     <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(33).gif" alt=""></div>
   </div>
-  <button class="arrow arrow-prev" onclick="changeSlide(-1)">←</button>
-  <button class="arrow arrow-next" onclick="changeSlide(1)">→</button>
   <div class="filmstrip-outer">
     <div class="filmstrip" id="filmstrip"></div>
   </div>
@@ -215,8 +208,11 @@ resize();
 window.addEventListener('resize', resize);
 
 let mouseX = -200, mouseY = -200;
+
+// Each point has x, y, and its own alpha that decays over time
 const points = [];
 const MAX = 45;
+const DECAY = 0.03; // how fast each point fades per frame
 
 const cursorImg = new Image();
 cursorImg.crossOrigin = 'anonymous';
@@ -226,61 +222,63 @@ const CURSOR_SIZE = 52;
 document.addEventListener('mousemove', e => {
   mouseX = e.clientX;
   mouseY = e.clientY;
-  points.push({ x: mouseX, y: mouseY, alpha: 1.0 });
+  // Trail starts exactly at cursor tip (top-left of cursor image = mouseX, mouseY)
+  points.push({ x: mouseX, y: mouseY, life: 1.0 });
   if (points.length > MAX) points.shift();
 });
 
 function frame() {
-  // Clear canvas fully — no fade rect so site stays visible
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Age points manually for fade effect
-  points.forEach((p, i) => {
-    p.alpha = i / points.length;
-  });
-
-  // Draw trail under cursor
-  if (points.length > 1) {
-    for (let i = 1; i < points.length; i++) {
-      const p0 = points[i - 1];
-      const p1 = points[i];
-      const t = i / points.length;
-
-      // Outer glow — wide, low opacity
-      ctx.beginPath();
-      ctx.moveTo(p0.x, p0.y);
-      ctx.lineTo(p1.x, p1.y);
-      ctx.strokeStyle = `rgba(20, 102, 255, ${t * 0.12})`;
-      ctx.lineWidth = t * 14;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.stroke();
-
-      // Mid glow
-      ctx.beginPath();
-      ctx.moveTo(p0.x, p0.y);
-      ctx.lineTo(p1.x, p1.y);
-      ctx.strokeStyle = `rgba(60, 140, 255, ${t * 0.25})`;
-      ctx.lineWidth = t * 5;
-      ctx.stroke();
-
-      // Core streak
-      ctx.beginPath();
-      ctx.moveTo(p0.x, p0.y);
-      ctx.lineTo(p1.x, p1.y);
-      ctx.strokeStyle = `rgba(200, 220, 255, ${t * 0.8})`;
-      ctx.lineWidth = Math.max(0.5, t * 1.5);
-      ctx.stroke();
-    }
+  // Decay ALL points every frame — trail fades even when mouse is still
+  for (let i = points.length - 1; i >= 0; i--) {
+    points[i].life -= DECAY;
+    if (points[i].life <= 0) points.splice(i, 1);
   }
 
-  // Draw cursor ON TOP — cursor tip at mouseX, mouseY
+  // Draw trail
+  for (let i = 1; i < points.length; i++) {
+    const p0 = points[i - 1];
+    const p1 = points[i];
+    const t = (i / points.length) * p1.life;
+    if (t <= 0) continue;
+
+    // Outer glow
+    ctx.beginPath();
+    ctx.moveTo(p0.x, p0.y);
+    ctx.lineTo(p1.x, p1.y);
+    ctx.strokeStyle = `rgba(20, 102, 255, ${t * 0.12})`;
+    ctx.lineWidth = t * 14;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+
+    // Mid
+    ctx.beginPath();
+    ctx.moveTo(p0.x, p0.y);
+    ctx.lineTo(p1.x, p1.y);
+    ctx.strokeStyle = `rgba(60, 140, 255, ${t * 0.25})`;
+    ctx.lineWidth = t * 5;
+    ctx.stroke();
+
+    // Core
+    ctx.beginPath();
+    ctx.moveTo(p0.x, p0.y);
+    ctx.lineTo(p1.x, p1.y);
+    ctx.strokeStyle = `rgba(200, 220, 255, ${t * 0.8})`;
+    ctx.lineWidth = Math.max(0.5, t * 1.5);
+    ctx.stroke();
+  }
+
+  // Draw cursor on top — tip at exact mouseX, mouseY
   if (cursorImg.complete && cursorImg.naturalWidth > 0 && mouseX > -100) {
+    // Subtle glow
     ctx.save();
-    ctx.globalAlpha = 0.3;
-    ctx.drawImage(cursorImg, mouseX - 4, mouseY - 4, CURSOR_SIZE + 8, CURSOR_SIZE + 8);
+    ctx.globalAlpha = 0.25;
+    ctx.drawImage(cursorImg, mouseX - 5, mouseY - 5, CURSOR_SIZE + 10, CURSOR_SIZE + 10);
     ctx.restore();
 
+    // Sharp cursor
     ctx.save();
     ctx.globalAlpha = 1;
     ctx.drawImage(cursorImg, mouseX, mouseY, CURSOR_SIZE, CURSOR_SIZE);
