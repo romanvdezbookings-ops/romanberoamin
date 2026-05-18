@@ -28,31 +28,12 @@ html, body {
 }
 * { cursor: none !important; }
 
-/* CUSTOM CURSOR */
-#custom-cursor {
-  position: fixed;
-  top: 0; left: 0;
-  pointer-events: none;
-  z-index: 99999;
-  /* No transform lag — directly set via JS */
-}
-
-#custom-cursor img {
-  width: 40px;
-  height: 40px;
-  image-rendering: pixelated;
-  display: block;
-  /* Remove any white box */
-  background: transparent;
-  mix-blend-mode: normal;
-}
-
-/* AKIRA TRAIL CANVAS */
+/* CANVAS handles both cursor and trail */
 #trail-canvas {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 99998;
+  z-index: 99999;
 }
 
 /* ===================== HEADER ===================== */
@@ -83,8 +64,8 @@ html, body {
   line-height: 1;
   text-transform: uppercase;
   text-shadow:
-    -1px 0 rgba(255, 0, 80, 0.4),
-    1px 0 rgba(0, 200, 255, 0.4),
+    -1px 0 rgba(255, 0, 80, 0.35),
+    1px 0 rgba(0, 200, 255, 0.35),
     0 0 12px rgba(20, 102, 255, 0.9),
     0 0 30px rgba(20, 102, 255, 0.5),
     0 0 70px rgba(20, 102, 255, 0.2);
@@ -122,20 +103,19 @@ html, body {
 .nav-item:hover {
   color: var(--blue);
   text-shadow:
-    -1px 0 rgba(255, 0, 80, 0.4),
-    1px 0 rgba(0, 200, 255, 0.4),
+    -1px 0 rgba(255, 0, 80, 0.35),
+    1px 0 rgba(0, 200, 255, 0.35),
     0 0 8px rgba(20, 102, 255, 0.8);
 }
 
 .nav-item.active {
   color: var(--blue);
   text-shadow:
-    -1px 0 rgba(255, 0, 80, 0.4),
-    1px 0 rgba(0, 200, 255, 0.4),
+    -1px 0 rgba(255, 0, 80, 0.35),
+    1px 0 rgba(0, 200, 255, 0.35),
     0 0 8px rgba(20, 102, 255, 0.8);
 }
 
-/* PORTFOLIO DROPDOWN */
 .portfolio-wrap { position: relative; }
 
 .portfolio-dropdown {
@@ -180,16 +160,14 @@ html, body {
 .portfolio-dropdown a:hover {
   color: var(--blue);
   text-shadow:
-    -0.5px 0 rgba(255, 0, 80, 0.4),
-    0.5px 0 rgba(0, 200, 255, 0.4),
+    -0.5px 0 rgba(255, 0, 80, 0.35),
+    0.5px 0 rgba(0, 200, 255, 0.35),
     0 0 6px rgba(20, 102, 255, 0.7);
 }
 
-/* ===================== PAGES ===================== */
 .page { display: none !important; }
 .page.active { display: flex !important; }
 
-/* ===================== HOME ===================== */
 #page-home {
   position: fixed;
   inset: 0;
@@ -223,10 +201,7 @@ html, body {
   justify-content: center;
 }
 
-.slide.active {
-  opacity: 1;
-  pointer-events: auto;
-}
+.slide.active { opacity: 1; pointer-events: auto; }
 
 .slide img {
   max-width: 60%;
@@ -254,18 +229,8 @@ html, body {
 .arrow-prev { left: 0; }
 .arrow-next { right: 0; }
 
-.filmstrip-outer {
-  width: 60%;
-  flex-shrink: 0;
-  overflow-x: hidden;
-}
-
-.filmstrip {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2px;
-}
+.filmstrip-outer { width: 60%; flex-shrink: 0; overflow-x: hidden; }
+.filmstrip { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; }
 
 .thumb {
   width: 48px;
@@ -280,13 +245,8 @@ html, body {
   background: none;
 }
 .thumb:hover { opacity: 0.7; }
-.thumb.active {
-  opacity: 1;
-  outline: 1px solid var(--blue);
-  box-shadow: 0 0 6px rgba(20,102,255,0.6);
-}
+.thumb.active { opacity: 1; outline: 1px solid var(--blue); box-shadow: 0 0 6px rgba(20,102,255,0.6); }
 
-/* ===================== INFO ===================== */
 #page-info {
   position: fixed;
   inset: 0;
@@ -381,14 +341,8 @@ html, body {
 </head>
 <body>
 
-<!-- CUSTOM CURSOR -->
-<div id="custom-cursor">
-  <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png" alt="">
-</div>
-
 <canvas id="trail-canvas"></canvas>
 
-<!-- HEADER -->
 <div class="site-header">
   <div class="header-left">
     <a class="site-title" href="#" onclick="go('home');return false;">ROMANBEROAMIN</a>
@@ -414,7 +368,6 @@ html, body {
   </nav>
 </div>
 
-<!-- HOME -->
 <div class="page active" id="page-home">
   <div class="carousel-wrap">
     <div class="slide active"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(1).gif" alt=""></div>
@@ -438,7 +391,6 @@ html, body {
   </div>
 </div>
 
-<!-- INFO -->
 <div class="page" id="page-info">
   <div class="info-wrap">
     <div class="info-left">
@@ -466,40 +418,35 @@ html, body {
 </div>
 
 <script>
-// ===================== CURSOR + TRAIL =====================
-const cursorEl = document.getElementById('custom-cursor');
+// ===================== CANVAS CURSOR + TRAIL =====================
 const canvas = document.getElementById('trail-canvas');
 const ctx = canvas.getContext('2d');
 
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
 let mouseX = -200, mouseY = -200;
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-// Trail points
 const trail = [];
-const MAX = 35;
+const MAX = 30;
+
+// Load cursor image
+const cursorImg = new Image();
+cursorImg.src = 'https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png';
+const CURSOR_SIZE = 52;
 
 document.addEventListener('mousemove', e => {
   mouseX = e.clientX;
   mouseY = e.clientY;
-  // Move cursor element instantly — no lag
-  cursorEl.style.left = mouseX + 'px';
-  cursorEl.style.top = mouseY + 'px';
   trail.push({ x: mouseX, y: mouseY, life: 1.0 });
   if (trail.length > MAX) trail.shift();
 });
 
-function drawFrame() {
+function frame() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Age points faster for quicker fade
-  trail.forEach(p => { p.life -= 0.06; });
-  // Remove dead points
+  // Age and draw trail
+  trail.forEach(p => { p.life -= 0.07; });
   while (trail.length > 0 && trail[0].life <= 0) trail.shift();
 
   for (let i = 1; i < trail.length; i++) {
@@ -540,10 +487,19 @@ function drawFrame() {
   }
 
   ctx.filter = 'none';
-  requestAnimationFrame(drawFrame);
+
+  // Draw cursor image on canvas — mix-blend-mode difference removes white box on dark background
+  if (cursorImg.complete && mouseX > -100) {
+    ctx.save();
+    ctx.globalCompositeOperation = 'difference';
+    ctx.drawImage(cursorImg, mouseX, mouseY, CURSOR_SIZE, CURSOR_SIZE);
+    ctx.restore();
+  }
+
+  requestAnimationFrame(frame);
 }
 
-drawFrame();
+frame();
 
 // ===================== PAGE NAV =====================
 function go(id) {
