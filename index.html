@@ -14,127 +14,151 @@
 }
 
 :root {
-  --black: #000;
-  --white: #fff;
-  --grey: #555;
-  --blue: #0057D9;
+  --black: #000000;
+  --white: #ffffff;
+  --blue: #1466FF;
 }
 
 html, body {
   background: var(--black);
   color: var(--white);
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 300;
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, auto;
+  font-weight: 400;
+  overflow: hidden;
 }
 
-* { cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, auto; }
+/* CURSOR — default pixel cursor everywhere */
+html { cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, auto; }
+
+/* hand pointer on interactive elements */
+a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, pointer; }
 
 /* ===================== HEADER ===================== */
 .site-header {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 200;
-  padding: 24px 36px;
+  z-index: 500;
+  padding: 20px 32px;
   display: flex;
   align-items: flex-start;
-  gap: 40px;
+  gap: 36px;
+  background: var(--black);
 }
 
 .header-left {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   flex-shrink: 0;
 }
 
 .site-title {
   font-family: 'BlueScreen', monospace;
-  font-size: 38px;
+  font-size: 52px;
   color: var(--blue);
   text-decoration: none;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   line-height: 1;
   text-transform: uppercase;
+  font-weight: normal;
 }
 
 .site-subtitle {
   font-family: 'BlueScreen', monospace;
-  font-size: 11px;
-  color: rgba(255,255,255,0.5);
-  letter-spacing: 0.1em;
+  font-size: 13px;
+  color: var(--white);
+  letter-spacing: 0.08em;
+  font-weight: normal;
 }
 
-/* NAV — inline right of name */
 .site-nav {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding-top: 10px;
-  flex-wrap: wrap;
+  gap: 28px;
+  padding-top: 16px;
 }
 
 .nav-item {
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-size: 12px;
+  letter-spacing: 0.1em;
   text-transform: lowercase;
   color: var(--white);
   text-decoration: none;
-  opacity: 0.45;
-  transition: opacity 0.2s, color 0.2s;
+  transition: color 0.2s;
   background: none;
   border: none;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   padding: 0;
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, pointer;
 }
-.nav-item:hover { opacity: 1; color: var(--blue); }
-.nav-item.active { opacity: 1; color: var(--blue); }
+.nav-item:hover { color: var(--blue); }
+.nav-item.active { color: var(--blue); }
 
 /* PORTFOLIO DROPDOWN */
 .portfolio-wrap { position: relative; }
 
 .portfolio-dropdown {
   position: absolute;
-  top: calc(100% + 12px);
+  top: 100%;
   left: 0;
+  padding-top: 8px;
   display: none;
   flex-direction: column;
   gap: 10px;
-  min-width: 260px;
-  background: var(--black);
-  padding: 16px 0;
-  z-index: 300;
-  border-top: 1px solid rgba(255,255,255,0.07);
+  min-width: 280px;
+  z-index: 600;
+}
+
+/* Buffer zone to keep hover alive while moving mouse down */
+.portfolio-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 0;
+  right: 0;
+  height: 8px;
 }
 
 .portfolio-wrap:hover .portfolio-dropdown { display: flex; }
 
+.dropdown-inner {
+  background: var(--black);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .portfolio-dropdown a {
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.45);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--white);
   text-decoration: none;
   transition: color 0.2s;
   white-space: nowrap;
   text-transform: lowercase;
+  padding: 2px 0;
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, pointer;
 }
 .portfolio-dropdown a:hover { color: var(--blue); }
 
 /* ===================== PAGES ===================== */
-.page { display: none; }
-.page.active { display: block; }
+.page { display: none !important; }
+.page.active { display: flex !important; }
 
 /* ===================== HOME ===================== */
 #page-home {
   position: fixed;
   inset: 0;
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 90px;
-  padding-bottom: 80px;
+  padding-top: 100px;
+  padding-bottom: 70px;
+  background: var(--black);
+  z-index: 1;
 }
 
 .carousel-wrap {
@@ -144,6 +168,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .slide {
@@ -163,15 +188,14 @@ html, body {
 }
 
 .slide img {
-  max-width: 55%;
-  max-height: 68vh;
+  max-width: 60%;
+  max-height: 65vh;
   width: auto;
   height: auto;
   object-fit: contain;
   display: block;
 }
 
-/* ARROWS */
 .arrow {
   position: fixed;
   top: 50%;
@@ -179,33 +203,32 @@ html, body {
   z-index: 50;
   background: none;
   border: none;
-  color: rgba(255,255,255,0.2);
-  font-size: 16px;
-  padding: 24px 20px;
+  color: rgba(255,255,255,0.3);
+  font-size: 18px;
+  padding: 24px 18px;
   transition: color 0.2s;
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, pointer;
 }
-.arrow:hover { color: var(--blue); }
+.arrow:hover { color: var(--white); }
 .arrow-prev { left: 0; }
 .arrow-next { right: 0; }
 
-/* FILMSTRIP — centered under carousel */
-.filmstrip-wrap {
-  width: 55%;
-  overflow-x: auto;
-  scrollbar-width: none;
+/* FILMSTRIP — two rows, full width, centered under image */
+.filmstrip-outer {
+  width: 60%;
   flex-shrink: 0;
 }
-.filmstrip-wrap::-webkit-scrollbar { display: none; }
 
 .filmstrip {
   display: flex;
-  gap: 3px;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: 2px;
 }
 
 .thumb {
-  width: 52px;
-  height: 34px;
+  width: 48px;
+  height: 32px;
   object-fit: cover;
   opacity: 0.3;
   transition: opacity 0.2s;
@@ -215,91 +238,102 @@ html, body {
   padding: 0;
   background: none;
 }
-.thumb:hover { opacity: 0.65; }
+.thumb:hover { opacity: 0.7; }
 .thumb.active { opacity: 1; outline: 1px solid var(--blue); }
 
 /* ===================== INFO ===================== */
 #page-info {
-  min-height: 100vh;
+  position: fixed;
+  inset: 0;
+  flex-direction: column;
   overflow-y: auto;
-  padding-top: 100px;
+  padding-top: 110px;
+  background: var(--black);
+  z-index: 1;
+  display: none !important;
 }
+
+#page-info.active { display: flex !important; }
 
 .info-wrap {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: calc(100vh - 100px);
+  flex: 1;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 60px 36px;
+  padding: 48px 36px 80px;
   gap: 80px;
   align-items: start;
+  width: 100%;
 }
 
-.info-left { display: flex; flex-direction: column; gap: 48px; }
+.info-left { display: flex; flex-direction: column; gap: 44px; }
 
 .info-section-label {
   font-size: 10px;
   letter-spacing: 0.25em;
   text-transform: lowercase;
-  color: var(--grey);
-  margin-bottom: 16px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 14px;
 }
 
 .info-bio {
   font-size: 13px;
   line-height: 1.9;
-  color: rgba(255,255,255,0.6);
+  color: var(--white);
   font-weight: 300;
 }
 
 .info-clients {
   font-size: 12px;
   line-height: 2;
-  color: rgba(255,255,255,0.45);
+  color: var(--white);
+  font-weight: 300;
 }
 
 .info-contact a {
-  font-size: 11px;
-  letter-spacing: 0.1em;
+  font-size: 12px;
+  letter-spacing: 0.08em;
   text-transform: lowercase;
-  color: rgba(255,255,255,0.45);
+  color: var(--white);
   text-decoration: underline;
   transition: color 0.2s;
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, pointer;
 }
 .info-contact a:hover { color: var(--blue); }
 
 .info-right {
   position: sticky;
-  top: 100px;
+  top: 20px;
 }
 
 .info-right img {
   width: 100%;
   display: block;
-  filter: brightness(0.75);
+  filter: brightness(0.8);
 }
 
 .page-footer {
-  padding: 24px 36px;
+  padding: 20px 36px;
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  margin-top: 60px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  width: 100%;
 }
 .page-footer span, .page-footer a {
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: lowercase;
-  color: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.2);
   text-decoration: none;
 }
 
 @media (max-width: 768px) {
-  .site-header { flex-direction: column; gap: 12px; }
-  .site-title { font-size: 26px; }
+  .site-title { font-size: 32px; }
+  .site-header { gap: 16px; }
+  .site-nav { gap: 16px; padding-top: 10px; }
   .slide img { max-width: 88%; }
-  .filmstrip-wrap { width: 88%; }
+  .filmstrip-outer { width: 88%; }
   .info-wrap { grid-template-columns: 1fr; gap: 40px; }
   .info-right { position: static; }
 }
@@ -307,7 +341,6 @@ html, body {
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="site-header">
   <div class="header-left">
     <a class="site-title" href="#" onclick="go('home');return false;">ROMANBEROAMIN</a>
@@ -319,12 +352,14 @@ html, body {
     <div class="portfolio-wrap">
       <button class="nav-item">portfolio ▾</button>
       <div class="portfolio-dropdown">
-        <a href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank">sincewhenbro — phineas</a>
-        <a href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank">logan ghiorzi — punk ass kids</a>
-        <a href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank">samn x — '1step' cypher</a>
-        <a href="https://www.youtube.com/watch?v=ds_LTLYf8E4" target="_blank">glaive & friends — live in los angeles</a>
-        <a href="https://www.youtube.com/watch?v=bMWZB63-0p4" target="_blank">74 youngan — the street escape</a>
-        <a href="https://www.youtube.com/watch?v=PIE1O1JSraA" target="_blank">chris king — who?</a>
+        <div class="dropdown-inner">
+          <a href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank">sincewhenbro — phineas</a>
+          <a href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank">logan ghiorzi — punk ass kids</a>
+          <a href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank">samn x — '1step' cypher</a>
+          <a href="https://www.youtube.com/watch?v=ds_LTLYf8E4" target="_blank">glaive & friends — live in los angeles</a>
+          <a href="https://www.youtube.com/watch?v=bMWZB63-0p4" target="_blank">74 youngan — the street escape</a>
+          <a href="https://www.youtube.com/watch?v=PIE1O1JSraA" target="_blank">chris king — who?</a>
+        </div>
       </div>
     </div>
     <a class="nav-item" href="https://instagram.com/romanberoamin" target="_blank">instagram</a>
@@ -348,11 +383,9 @@ html, body {
     <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(33).gif" alt=""></div>
     <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(35).gif" alt=""></div>
   </div>
-
   <button class="arrow arrow-prev" onclick="changeSlide(-1)">←</button>
   <button class="arrow arrow-next" onclick="changeSlide(1)">→</button>
-
-  <div class="filmstrip-wrap">
+  <div class="filmstrip-outer">
     <div class="filmstrip" id="filmstrip"></div>
   </div>
 </div>
@@ -392,7 +425,6 @@ function go(id) {
   const a = document.getElementById('nav-' + id);
   if (a) a.classList.add('active');
   window.scrollTo(0, 0);
-  document.body.style.overflow = id === 'home' ? 'hidden' : '';
 }
 
 const slides = document.querySelectorAll('.slide');
