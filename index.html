@@ -17,21 +17,29 @@
   --black: #000000;
   --white: #ffffff;
   --blue: #1466FF;
+  --blue-glow: #1466FF;
 }
 
 html, body {
   background: var(--black);
   color: var(--white);
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'BlueScreen', monospace;
   font-weight: 400;
   overflow: hidden;
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, auto;
 }
 
-/* CURSOR — default pixel cursor everywhere */
-html { cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, auto; }
+a, button, .thumb {
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, pointer;
+}
 
-/* hand pointer on interactive elements */
-a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, pointer; }
+/* AKIRA TRAIL CANVAS */
+#trail-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
 
 /* ===================== HEADER ===================== */
 .site-header {
@@ -60,7 +68,10 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
   letter-spacing: 0.04em;
   line-height: 1;
   text-transform: uppercase;
-  font-weight: normal;
+  text-shadow:
+    0 0 10px rgba(20, 102, 255, 0.9),
+    0 0 30px rgba(20, 102, 255, 0.6),
+    0 0 60px rgba(20, 102, 255, 0.3);
 }
 
 .site-subtitle {
@@ -68,7 +79,7 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
   font-size: 13px;
   color: var(--white);
   letter-spacing: 0.08em;
-  font-weight: normal;
+  text-transform: uppercase;
 }
 
 .site-nav {
@@ -79,21 +90,27 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
 }
 
 .nav-item {
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  font-family: 'BlueScreen', monospace;
+  font-size: 13px;
+  letter-spacing: 0.08em;
   text-transform: lowercase;
   color: var(--white);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color 0.2s, text-shadow 0.2s;
   background: none;
   border: none;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 400;
   padding: 0;
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, pointer;
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, pointer;
 }
-.nav-item:hover { color: var(--blue); }
-.nav-item.active { color: var(--blue); }
+.nav-item:hover {
+  color: var(--blue);
+  text-shadow: 0 0 8px rgba(20,102,255,0.8), 0 0 20px rgba(20,102,255,0.4);
+}
+.nav-item.active {
+  color: var(--blue);
+  text-shadow: 0 0 8px rgba(20,102,255,0.8), 0 0 20px rgba(20,102,255,0.4);
+}
 
 /* PORTFOLIO DROPDOWN */
 .portfolio-wrap { position: relative; }
@@ -102,22 +119,17 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
   position: absolute;
   top: 100%;
   left: 0;
-  padding-top: 8px;
+  padding-top: 0;
   display: none;
   flex-direction: column;
-  gap: 10px;
-  min-width: 280px;
   z-index: 600;
+  min-width: 290px;
 }
 
-/* Buffer zone to keep hover alive while moving mouse down */
 .portfolio-dropdown::before {
   content: '';
-  position: absolute;
-  top: -8px;
-  left: 0;
-  right: 0;
-  height: 8px;
+  display: block;
+  height: 10px;
 }
 
 .portfolio-wrap:hover .portfolio-dropdown { display: flex; }
@@ -132,17 +144,21 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
 }
 
 .portfolio-dropdown a {
+  font-family: 'BlueScreen', monospace;
   font-size: 11px;
   letter-spacing: 0.06em;
   color: var(--white);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color 0.2s, text-shadow 0.2s;
   white-space: nowrap;
   text-transform: lowercase;
   padding: 2px 0;
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, pointer;
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, pointer;
 }
-.portfolio-dropdown a:hover { color: var(--blue); }
+.portfolio-dropdown a:hover {
+  color: var(--blue);
+  text-shadow: 0 0 8px rgba(20,102,255,0.7);
+}
 
 /* ===================== PAGES ===================== */
 .page { display: none !important; }
@@ -207,16 +223,18 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
   font-size: 18px;
   padding: 24px 18px;
   transition: color 0.2s;
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, pointer;
+  font-family: 'BlueScreen', monospace;
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, pointer;
 }
-.arrow:hover { color: var(--white); }
+.arrow:hover { color: var(--blue); text-shadow: 0 0 8px rgba(20,102,255,0.8); }
 .arrow-prev { left: 0; }
 .arrow-next { right: 0; }
 
-/* FILMSTRIP — two rows, full width, centered under image */
+/* FILMSTRIP */
 .filmstrip-outer {
   width: 60%;
   flex-shrink: 0;
+  overflow-x: hidden;
 }
 
 .filmstrip {
@@ -237,9 +255,14 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
   border: none;
   padding: 0;
   background: none;
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, pointer;
 }
 .thumb:hover { opacity: 0.7; }
-.thumb.active { opacity: 1; outline: 1px solid var(--blue); }
+.thumb.active {
+  opacity: 1;
+  outline: 1px solid var(--blue);
+  box-shadow: 0 0 6px rgba(20,102,255,0.6);
+}
 
 /* ===================== INFO ===================== */
 #page-info {
@@ -252,7 +275,6 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
   z-index: 1;
   display: none !important;
 }
-
 #page-info.active { display: flex !important; }
 
 .info-wrap {
@@ -270,14 +292,16 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
 .info-left { display: flex; flex-direction: column; gap: 44px; }
 
 .info-section-label {
+  font-family: 'BlueScreen', monospace;
   font-size: 10px;
   letter-spacing: 0.25em;
   text-transform: lowercase;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.35);
   margin-bottom: 14px;
 }
 
 .info-bio {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 13px;
   line-height: 1.9;
   color: var(--white);
@@ -285,6 +309,7 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
 }
 
 .info-clients {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 12px;
   line-height: 2;
   color: var(--white);
@@ -292,15 +317,19 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
 }
 
 .info-contact a {
+  font-family: 'BlueScreen', monospace;
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: lowercase;
   color: var(--white);
   text-decoration: underline;
-  transition: color 0.2s;
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png.png') 0 0, pointer;
+  transition: color 0.2s, text-shadow 0.2s;
+  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, pointer;
 }
-.info-contact a:hover { color: var(--blue); }
+.info-contact a:hover {
+  color: var(--blue);
+  text-shadow: 0 0 8px rgba(20,102,255,0.7);
+}
 
 .info-right {
   position: sticky;
@@ -319,6 +348,7 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
   justify-content: space-between;
   border-top: 1px solid rgba(255,255,255,0.06);
   width: 100%;
+  font-family: 'BlueScreen', monospace;
 }
 .page-footer span, .page-footer a {
   font-size: 10px;
@@ -330,8 +360,8 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
 
 @media (max-width: 768px) {
   .site-title { font-size: 32px; }
-  .site-header { gap: 16px; }
-  .site-nav { gap: 16px; padding-top: 10px; }
+  .site-header { gap: 16px; flex-wrap: wrap; }
+  .site-nav { gap: 14px; padding-top: 8px; }
   .slide img { max-width: 88%; }
   .filmstrip-outer { width: 88%; }
   .info-wrap { grid-template-columns: 1fr; gap: 40px; }
@@ -341,10 +371,14 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
 </head>
 <body>
 
+<!-- AKIRA TRAIL CANVAS -->
+<canvas id="trail-canvas"></canvas>
+
+<!-- HEADER -->
 <div class="site-header">
   <div class="header-left">
     <a class="site-title" href="#" onclick="go('home');return false;">ROMANBEROAMIN</a>
-    <span class="site-subtitle">Roman Valadez</span>
+    <span class="site-subtitle">ROMAN VALADEZ</span>
   </div>
   <nav class="site-nav">
     <a class="nav-item active" id="nav-home" href="#" onclick="go('home');return false;">home</a>
@@ -418,6 +452,85 @@ a, button, .thumb { cursor: url('https://raw.githubusercontent.com/romanvdezbook
 </div>
 
 <script>
+// ===================== AKIRA LIGHT TRAIL =====================
+const canvas = document.getElementById('trail-canvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const points = [];
+const MAX_POINTS = 80;
+let mouseX = -999, mouseY = -999;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  points.push({ x: mouseX, y: mouseY, age: 0 });
+  if (points.length > MAX_POINTS) points.shift();
+});
+
+function drawTrail() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (points.length < 2) {
+    requestAnimationFrame(drawTrail);
+    return;
+  }
+
+  // Age all points
+  points.forEach(p => p.age++);
+
+  // Draw trail segments
+  for (let i = 1; i < points.length; i++) {
+    const p0 = points[i - 1];
+    const p1 = points[i];
+    const progress = i / points.length;
+    const alpha = progress * (1 - p1.age / 120);
+    if (alpha <= 0) continue;
+
+    const lineWidth = progress * 3;
+
+    // Outer glow
+    ctx.beginPath();
+    ctx.moveTo(p0.x, p0.y);
+    ctx.lineTo(p1.x, p1.y);
+    ctx.strokeStyle = `rgba(20, 102, 255, ${alpha * 0.15})`;
+    ctx.lineWidth = lineWidth * 6;
+    ctx.lineCap = 'round';
+    ctx.filter = 'blur(8px)';
+    ctx.stroke();
+
+    // Mid glow
+    ctx.beginPath();
+    ctx.moveTo(p0.x, p0.y);
+    ctx.lineTo(p1.x, p1.y);
+    ctx.strokeStyle = `rgba(60, 140, 255, ${alpha * 0.35})`;
+    ctx.lineWidth = lineWidth * 3;
+    ctx.filter = 'blur(3px)';
+    ctx.stroke();
+
+    // Core bright line
+    ctx.beginPath();
+    ctx.moveTo(p0.x, p0.y);
+    ctx.lineTo(p1.x, p1.y);
+    ctx.strokeStyle = `rgba(180, 210, 255, ${alpha * 0.9})`;
+    ctx.lineWidth = Math.max(0.5, lineWidth * 0.8);
+    ctx.filter = 'none';
+    ctx.stroke();
+  }
+
+  ctx.filter = 'none';
+  requestAnimationFrame(drawTrail);
+}
+
+drawTrail();
+
+// ===================== PAGE NAV =====================
 function go(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
@@ -427,6 +540,7 @@ function go(id) {
   window.scrollTo(0, 0);
 }
 
+// ===================== CAROUSEL =====================
 const slides = document.querySelectorAll('.slide');
 const filmstrip = document.getElementById('filmstrip');
 const srcs = [
