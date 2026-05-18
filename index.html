@@ -17,20 +17,36 @@
   --black: #000000;
   --white: #ffffff;
   --blue: #1466FF;
-  --blue-glow: #1466FF;
 }
 
 html, body {
   background: var(--black);
   color: var(--white);
   font-family: 'BlueScreen', monospace;
-  font-weight: 400;
   overflow: hidden;
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, auto;
+  /* Hide default cursor everywhere */
+  cursor: none !important;
 }
 
-a, button, .thumb {
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, pointer;
+* { cursor: none !important; }
+
+/* CUSTOM CURSOR ELEMENT */
+#custom-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(0, 0);
+  image-rendering: pixelated;
+}
+
+#custom-cursor img {
+  width: 24px;
+  height: 24px;
+  image-rendering: pixelated;
+  display: block;
 }
 
 /* AKIRA TRAIL CANVAS */
@@ -38,7 +54,7 @@ a, button, .thumb {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 99998;
 }
 
 /* ===================== HEADER ===================== */
@@ -60,6 +76,7 @@ a, button, .thumb {
   flex-shrink: 0;
 }
 
+/* CHROMATIC ABERRATION via layered pseudo-elements */
 .site-title {
   font-family: 'BlueScreen', monospace;
   font-size: 52px;
@@ -68,10 +85,14 @@ a, button, .thumb {
   letter-spacing: 0.04em;
   line-height: 1;
   text-transform: uppercase;
+  position: relative;
+  display: inline-block;
   text-shadow:
-    0 0 10px rgba(20, 102, 255, 0.9),
-    0 0 30px rgba(20, 102, 255, 0.6),
-    0 0 60px rgba(20, 102, 255, 0.3);
+    -2px 0 rgba(255, 0, 80, 0.6),
+    2px 0 rgba(0, 200, 255, 0.6),
+    0 0 12px rgba(20, 102, 255, 1),
+    0 0 30px rgba(20, 102, 255, 0.7),
+    0 0 70px rgba(20, 102, 255, 0.3);
 }
 
 .site-subtitle {
@@ -96,20 +117,29 @@ a, button, .thumb {
   text-transform: lowercase;
   color: var(--white);
   text-decoration: none;
-  transition: color 0.2s, text-shadow 0.2s;
+  transition: color 0.15s, text-shadow 0.15s;
   background: none;
   border: none;
   font-weight: 400;
   padding: 0;
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, pointer;
 }
+
 .nav-item:hover {
   color: var(--blue);
-  text-shadow: 0 0 8px rgba(20,102,255,0.8), 0 0 20px rgba(20,102,255,0.4);
+  text-shadow:
+    -1.5px 0 rgba(255, 0, 80, 0.7),
+    1.5px 0 rgba(0, 200, 255, 0.7),
+    0 0 8px rgba(20, 102, 255, 1),
+    0 0 20px rgba(20, 102, 255, 0.5);
 }
+
 .nav-item.active {
   color: var(--blue);
-  text-shadow: 0 0 8px rgba(20,102,255,0.8), 0 0 20px rgba(20,102,255,0.4);
+  text-shadow:
+    -1.5px 0 rgba(255, 0, 80, 0.7),
+    1.5px 0 rgba(0, 200, 255, 0.7),
+    0 0 8px rgba(20, 102, 255, 1),
+    0 0 20px rgba(20, 102, 255, 0.5);
 }
 
 /* PORTFOLIO DROPDOWN */
@@ -119,7 +149,6 @@ a, button, .thumb {
   position: absolute;
   top: 100%;
   left: 0;
-  padding-top: 0;
   display: none;
   flex-direction: column;
   z-index: 600;
@@ -129,7 +158,7 @@ a, button, .thumb {
 .portfolio-dropdown::before {
   content: '';
   display: block;
-  height: 10px;
+  height: 12px;
 }
 
 .portfolio-wrap:hover .portfolio-dropdown { display: flex; }
@@ -149,15 +178,18 @@ a, button, .thumb {
   letter-spacing: 0.06em;
   color: var(--white);
   text-decoration: none;
-  transition: color 0.2s, text-shadow 0.2s;
+  transition: color 0.15s, text-shadow 0.15s;
   white-space: nowrap;
   text-transform: lowercase;
   padding: 2px 0;
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, pointer;
 }
+
 .portfolio-dropdown a:hover {
   color: var(--blue);
-  text-shadow: 0 0 8px rgba(20,102,255,0.7);
+  text-shadow:
+    -1px 0 rgba(255, 0, 80, 0.6),
+    1px 0 rgba(0, 200, 255, 0.6),
+    0 0 6px rgba(20, 102, 255, 0.9);
 }
 
 /* ===================== PAGES ===================== */
@@ -222,11 +254,13 @@ a, button, .thumb {
   color: rgba(255,255,255,0.3);
   font-size: 18px;
   padding: 24px 18px;
-  transition: color 0.2s;
+  transition: color 0.2s, text-shadow 0.2s;
   font-family: 'BlueScreen', monospace;
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, pointer;
 }
-.arrow:hover { color: var(--blue); text-shadow: 0 0 8px rgba(20,102,255,0.8); }
+.arrow:hover {
+  color: var(--blue);
+  text-shadow: -1px 0 rgba(255,0,80,0.6), 1px 0 rgba(0,200,255,0.6), 0 0 8px rgba(20,102,255,0.9);
+}
 .arrow-prev { left: 0; }
 .arrow-next { right: 0; }
 
@@ -255,13 +289,12 @@ a, button, .thumb {
   border: none;
   padding: 0;
   background: none;
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, pointer;
 }
 .thumb:hover { opacity: 0.7; }
 .thumb.active {
   opacity: 1;
   outline: 1px solid var(--blue);
-  box-shadow: 0 0 6px rgba(20,102,255,0.6);
+  box-shadow: 0 0 6px rgba(20,102,255,0.7), -1px 0 rgba(255,0,80,0.4), 1px 0 rgba(0,200,255,0.4);
 }
 
 /* ===================== INFO ===================== */
@@ -324,23 +357,14 @@ a, button, .thumb {
   color: var(--white);
   text-decoration: underline;
   transition: color 0.2s, text-shadow 0.2s;
-  cursor: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png') 0 0, pointer;
 }
 .info-contact a:hover {
   color: var(--blue);
-  text-shadow: 0 0 8px rgba(20,102,255,0.7);
+  text-shadow: -1px 0 rgba(255,0,80,0.6), 1px 0 rgba(0,200,255,0.6), 0 0 8px rgba(20,102,255,0.9);
 }
 
-.info-right {
-  position: sticky;
-  top: 20px;
-}
-
-.info-right img {
-  width: 100%;
-  display: block;
-  filter: brightness(0.8);
-}
+.info-right { position: sticky; top: 20px; }
+.info-right img { width: 100%; display: block; filter: brightness(0.8); }
 
 .page-footer {
   padding: 20px 36px;
@@ -348,9 +372,9 @@ a, button, .thumb {
   justify-content: space-between;
   border-top: 1px solid rgba(255,255,255,0.06);
   width: 100%;
-  font-family: 'BlueScreen', monospace;
 }
 .page-footer span, .page-footer a {
+  font-family: 'BlueScreen', monospace;
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: lowercase;
@@ -359,10 +383,10 @@ a, button, .thumb {
 }
 
 @media (max-width: 768px) {
-  .site-title { font-size: 32px; }
+  .site-title { font-size: 30px; }
   .site-header { gap: 16px; flex-wrap: wrap; }
   .site-nav { gap: 14px; padding-top: 8px; }
-  .slide img { max-width: 88%; }
+  .slide img { max-width: 88%; max-height: 55vh; }
   .filmstrip-outer { width: 88%; }
   .info-wrap { grid-template-columns: 1fr; gap: 40px; }
   .info-right { position: static; }
@@ -370,6 +394,11 @@ a, button, .thumb {
 </style>
 </head>
 <body>
+
+<!-- CUSTOM CURSOR -->
+<div id="custom-cursor">
+  <img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/cursor.png" alt="">
+</div>
 
 <!-- AKIRA TRAIL CANVAS -->
 <canvas id="trail-canvas"></canvas>
@@ -452,7 +481,17 @@ a, button, .thumb {
 </div>
 
 <script>
-// ===================== AKIRA LIGHT TRAIL =====================
+// ===================== CUSTOM CURSOR =====================
+const cursorEl = document.getElementById('custom-cursor');
+let cursorX = -100, cursorY = -100;
+let smoothX = -100, smoothY = -100;
+
+document.addEventListener('mousemove', e => {
+  cursorX = e.clientX;
+  cursorY = e.clientY;
+});
+
+// ===================== AKIRA TRAIL =====================
 const canvas = document.getElementById('trail-canvas');
 const ctx = canvas.getContext('2d');
 
@@ -463,72 +502,73 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-const points = [];
-const MAX_POINTS = 80;
-let mouseX = -999, mouseY = -999;
+const trail = [];
+const TRAIL_LENGTH = 40;
+const FADE_SPEED = 8; // higher = faster fade
 
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  points.push({ x: mouseX, y: mouseY, age: 0 });
-  if (points.length > MAX_POINTS) points.shift();
-});
+function lerp(a, b, t) { return a + (b - a) * t; }
 
-function drawTrail() {
+function animate() {
+  // Smooth cursor following
+  smoothX = lerp(smoothX, cursorX, 0.35);
+  smoothY = lerp(smoothY, cursorY, 0.35);
+
+  // Update cursor element position
+  cursorEl.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
+
+  // Add current smoothed position to trail
+  trail.push({ x: smoothX, y: smoothY, life: 1.0 });
+  if (trail.length > TRAIL_LENGTH) trail.shift();
+
+  // Age trail points
+  trail.forEach(p => { p.life -= 0.045; });
+
+  // Draw trail
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  if (points.length < 2) {
-    requestAnimationFrame(drawTrail);
-    return;
-  }
+  for (let i = 1; i < trail.length; i++) {
+    const p0 = trail[i - 1];
+    const p1 = trail[i];
+    const life = Math.max(0, p1.life);
+    if (life <= 0) continue;
 
-  // Age all points
-  points.forEach(p => p.age++);
-
-  // Draw trail segments
-  for (let i = 1; i < points.length; i++) {
-    const p0 = points[i - 1];
-    const p1 = points[i];
-    const progress = i / points.length;
-    const alpha = progress * (1 - p1.age / 120);
-    if (alpha <= 0) continue;
-
-    const lineWidth = progress * 3;
+    const t = i / trail.length;
+    const alpha = life * t;
 
     // Outer glow
     ctx.beginPath();
     ctx.moveTo(p0.x, p0.y);
     ctx.lineTo(p1.x, p1.y);
-    ctx.strokeStyle = `rgba(20, 102, 255, ${alpha * 0.15})`;
-    ctx.lineWidth = lineWidth * 6;
+    ctx.strokeStyle = `rgba(20, 80, 255, ${alpha * 0.12})`;
+    ctx.lineWidth = t * 14;
     ctx.lineCap = 'round';
-    ctx.filter = 'blur(8px)';
+    ctx.filter = 'blur(6px)';
     ctx.stroke();
 
     // Mid glow
     ctx.beginPath();
     ctx.moveTo(p0.x, p0.y);
     ctx.lineTo(p1.x, p1.y);
-    ctx.strokeStyle = `rgba(60, 140, 255, ${alpha * 0.35})`;
-    ctx.lineWidth = lineWidth * 3;
-    ctx.filter = 'blur(3px)';
+    ctx.strokeStyle = `rgba(40, 120, 255, ${alpha * 0.3})`;
+    ctx.lineWidth = t * 5;
+    ctx.filter = 'blur(2px)';
     ctx.stroke();
 
-    // Core bright line
+    // Core white-blue streak
     ctx.beginPath();
     ctx.moveTo(p0.x, p0.y);
     ctx.lineTo(p1.x, p1.y);
-    ctx.strokeStyle = `rgba(180, 210, 255, ${alpha * 0.9})`;
-    ctx.lineWidth = Math.max(0.5, lineWidth * 0.8);
+    ctx.strokeStyle = `rgba(200, 220, 255, ${alpha * 0.85})`;
+    ctx.lineWidth = Math.max(0.4, t * 1.5);
     ctx.filter = 'none';
     ctx.stroke();
   }
 
   ctx.filter = 'none';
-  requestAnimationFrame(drawTrail);
+  requestAnimationFrame(animate);
 }
 
-drawTrail();
+animate();
 
 // ===================== PAGE NAV =====================
 function go(id) {
