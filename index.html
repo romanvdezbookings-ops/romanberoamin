@@ -18,8 +18,6 @@
   --black: #000000;
   --white: #ffffff;
   --blue: #1466FF;
-  /* BRTHR-style: content cluster lives in a band centered on the page,
-     leaving generous black margins left/right. Tuned to match the screenshot. */
   --cluster-width: 56vw;
   --cluster-max: 900px;
 }
@@ -40,7 +38,6 @@ html, body {
   z-index: 99999;
 }
 
-/* HEADER: a centered cluster (not full-width), title left of cluster, nav right of cluster */
 .site-header {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -109,7 +106,6 @@ html, body {
 .page { display: none !important; }
 .page.active { display: flex !important; }
 
-/* HOME: hero centered to same cluster width as header */
 #page-home {
   position: fixed; inset: 0;
   flex-direction: column; align-items: center; justify-content: center;
@@ -163,6 +159,8 @@ html, body {
 .info-left { display: flex; flex-direction: column; gap: 44px; }
 .info-section-label { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; letter-spacing: 0.25em; text-transform: lowercase; color: rgba(255,255,255,0.35); margin-bottom: 14px; }
 .info-bio { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.9; color: var(--white); font-weight: 300; }
+.info-bio p { margin-bottom: 14px; }
+.info-bio p:last-child { margin-bottom: 0; }
 .info-clients { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; line-height: 2; color: var(--white); font-weight: 300; }
 .info-contact a { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: lowercase; color: var(--white); text-decoration: underline; transition: color 0.2s; }
 .info-contact a:hover { color: var(--blue); }
@@ -247,7 +245,11 @@ html, body {
     <div class="info-left">
       <div>
         <div class="info-section-label">bio</div>
-        <p class="info-bio">Born in Chicago, Illinois, raised in Phoenix, Arizona, Roman Valadez is a director and visual artist. Beginning at 20 with no formal training, Valadez built his practice from the ground up — shooting artists, learning every aspect of production, and developing a style rooted in visceral emotion and high energy. His aesthetic draws from surrealism, dark imagery, and cinematic precision, combining these disciplines into a body of work that is visceral, intentional, and distinctly his own.</p>
+        <div class="info-bio">
+          <p><strong>ROMANBEROAMIN</strong> (Roman Valadez) is a director and visual artist.</p>
+          <p>Chicago. Phoenix. Los Angeles.</p>
+          <p>Roman picked up a camera at 17 and built his practice from the ground up — self-taught across every stage of production. His work combines film, VFX, editing, sound design, and 3D animation into full multimedia experiences, rooted in surrealism, dark imagery, and cinematic precision. Driven by faith and craft, he creates work that is visceral, intentional, and distinctly his own.</p>
+        </div>
       </div>
       <div>
         <div class="info-section-label">clients</div>
@@ -268,11 +270,9 @@ html, body {
   </div>
 </div>
 
-<!-- GIF parser to read true duration of each GIF -->
 <script src="https://unpkg.com/gifuct-js@2.1.2/dist/gifuct-js.min.js"></script>
 
 <script>
-/* ============== CURSOR + TRAIL ============== */
 const canvas = document.getElementById('trail-canvas');
 const ctx = canvas.getContext('2d');
 
@@ -330,7 +330,6 @@ function frame() {
 }
 frame();
 
-/* ============== PAGE NAVIGATION ============== */
 function go(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
@@ -340,7 +339,6 @@ function go(id) {
   window.scrollTo(0, 0);
 }
 
-/* ============== CAROUSEL ============== */
 const slides = document.querySelectorAll('.slide');
 const filmstrip = document.getElementById('filmstrip');
 const srcs = [
@@ -362,8 +360,6 @@ const base = 'https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoa
 let current = 0;
 const total = slides.length;
 let timer = null;
-
-// Each slide gets its own duration — defaults to 6s, replaced once GIF is parsed
 const durations = new Array(total).fill(6000);
 
 srcs.forEach((src, i) => {
@@ -373,21 +369,17 @@ srcs.forEach((src, i) => {
   img.onclick = () => { showSlide(i); resetTimer(); };
   filmstrip.appendChild(img);
 
-  // Parse GIF to get true total duration
   fetch(base + src)
     .then(r => r.arrayBuffer())
     .then(buf => {
       try {
         const gif = window.gifuct.parseGIF(buf);
         const frames = window.gifuct.decompressFrames(gif, false);
-        // GIF delays are in 1/100s; clamp minimums (browsers treat 0/1 as 10)
         const totalMs = frames.reduce((acc, f) => {
           const d = (f.delay && f.delay > 1) ? f.delay : 10;
           return acc + d * 10;
         }, 0);
-        // Add small buffer so the last frame isn't cut off
         durations[i] = Math.max(2000, totalMs + 200);
-        // If we just parsed the currently-playing slide, restart timer with new duration
         if (i === current) resetTimer();
       } catch (e) {
         console.warn('GIF parse failed for', src, e);
