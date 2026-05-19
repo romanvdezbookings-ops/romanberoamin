@@ -14,7 +14,15 @@
   unicode-range: U+0020-002F, U+003A-007E, U+00A0-00FF, U+2010-2BFF;
 }
 
-:root { --black: #000000; --white: #ffffff; --blue: #1466FF; --maxw: 1140px; }
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --blue: #1466FF;
+  /* BRTHR-style: content cluster lives in a band centered on the page,
+     leaving generous black margins left/right. Tuned to match the screenshot. */
+  --cluster-width: 56vw;
+  --cluster-max: 900px;
+}
 
 html, body {
   background: var(--black);
@@ -32,24 +40,25 @@ html, body {
   z-index: 99999;
 }
 
+/* HEADER: a centered cluster (not full-width), title left of cluster, nav right of cluster */
 .site-header {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 500;
   background: var(--black);
-  padding: 24px 0;
+  padding: 36px 0 20px;
 }
 .header-inner {
-  max-width: var(--maxw);
+  width: var(--cluster-width);
+  max-width: var(--cluster-max);
   margin: 0 auto;
-  padding: 0 32px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 24px;
 }
 
-.header-left { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
+.header-left { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
 
 .site-title {
   font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -64,14 +73,25 @@ html, body {
     0 0 12px rgba(20,102,255,0.9), 0 0 30px rgba(20,102,255,0.5), 0 0 70px rgba(20,102,255,0.2);
 }
 
-.site-subtitle { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; color: var(--white); letter-spacing: 0.08em; text-transform: uppercase; }
+.site-subtitle {
+  font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: var(--white);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
-.site-nav { display: flex; align-items: center; gap: 28px; padding-top: 18px; }
+.site-nav { display: flex; align-items: center; gap: 26px; padding-top: 20px; }
 
 .nav-item {
-  font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; letter-spacing: 0.08em;
-  text-transform: lowercase; color: var(--white); text-decoration: none;
-  transition: color 0.15s, text-shadow 0.15s; background: none; border: none; font-weight: 400; padding: 0;
+  font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  color: var(--white);
+  text-decoration: none;
+  transition: color 0.15s, text-shadow 0.15s;
+  background: none; border: none; font-weight: 400; padding: 0;
 }
 .nav-item:hover, .nav-item.active {
   color: var(--blue);
@@ -89,22 +109,22 @@ html, body {
 .page { display: none !important; }
 .page.active { display: flex !important; }
 
+/* HOME: hero centered to same cluster width as header */
 #page-home {
   position: fixed; inset: 0;
   flex-direction: column; align-items: center; justify-content: center;
-  padding-top: 140px; padding-bottom: 60px;
+  padding-top: 160px; padding-bottom: 70px;
   background: var(--black); z-index: 1;
 }
 
 .home-inner {
-  max-width: var(--maxw);
-  width: 100%;
+  width: var(--cluster-width);
+  max-width: var(--cluster-max);
   margin: 0 auto;
-  padding: 0 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 28px;
+  gap: 40px;
   flex: 1;
   justify-content: center;
 }
@@ -136,10 +156,10 @@ html, body {
 .thumb:hover { opacity: 0.7; }
 .thumb.active { opacity: 1; outline: 1px solid #1466FF; box-shadow: 0 0 6px rgba(20,102,255,0.6); }
 
-#page-info { position: fixed; inset: 0; flex-direction: column; overflow-y: auto; padding-top: 140px; background: var(--black); z-index: 1; display: none !important; }
+#page-info { position: fixed; inset: 0; flex-direction: column; overflow-y: auto; padding-top: 160px; background: var(--black); z-index: 1; display: none !important; }
 #page-info.active { display: flex !important; }
 
-.info-wrap { display: grid; grid-template-columns: 1fr 1fr; flex: 1; max-width: var(--maxw); margin: 0 auto; padding: 48px 32px 80px; gap: 80px; align-items: start; width: 100%; }
+.info-wrap { display: grid; grid-template-columns: 1fr 1fr; flex: 1; width: var(--cluster-width); max-width: var(--cluster-max); margin: 0 auto; padding: 48px 0 80px; gap: 60px; align-items: start; }
 .info-left { display: flex; flex-direction: column; gap: 44px; }
 .info-section-label { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; letter-spacing: 0.25em; text-transform: lowercase; color: rgba(255,255,255,0.35); margin-bottom: 14px; }
 .info-bio { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.9; color: var(--white); font-weight: 300; }
@@ -148,13 +168,14 @@ html, body {
 .info-contact a:hover { color: var(--blue); }
 .info-right { position: sticky; top: 20px; }
 .info-right img { width: 100%; display: block; filter: brightness(0.8); }
-.page-footer { padding: 20px 32px; display: flex; justify-content: space-between; border-top: 1px solid rgba(20,102,255,0.15); width: 100%; max-width: var(--maxw); margin: 0 auto; }
+.page-footer { padding: 20px 0; display: flex; justify-content: space-between; border-top: 1px solid rgba(20,102,255,0.15); width: var(--cluster-width); max-width: var(--cluster-max); margin: 0 auto; }
 .page-footer span, .page-footer a { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: lowercase; color: rgba(255,255,255,0.2); text-decoration: none; }
 
-@media (max-width: 768px) {
-  .site-title { font-size: 30px; }
-  .header-inner { flex-direction: column; gap: 12px; }
-  .site-nav { gap: 14px; padding-top: 0; }
+@media (max-width: 900px) {
+  :root { --cluster-width: 88vw; }
+  .site-title { font-size: 36px; }
+  .header-inner { flex-direction: column; gap: 14px; }
+  .site-nav { gap: 16px; padding-top: 0; flex-wrap: wrap; }
   .portfolio-dropdown { left: 0; right: auto; }
   .dropdown-inner { align-items: flex-start; }
   .slide img { max-width: 100%; max-height: 50vh; }
@@ -193,6 +214,7 @@ html, body {
         </div>
       </div>
       <a class="nav-item" href="https://instagram.com/romanberoamin" target="_blank">instagram</a>
+      <a class="nav-item" href="https://www.tiktok.com/@romanberoamin" target="_blank">tiktok</a>
     </nav>
   </div>
 </div>
@@ -200,19 +222,19 @@ html, body {
 <div class="page active" id="page-home">
   <div class="home-inner">
     <div class="carousel-wrap">
-      <div class="slide active"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/FEARNOT_web.gif" alt=""></div>
-      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(1).gif" alt=""></div>
-      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(27).gif" alt=""></div>
-      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(2).gif" alt=""></div>
-      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(6).gif" alt=""></div>
-      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(28).gif" alt=""></div>
-      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(9).gif" alt=""></div>
-      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(30).gif" alt=""></div>
-      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(12).gif" alt=""></div>
-      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(17).gif" alt=""></div>
-      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(32).gif" alt=""></div>
-      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(26).gif" alt=""></div>
-      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(33).gif" alt=""></div>
+      <div class="slide active"><img data-src="FEARNOT_web.gif" src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/FEARNOT_web.gif" alt=""></div>
+      <div class="slide"><img data-src="giphy%20(1).gif" src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(1).gif" alt=""></div>
+      <div class="slide"><img data-src="giphy%20(27).gif" src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(27).gif" alt=""></div>
+      <div class="slide"><img data-src="giphy%20(2).gif" src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(2).gif" alt=""></div>
+      <div class="slide"><img data-src="giphy%20(6).gif" src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(6).gif" alt=""></div>
+      <div class="slide"><img data-src="giphy%20(28).gif" src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(28).gif" alt=""></div>
+      <div class="slide"><img data-src="giphy%20(9).gif" src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(9).gif" alt=""></div>
+      <div class="slide"><img data-src="giphy%20(30).gif" src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(30).gif" alt=""></div>
+      <div class="slide"><img data-src="giphy%20(12).gif" src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(12).gif" alt=""></div>
+      <div class="slide"><img data-src="giphy%20(17).gif" src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(17).gif" alt=""></div>
+      <div class="slide"><img data-src="giphy%20(32).gif" src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(32).gif" alt=""></div>
+      <div class="slide"><img data-src="giphy%20(26).gif" src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(26).gif" alt=""></div>
+      <div class="slide"><img data-src="giphy%20(33).gif" src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(33).gif" alt=""></div>
     </div>
     <div class="filmstrip-outer">
       <div class="filmstrip" id="filmstrip"></div>
@@ -246,7 +268,11 @@ html, body {
   </div>
 </div>
 
+<!-- GIF parser to read true duration of each GIF -->
+<script src="https://unpkg.com/gifuct-js@2.1.2/dist/gifuct-js.min.js"></script>
+
 <script>
+/* ============== CURSOR + TRAIL ============== */
 const canvas = document.getElementById('trail-canvas');
 const ctx = canvas.getContext('2d');
 
@@ -255,7 +281,6 @@ resize();
 window.addEventListener('resize', resize);
 
 let mouseX = -200, mouseY = -200;
-
 const points = [];
 const MAX = 45;
 const DECAY = 0.03;
@@ -274,59 +299,38 @@ document.addEventListener('mousemove', e => {
 
 function frame() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
   for (let i = points.length - 1; i >= 0; i--) {
     points[i].life -= DECAY;
     if (points[i].life <= 0) points.splice(i, 1);
   }
-
   for (let i = 1; i < points.length; i++) {
     const p0 = points[i - 1];
     const p1 = points[i];
     const t = (i / points.length) * p1.life;
     if (t <= 0) continue;
-
-    ctx.beginPath();
-    ctx.moveTo(p0.x, p0.y);
-    ctx.lineTo(p1.x, p1.y);
+    ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y);
     ctx.strokeStyle = `rgba(20, 102, 255, ${t * 0.12})`;
-    ctx.lineWidth = t * 14;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(p0.x, p0.y);
-    ctx.lineTo(p1.x, p1.y);
+    ctx.lineWidth = t * 14; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y);
     ctx.strokeStyle = `rgba(60, 140, 255, ${t * 0.25})`;
-    ctx.lineWidth = t * 5;
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(p0.x, p0.y);
-    ctx.lineTo(p1.x, p1.y);
+    ctx.lineWidth = t * 5; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y);
     ctx.strokeStyle = `rgba(200, 220, 255, ${t * 0.8})`;
-    ctx.lineWidth = Math.max(0.5, t * 1.5);
-    ctx.stroke();
+    ctx.lineWidth = Math.max(0.5, t * 1.5); ctx.stroke();
   }
-
   if (cursorImg.complete && cursorImg.naturalWidth > 0 && mouseX > -100) {
-    ctx.save();
-    ctx.globalAlpha = 0.25;
+    ctx.save(); ctx.globalAlpha = 0.25;
     ctx.drawImage(cursorImg, mouseX - 5, mouseY - 5, CURSOR_SIZE + 10, CURSOR_SIZE + 10);
     ctx.restore();
-
-    ctx.save();
-    ctx.globalAlpha = 1;
+    ctx.save(); ctx.globalAlpha = 1;
     ctx.drawImage(cursorImg, mouseX, mouseY, CURSOR_SIZE, CURSOR_SIZE);
     ctx.restore();
   }
-
   requestAnimationFrame(frame);
 }
-
 frame();
 
+/* ============== PAGE NAVIGATION ============== */
 function go(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
@@ -336,6 +340,7 @@ function go(id) {
   window.scrollTo(0, 0);
 }
 
+/* ============== CAROUSEL ============== */
 const slides = document.querySelectorAll('.slide');
 const filmstrip = document.getElementById('filmstrip');
 const srcs = [
@@ -358,12 +363,37 @@ let current = 0;
 const total = slides.length;
 let timer = null;
 
+// Each slide gets its own duration — defaults to 6s, replaced once GIF is parsed
+const durations = new Array(total).fill(6000);
+
 srcs.forEach((src, i) => {
   const img = document.createElement('img');
   img.src = base + src;
   img.className = 'thumb' + (i === 0 ? ' active' : '');
   img.onclick = () => { showSlide(i); resetTimer(); };
   filmstrip.appendChild(img);
+
+  // Parse GIF to get true total duration
+  fetch(base + src)
+    .then(r => r.arrayBuffer())
+    .then(buf => {
+      try {
+        const gif = window.gifuct.parseGIF(buf);
+        const frames = window.gifuct.decompressFrames(gif, false);
+        // GIF delays are in 1/100s; clamp minimums (browsers treat 0/1 as 10)
+        const totalMs = frames.reduce((acc, f) => {
+          const d = (f.delay && f.delay > 1) ? f.delay : 10;
+          return acc + d * 10;
+        }, 0);
+        // Add small buffer so the last frame isn't cut off
+        durations[i] = Math.max(2000, totalMs + 200);
+        // If we just parsed the currently-playing slide, restart timer with new duration
+        if (i === current) resetTimer();
+      } catch (e) {
+        console.warn('GIF parse failed for', src, e);
+      }
+    })
+    .catch(e => console.warn('GIF fetch failed for', src, e));
 });
 
 function showSlide(n) {
@@ -378,10 +408,12 @@ function changeSlide(dir) { showSlide(current + dir); resetTimer(); }
 
 function startCarousel() {
   stopCarousel();
+  const wait = durations[current] || 6000;
   timer = setTimeout(function tick() {
-    showSlide(current + 1);
-    timer = setTimeout(tick, 5000);
-  }, 5000);
+    showSlide((current + 1) % total);
+    const next = durations[current] || 6000;
+    timer = setTimeout(tick, next);
+  }, wait);
 }
 
 function stopCarousel() { if (timer) { clearTimeout(timer); timer = null; } }
