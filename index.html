@@ -8,16 +8,13 @@
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* BlueScreen covers letters + common punctuation only.
-   unicode-range excludes digits (U+0030–U+0039), so browser auto-falls back
-   to the next font in the stack (Helvetica Neue) for any number. */
 @font-face {
   font-family: 'BlueScreen';
   src: url('https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/Blue%20Screen%20Personal%20Use.ttf') format('truetype');
   unicode-range: U+0020-002F, U+003A-007E, U+00A0-00FF, U+2010-2BFF;
 }
 
-:root { --black: #000000; --white: #ffffff; --blue: #1466FF; }
+:root { --black: #000000; --white: #ffffff; --blue: #1466FF; --maxw: 1140px; }
 
 html, body {
   background: var(--black);
@@ -39,11 +36,17 @@ html, body {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 500;
-  padding: 20px 32px;
+  background: var(--black);
+  padding: 24px 0;
+}
+.header-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 32px;
   display: flex;
   align-items: flex-start;
-  gap: 36px;
-  background: var(--black);
+  justify-content: space-between;
+  gap: 24px;
 }
 
 .header-left { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
@@ -63,7 +66,7 @@ html, body {
 
 .site-subtitle { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; color: var(--white); letter-spacing: 0.08em; text-transform: uppercase; }
 
-.site-nav { display: flex; align-items: center; gap: 28px; padding-top: 16px; }
+.site-nav { display: flex; align-items: center; gap: 28px; padding-top: 18px; }
 
 .nav-item {
   font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; letter-spacing: 0.08em;
@@ -76,34 +79,67 @@ html, body {
 }
 
 .portfolio-wrap { position: relative; }
-.portfolio-dropdown { position: absolute; top: 100%; left: 0; display: none; flex-direction: column; z-index: 600; min-width: 290px; }
+.portfolio-dropdown { position: absolute; top: 100%; right: 0; display: none; flex-direction: column; z-index: 600; min-width: 290px; }
 .portfolio-dropdown::before { content: ''; display: block; height: 12px; }
 .portfolio-wrap:hover .portfolio-dropdown { display: flex; }
-.dropdown-inner { background: var(--black); border-top: 1px solid rgba(20,102,255,0.3); padding: 14px 0; display: flex; flex-direction: column; gap: 10px; }
+.dropdown-inner { background: var(--black); border-top: 1px solid rgba(20,102,255,0.3); padding: 14px 0; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
 .portfolio-dropdown a { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; letter-spacing: 0.08em; color: var(--white); text-decoration: none; transition: color 0.15s; white-space: nowrap; text-transform: lowercase; padding: 2px 0; }
 .portfolio-dropdown a:hover { color: var(--blue); text-shadow: 0 0 6px rgba(20,102,255,0.7); }
 
 .page { display: none !important; }
 .page.active { display: flex !important; }
 
-#page-home { position: fixed; inset: 0; flex-direction: column; align-items: center; justify-content: center; padding-top: 100px; padding-bottom: 70px; background: var(--black); z-index: 1; }
+#page-home {
+  position: fixed; inset: 0;
+  flex-direction: column; align-items: center; justify-content: center;
+  padding-top: 140px; padding-bottom: 60px;
+  background: var(--black); z-index: 1;
+}
 
-.carousel-wrap { position: relative; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.home-inner {
+  max-width: var(--maxw);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  flex: 1;
+  justify-content: center;
+}
+
+.carousel-wrap {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 0;
+}
 
 .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease; pointer-events: none; display: flex; align-items: center; justify-content: center; }
 .slide.active { opacity: 1; pointer-events: auto; }
-.slide img { max-width: 60%; max-height: 65vh; width: auto; height: auto; object-fit: contain; display: block; }
+.slide img { max-width: 100%; max-height: 60vh; width: auto; height: auto; object-fit: contain; display: block; }
 
-.filmstrip-outer { width: 60%; flex-shrink: 0; overflow-x: hidden; }
-.filmstrip { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; }
-.thumb { width: 48px; height: 32px; object-fit: cover; opacity: 0.3; transition: opacity 0.2s; flex-shrink: 0; display: block; border: none; padding: 0; background: none; }
+.filmstrip-outer { width: 100%; display: flex; justify-content: center; }
+.filmstrip {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 3px;
+  max-width: 100%;
+}
+.thumb { width: 36px; height: 22px; object-fit: cover; opacity: 0.3; transition: opacity 0.2s; flex-shrink: 0; display: block; border: none; padding: 0; background: none; }
 .thumb:hover { opacity: 0.7; }
 .thumb.active { opacity: 1; outline: 1px solid #1466FF; box-shadow: 0 0 6px rgba(20,102,255,0.6); }
 
-#page-info { position: fixed; inset: 0; flex-direction: column; overflow-y: auto; padding-top: 110px; background: var(--black); z-index: 1; display: none !important; }
+#page-info { position: fixed; inset: 0; flex-direction: column; overflow-y: auto; padding-top: 140px; background: var(--black); z-index: 1; display: none !important; }
 #page-info.active { display: flex !important; }
 
-.info-wrap { display: grid; grid-template-columns: 1fr 1fr; flex: 1; max-width: 1100px; margin: 0 auto; padding: 48px 36px 80px; gap: 80px; align-items: start; width: 100%; }
+.info-wrap { display: grid; grid-template-columns: 1fr 1fr; flex: 1; max-width: var(--maxw); margin: 0 auto; padding: 48px 32px 80px; gap: 80px; align-items: start; width: 100%; }
 .info-left { display: flex; flex-direction: column; gap: 44px; }
 .info-section-label { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; letter-spacing: 0.25em; text-transform: lowercase; color: rgba(255,255,255,0.35); margin-bottom: 14px; }
 .info-bio { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.9; color: var(--white); font-weight: 300; }
@@ -112,17 +148,19 @@ html, body {
 .info-contact a:hover { color: var(--blue); }
 .info-right { position: sticky; top: 20px; }
 .info-right img { width: 100%; display: block; filter: brightness(0.8); }
-.page-footer { padding: 20px 36px; display: flex; justify-content: space-between; border-top: 1px solid rgba(20,102,255,0.15); width: 100%; }
+.page-footer { padding: 20px 32px; display: flex; justify-content: space-between; border-top: 1px solid rgba(20,102,255,0.15); width: 100%; max-width: var(--maxw); margin: 0 auto; }
 .page-footer span, .page-footer a { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: lowercase; color: rgba(255,255,255,0.2); text-decoration: none; }
 
 @media (max-width: 768px) {
   .site-title { font-size: 30px; }
-  .site-header { gap: 16px; flex-wrap: wrap; }
-  .site-nav { gap: 14px; padding-top: 8px; }
-  .slide img { max-width: 88%; max-height: 55vh; }
-  .filmstrip-outer { width: 88%; }
+  .header-inner { flex-direction: column; gap: 12px; }
+  .site-nav { gap: 14px; padding-top: 0; }
+  .portfolio-dropdown { left: 0; right: auto; }
+  .dropdown-inner { align-items: flex-start; }
+  .slide img { max-width: 100%; max-height: 50vh; }
   .info-wrap { grid-template-columns: 1fr; gap: 40px; }
   .info-right { position: static; }
+  .thumb { width: 28px; height: 18px; }
 }
 </style>
 </head>
@@ -131,49 +169,54 @@ html, body {
 <canvas id="trail-canvas"></canvas>
 
 <div class="site-header">
-  <div class="header-left">
-    <a class="site-title" href="#" onclick="go('home');return false;">ROMANBEROAMIN</a>
-    <span class="site-subtitle">ROMAN VALADEZ</span>
-  </div>
-  <nav class="site-nav">
-    <a class="nav-item active" id="nav-home" href="#" onclick="go('home');return false;">home</a>
-    <a class="nav-item" id="nav-info" href="#" onclick="go('info');return false;">info</a>
-    <div class="portfolio-wrap">
-      <button class="nav-item">portfolio ▾</button>
-      <div class="portfolio-dropdown">
-        <div class="dropdown-inner">
-          <a href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank">sincewhenbro — phineas</a>
-          <a href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank">logan ghiorzi — punk ass kids</a>
-          <a href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank">samn x — 1step cypher</a>
-          <a href="https://www.youtube.com/watch?v=ds_LTLYf8E4" target="_blank">glaive & friends — live in los angeles</a>
-          <a href="https://www.youtube.com/watch?v=bMWZB63-0p4" target="_blank">74 youngan — the street escape</a>
-          <a href="https://www.youtube.com/watch?v=PIE1O1JSraA" target="_blank">chris king — who?</a>
-          <a href="https://www.youtube.com/watch?v=v677z4mhKWw" target="_blank">spotemgottem — no tiktok</a>
-          <a href="https://www.youtube.com/watch?v=7qdfkpLZGYA" target="_blank">rotten clothing commercial</a>
+  <div class="header-inner">
+    <div class="header-left">
+      <a class="site-title" href="#" onclick="go('home');return false;">ROMANBEROAMIN</a>
+      <span class="site-subtitle">ROMAN VALADEZ</span>
+    </div>
+    <nav class="site-nav">
+      <a class="nav-item active" id="nav-home" href="#" onclick="go('home');return false;">home</a>
+      <a class="nav-item" id="nav-info" href="#" onclick="go('info');return false;">info</a>
+      <div class="portfolio-wrap">
+        <button class="nav-item">portfolio ▾</button>
+        <div class="portfolio-dropdown">
+          <div class="dropdown-inner">
+            <a href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank">sincewhenbro — phineas</a>
+            <a href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank">logan ghiorzi — punk ass kids</a>
+            <a href="https://www.youtube.com/watch?v=Tj1NM9ZlxYg" target="_blank">samn x — 1step cypher</a>
+            <a href="https://www.youtube.com/watch?v=ds_LTLYf8E4" target="_blank">glaive & friends — live in los angeles</a>
+            <a href="https://www.youtube.com/watch?v=bMWZB63-0p4" target="_blank">74 youngan — the street escape</a>
+            <a href="https://www.youtube.com/watch?v=PIE1O1JSraA" target="_blank">chris king — who?</a>
+            <a href="https://www.youtube.com/watch?v=v677z4mhKWw" target="_blank">spotemgottem — no tiktok</a>
+            <a href="https://www.youtube.com/watch?v=7qdfkpLZGYA" target="_blank">rotten clothing commercial</a>
+          </div>
         </div>
       </div>
-    </div>
-    <a class="nav-item" href="https://instagram.com/romanberoamin" target="_blank">instagram</a>
-  </nav>
+      <a class="nav-item" href="https://instagram.com/romanberoamin" target="_blank">instagram</a>
+    </nav>
+  </div>
 </div>
 
 <div class="page active" id="page-home">
-  <div class="carousel-wrap">
-    <div class="slide active"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(1).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(2).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(6).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(9).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(12).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(17).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(26).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(27).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(28).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(30).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(32).gif" alt=""></div>
-    <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(33).gif" alt=""></div>
-  </div>
-  <div class="filmstrip-outer">
-    <div class="filmstrip" id="filmstrip"></div>
+  <div class="home-inner">
+    <div class="carousel-wrap">
+      <div class="slide active"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/FEARNOT_web.gif" alt=""></div>
+      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(1).gif" alt=""></div>
+      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(27).gif" alt=""></div>
+      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(2).gif" alt=""></div>
+      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(6).gif" alt=""></div>
+      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(28).gif" alt=""></div>
+      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(9).gif" alt=""></div>
+      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(30).gif" alt=""></div>
+      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(12).gif" alt=""></div>
+      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(17).gif" alt=""></div>
+      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(32).gif" alt=""></div>
+      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(26).gif" alt=""></div>
+      <div class="slide"><img src="https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/giphy%20(33).gif" alt=""></div>
+    </div>
+    <div class="filmstrip-outer">
+      <div class="filmstrip" id="filmstrip"></div>
+    </div>
   </div>
 </div>
 
@@ -213,10 +256,9 @@ window.addEventListener('resize', resize);
 
 let mouseX = -200, mouseY = -200;
 
-// Each point has x, y, and its own alpha that decays over time
 const points = [];
 const MAX = 45;
-const DECAY = 0.03; // how fast each point fades per frame
+const DECAY = 0.03;
 
 const cursorImg = new Image();
 cursorImg.crossOrigin = 'anonymous';
@@ -226,7 +268,6 @@ const CURSOR_SIZE = 52;
 document.addEventListener('mousemove', e => {
   mouseX = e.clientX;
   mouseY = e.clientY;
-  // Trail starts exactly at cursor tip (top-left of cursor image = mouseX, mouseY)
   points.push({ x: mouseX, y: mouseY, life: 1.0 });
   if (points.length > MAX) points.shift();
 });
@@ -234,20 +275,17 @@ document.addEventListener('mousemove', e => {
 function frame() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Decay ALL points every frame — trail fades even when mouse is still
   for (let i = points.length - 1; i >= 0; i--) {
     points[i].life -= DECAY;
     if (points[i].life <= 0) points.splice(i, 1);
   }
 
-  // Draw trail
   for (let i = 1; i < points.length; i++) {
     const p0 = points[i - 1];
     const p1 = points[i];
     const t = (i / points.length) * p1.life;
     if (t <= 0) continue;
 
-    // Outer glow
     ctx.beginPath();
     ctx.moveTo(p0.x, p0.y);
     ctx.lineTo(p1.x, p1.y);
@@ -257,7 +295,6 @@ function frame() {
     ctx.lineJoin = 'round';
     ctx.stroke();
 
-    // Mid
     ctx.beginPath();
     ctx.moveTo(p0.x, p0.y);
     ctx.lineTo(p1.x, p1.y);
@@ -265,7 +302,6 @@ function frame() {
     ctx.lineWidth = t * 5;
     ctx.stroke();
 
-    // Core
     ctx.beginPath();
     ctx.moveTo(p0.x, p0.y);
     ctx.lineTo(p1.x, p1.y);
@@ -274,15 +310,12 @@ function frame() {
     ctx.stroke();
   }
 
-  // Draw cursor on top — tip at exact mouseX, mouseY
   if (cursorImg.complete && cursorImg.naturalWidth > 0 && mouseX > -100) {
-    // Subtle glow
     ctx.save();
     ctx.globalAlpha = 0.25;
     ctx.drawImage(cursorImg, mouseX - 5, mouseY - 5, CURSOR_SIZE + 10, CURSOR_SIZE + 10);
     ctx.restore();
 
-    // Sharp cursor
     ctx.save();
     ctx.globalAlpha = 1;
     ctx.drawImage(cursorImg, mouseX, mouseY, CURSOR_SIZE, CURSOR_SIZE);
@@ -306,9 +339,19 @@ function go(id) {
 const slides = document.querySelectorAll('.slide');
 const filmstrip = document.getElementById('filmstrip');
 const srcs = [
-  'giphy%20(1).gif','giphy%20(2).gif','giphy%20(6).gif','giphy%20(9).gif',
-  'giphy%20(12).gif','giphy%20(17).gif','giphy%20(26).gif','giphy%20(27).gif',
-  'giphy%20(28).gif','giphy%20(30).gif','giphy%20(32).gif','giphy%20(33).gif'
+  'FEARNOT_web.gif',
+  'giphy%20(1).gif',
+  'giphy%20(27).gif',
+  'giphy%20(2).gif',
+  'giphy%20(6).gif',
+  'giphy%20(28).gif',
+  'giphy%20(9).gif',
+  'giphy%20(30).gif',
+  'giphy%20(12).gif',
+  'giphy%20(17).gif',
+  'giphy%20(32).gif',
+  'giphy%20(26).gif',
+  'giphy%20(33).gif'
 ];
 const base = 'https://raw.githubusercontent.com/romanvdezbookings-ops/romanberoamin/main/';
 let current = 0;
