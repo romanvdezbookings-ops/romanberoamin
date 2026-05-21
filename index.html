@@ -95,13 +95,13 @@ html, body {
   text-shadow: -1px 0 rgba(255,0,80,0.35), 1px 0 rgba(0,200,255,0.35), 0 0 8px rgba(20,102,255,0.8);
 }
 
-.portfolio-wrap { position: relative; }
-.portfolio-dropdown { position: absolute; top: 100%; right: 0; display: none; flex-direction: column; z-index: 600; min-width: 290px; }
-.portfolio-dropdown::before { content: ''; display: block; height: 12px; }
-.portfolio-wrap:hover .portfolio-dropdown { display: flex; }
+.dropdown-wrap { position: relative; }
+.nav-dropdown { position: absolute; top: 100%; right: 0; display: none; flex-direction: column; z-index: 600; min-width: 290px; }
+.nav-dropdown::before { content: ''; display: block; height: 12px; }
+.dropdown-wrap:hover .nav-dropdown { display: flex; }
 .dropdown-inner { background: var(--black); border-top: 1px solid rgba(20,102,255,0.3); padding: 14px 0; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
-.portfolio-dropdown a { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; letter-spacing: 0.08em; color: var(--white); text-decoration: none; transition: color 0.15s; white-space: nowrap; text-transform: lowercase; padding: 2px 0; }
-.portfolio-dropdown a:hover { color: var(--blue); text-shadow: 0 0 6px rgba(20,102,255,0.7); }
+.nav-dropdown a { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; letter-spacing: 0.08em; color: var(--white); text-decoration: none; transition: color 0.15s; white-space: nowrap; text-transform: lowercase; padding: 2px 0; }
+.nav-dropdown a:hover { color: var(--blue); text-shadow: 0 0 6px rgba(20,102,255,0.7); }
 
 .page { display: none !important; }
 .page.active { display: flex !important; }
@@ -169,17 +169,47 @@ html, body {
 .page-footer { padding: 20px 0; display: flex; justify-content: space-between; border-top: 1px solid rgba(20,102,255,0.15); width: var(--cluster-width); max-width: var(--cluster-max); margin: 0 auto; }
 .page-footer span, .page-footer a { font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: lowercase; color: rgba(255,255,255,0.2); text-decoration: none; }
 
+#page-shop {
+  position: fixed; inset: 0;
+  flex-direction: column; align-items: center; justify-content: center;
+  padding-top: 160px; padding-bottom: 70px;
+  background: var(--black); z-index: 1;
+}
+.shop-inner {
+  width: var(--cluster-width);
+  max-width: var(--cluster-max);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+.coming-soon {
+  font-family: 'BlueScreen', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 52px;
+  color: var(--blue);
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow:
+    -1px 0 rgba(255,0,80,0.35), 1px 0 rgba(0,200,255,0.35),
+    0 0 12px rgba(20,102,255,0.9), 0 0 30px rgba(20,102,255,0.5), 0 0 70px rgba(20,102,255,0.2);
+}
+
 @media (max-width: 900px) {
   :root { --cluster-width: 88vw; }
   .site-title { font-size: 36px; }
   .header-inner { flex-direction: column; gap: 14px; }
   .site-nav { gap: 16px; padding-top: 0; flex-wrap: wrap; }
-  .portfolio-dropdown { left: 0; right: auto; }
+  .nav-dropdown { left: 0; right: auto; }
   .dropdown-inner { align-items: flex-start; }
   .slide img { max-width: 100%; max-height: 50vh; }
   .info-wrap { grid-template-columns: 1fr; gap: 40px; }
   .info-right { position: static; }
   .thumb { width: 28px; height: 18px; }
+  .coming-soon { font-size: 36px; }
 }
 </style>
 </head>
@@ -196,9 +226,9 @@ html, body {
     <nav class="site-nav">
       <a class="nav-item active" id="nav-home" href="#" onclick="go('home');return false;">home</a>
       <a class="nav-item" id="nav-info" href="#" onclick="go('info');return false;">info</a>
-      <div class="portfolio-wrap">
+      <div class="dropdown-wrap">
         <button class="nav-item">portfolio ▾</button>
-        <div class="portfolio-dropdown">
+        <div class="nav-dropdown">
           <div class="dropdown-inner">
             <a href="https://www.youtube.com/watch?v=qqzMvBtQ9Ks" target="_blank">sincewhenbro — phineas</a>
             <a href="https://www.youtube.com/watch?v=vUanMW8PWqY" target="_blank">logan ghiorzi — punk ass kids</a>
@@ -211,8 +241,17 @@ html, body {
           </div>
         </div>
       </div>
-      <a class="nav-item" href="https://instagram.com/romanberoamin" target="_blank">instagram</a>
-      <a class="nav-item" href="https://www.tiktok.com/@romanberoamin" target="_blank">tiktok</a>
+      <div class="dropdown-wrap">
+        <button class="nav-item">contact ▾</button>
+        <div class="nav-dropdown">
+          <div class="dropdown-inner">
+            <a href="mailto:romanvdezbookings@gmail.com">email</a>
+            <a href="https://instagram.com/romanberoamin" target="_blank">instagram</a>
+            <a href="https://www.tiktok.com/@romanberoamin" target="_blank">tiktok</a>
+          </div>
+        </div>
+      </div>
+      <a class="nav-item" id="nav-shop" href="#" onclick="go('shop');return false;">shop</a>
     </nav>
   </div>
 </div>
@@ -267,6 +306,12 @@ html, body {
   <div class="page-footer">
     <span>© 2025 romanberoamin llc</span>
     <a href="https://instagram.com/romanberoamin" target="_blank">@romanberoamin</a>
+  </div>
+</div>
+
+<div class="page" id="page-shop">
+  <div class="shop-inner">
+    <div class="coming-soon">COMING SOON</div>
   </div>
 </div>
 
